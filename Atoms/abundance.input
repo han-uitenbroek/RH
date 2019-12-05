@@ -1,0 +1,119 @@
+# Solar abundances from N. Grevesse and E. Anders (1991), 
+# in "Solar Interior and Atmosphere", Univ. Ariz. Press.,
+# eds. Cox, Livingston, and Matthews, p. 1227
+
+# Abundances for elements heavier than NI are taken from the Atlas 9
+# code of R. L. Kurucz
+
+## With the Asplund et al C and O abundances CH (G band) and
+## CN (388.3 nm) fit better in (radiation-) hydrodynamic models.
+
+# Han Uitenbroek
+# Last modified: Wed Feb  5 14:29:34 2014 --
+  
+  H   12.00
+  HE  10.99
+  LI   1.16
+  BE   1.15
+  B    2.6
+#  C    8.60  # original
+  C    8.39  ## Asplund et al 2005, A&A, 431, 693-705
+  N    8.00
+#  O    8.93  # original
+  O    8.66  ## Asplund et al 2004, A&A, 417, 751
+  F    4.40  ## for Kurucz model T4250, vt=0.5
+  NE   8.09
+  NA   6.33 
+#-#  NA   6.73  ## Value needed for small Na I atom
+  MG   7.58
+  AL   6.47
+  SI   7.55
+  P    5.45
+  S    7.21
+  CL   5.50
+  AR   6.56
+  K    5.12
+  CA   6.36
+  SC   3.10
+  TI   4.99
+  V    4.00
+  CR   5.67
+  MN   5.39
+#  FE   7.67  #original
+  FE   7.44  ## Asplund et al 2000, A&A, 359, 743
+  CO   4.92
+  NI   6.25
+#
+  CU   4.21
+  ZN   4.60
+  GA   2.88
+  GE   3.41
+  AS   2.37
+  SE   3.35
+  BR   2.63
+  KR   3.23
+  RB   2.60
+  SR   2.90
+  Y    2.24
+  ZR   2.60
+  NB   1.42
+  MO   1.92
+  TC  -7.96
+  RU   1.84
+  RH   1.12
+  PD   1.69
+  AG   0.94
+  CD   1.86
+  IN   1.66
+  SN   2.00
+  SB   1.00
+  TE   2.24
+  I    1.51
+  XE   2.23
+  CS   1.12
+  BA   2.13
+  LA   1.22
+  CE   1.55
+  PR   0.71
+  ND   1.50
+  PM  -7.96
+  SM   1.00
+  EU   0.51
+  GD   1.12
+  TB  -0.10
+  DY   1.10
+  HO   0.26
+  ER   0.93
+  TM   0.00
+  YB   1.08
+  LU   0.76
+  HF   0.88
+  TA   0.13
+  W    1.11
+  RE   0.27
+  OS   1.45
+  IR   1.35
+  PT   1.80
+  AU   1.01
+  HG   1.09
+  TL   0.90
+  PB   1.85
+  BI   0.71
+  PO  -7.96
+  AT  -7.96
+  RN  -7.96
+  FR  -7.96
+  RA  -7.96
+  AC  -7.96
+  TH   0.12
+  PA  -7.96
+  U   -0.47
+  NP  -7.96
+  PU  -7.96
+  AM  -7.96
+  CM  -7.96
+  BK  -7.96
+  CF  -7.96
+  ES  -7.96
+#
+# End

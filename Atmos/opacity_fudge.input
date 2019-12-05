@@ -1,0 +1,42 @@
+# Background opacity fudge factors according to Jo Bruls
+#  (See: J. H. M. J. Bruls 1992, "Formation of diagnostic lines in the
+#   solar spectrum", Thesis Utrecht University, Utrecht, The Netherlands
+#   pp. 104-106)
+#
+# Actual multiplication factor is (1.0 + fudge)
+
+
+# Nfudge
+   23
+
+# lambda   Hmin_fudge   scatt_fudge   metal_fudge
+  100.000     0.00         0.00           0.00
+  152.499     0.00         0.00           0.00
+  152.500     0.00         0.00           1.00
+  168.200     0.00         0.00           1.00
+  168.201     0.00         0.00           20.0
+  185.000     0.00         0.00           10.0
+  185.001     0.00         0.00           1.30
+  198.600     0.00         0.00           1.00
+  198.601     0.00         0.00           1.50
+
+# The following is meant to be consistent with the AL I 3S2 3P 2PO edge
+#  (See Al.atom)
+#-#  207.599     0.00         0.00           1.00
+#-#  207.600     6.50         6.50           0.00
+  210.615     0.00         0.00           1.00
+  210.616     6.50         6.50           0.00
+
+  230.000     2.50         2.50           0.00
+  251.500     1.60         1.60           0.00
+  251.501     4.50         4.50           0.00
+  265.000     4.00         4.00           0.00
+  265.001     1.50         1.50           0.00
+  300.000     0.45         0.45           0.00
+  320.000     0.45         0.45           0.00
+  370.000     0.35         0.35           0.00
+  420.000     0.00         0.00           0.00
+  500.000     0.00         0.00           0.00
+  600.000     0.00         0.00           0.00
+ 1000.000     0.00         0.00           0.00
+#

@@ -1,0 +1,34 @@
+## --- Machine dependent defs --                       -------------- ##
+#     
+#      CPU = x86_64
+#      OS  = Linux
+#
+#      Version:       rh2.0
+#      Author:        Han Uitenbroek (huitenbroek@nso.edu)
+#      Last modified: Thu May 31 09:11:05 2018 --
+#
+##     --------------------------                      ----------RH-- ##
+
+## --- Choose one if compilation is required for a specific target
+##     machine (use the fpversion command to determine optimal target)##
+
+TARGET =
+XARCH  =
+
+
+CC       = gcc
+CFLAGS   = -O2 -m64 -I../
+
+
+## --- If f90 compiler is not available replace loader with cc (LD = cc)
+
+LD       = gcc
+LDFLAGS  = -O2 -m64 -L../
+
+
+#      --                                              -------------- ##
+
+ARCHLIBS = -lm -lpthread
+ARCHINC  = 
+
+## ---                                                 -------------- ##

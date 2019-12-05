@@ -1,0 +1,767 @@
+#
+# Sdata:
+#       2.00000      2.00000
+#       1.00000      3.00000
+#       1.50000      2.50000
+#       1.50000      2.50000
+# Ldata:
+#       1.00000      3.00000
+#       0.00000      4.00000
+#       0.00000      3.00000
+#       0.00000      3.00000
+# Edata:
+#       0.00000      39000.0      55000.0
+#       0.00000      39000.0      55000.0
+#       63737.0      64737.0      68737.0
+#       63737.0      64737.0      68737.0
+# Mdata:
+#     1   62  816
+#  -200
+# 
+# FeI/FeII atom with selected multiplets in detail
+Fe
+ 
+#   Nlevel  Nline   Ncont   Nfixed
+      33      63      31       1
+ 
+#  E[cm^-1]      g           label[20]           stage    levelNo
+#                        |----|----|----|----
+       0.000    9.00    'FeI 3d6 4s2   a5DE 4'     0        0
+     415.932    7.00    'FeI 3d6 4s2   a5DE 3'     0        1
+     704.004    5.00    'FeI 3d6 4s2   a5DE 2'     0        2
+     888.129    3.00    'FeI 3d6 4s2   a5DE 1'     0        3
+     978.072    1.00    'FeI 3d6 4s2   a5DE 0'     0        4
+    6928.266   35.00    'FeI 3d7 4s      a5FE'     0        5
+   17550.176    7.00    'FeI 3d7 4s    a5PE 3'     0        6
+   17726.980    5.00    'FeI 3d7 4s    a5PE 2'     0        7
+   17927.377    3.00    'FeI 3d7 4s    a5PE 1'     0        8
+   19350.893   11.00    'FeI 3d6 4s 4p z7DO 5'     0        9
+   19562.439    9.00    'FeI 3d6 4s 4p z7DO 4'     0       10
+   19757.033    7.00    'FeI 3d6 4s 4p z7DO 3'     0       11
+   19912.494    5.00    'FeI 3d6 4s 4p z7DO 2'     0       12
+   20019.635    3.00    'FeI 3d6 4s 4p z7DO 1'     0       13
+   25899.986   25.00    'FeI 3d6 4s 4p   z5DO'     0       14
+   26874.549   35.00    'FeI 3d6 4s 4p   z5FO'     0       15
+   29056.320    7.00    'FeI 3d6 4s 4p z5PO 3'     0       16
+   29469.020    5.00    'FeI 3d6 4s 4p z5PO 2'     0       17
+   29732.732    3.00    'FeI 3d6 4s 4p z5PO 1'     0       18
+   33095.938    9.00    'FeI 3d7 4p    y5DO 4'     0       19
+   33507.121    7.00    'FeI 3d7 4p    y5DO 3'     0       20
+   33695.395   35.00    'FeI 3d7 4p      y5FO'     0       21
+   33801.566    5.00    'FeI 3d7 4p    y5DO 2'     0       22
+   34017.098    3.00    'FeI 3d7 4p    y5DO 1'     0       23
+   34121.578    1.00    'FeI 3d7 4p    y5DO 0'     0       24
+   36766.961   15.00    'FeI 3d6 4s 4p   y5PO'     0       25
+   44677.004    9.00    'FeI 3d6 4s 5s e5DE 4'     0       26
+   45061.328    7.00    'FeI 3d6 4s 5s e5DE 3'     0       27
+   45333.875    5.00    'FeI 3d6 4s 5s e5DE 2'     0       28
+   45509.148    3.00    'FeI 3d6 4s 5s e5DE 1'     0       29
+   45595.078    1.00    'FeI 3d6 4s 5s e5DE 0'     0       30
+   63737.000   30.00    'FeII 3d6 4s     a6DE'     1       31
+  194300.000   25.00    'FeIII 3d6        5DE'     2       32
+#
+# B-B transitions 
+#   j    i       f       type   NQ    symmetr  Qcore  Qwing vdWapprx           vdWaals             radiative    Stark
+#                                                                           H            He
+# multiplet:  -5     271.903  [nm]    FeI 3d6 4s 4p   y5PO --> FeI 3d6 4s2   a5DE 4
+   25    0  3.406E-01    VOIGT  121 ASYMM       2.0   170.2   UNSOLD   1.00   0.00   1.00   0.00  2.192E+08  0.000E+00
+# multiplet:  -1     296.690  [nm]    FeI 3d7 4p      y5FO --> FeI 3d6 4s2   a5DE 4
+   21    0  1.576E-01    VOIGT  121 ASYMM       2.0   121.0   UNSOLD   1.00   0.00   1.00   0.00  2.758E+07  0.000E+00
+# multiplet:   1     516.625  [nm]    FeI 3d6 4s 4p z7DO 5 --> FeI 3d6 4s2   a5DE 4
+    9    0  7.090E-06    VOIGT   49 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.450E+03  0.000E+00
+# multiplet:   1     524.706  [nm]    FeI 3d6 4s 4p z7DO 3 --> FeI 3d6 4s2   a5DE 2
+   11    2  2.260E-06    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  3.920E+02  0.000E+00
+# multiplet:   1     525.508  [nm]    FeI 3d6 4s 4p z7DO 2 --> FeI 3d6 4s2   a5DE 1
+   12    3  5.740E-06    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  8.320E+02  0.000E+00
+# multiplet:   1     525.011  [nm]    FeI 3d6 4s 4p z7DO 1 --> FeI 3d6 4s2   a5DE 0
+   13    4  1.150E-05    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  9.300E+02  0.000E+00
+# multiplet:   1     511.053  [nm]    FeI 3d6 4s 4p z7DO 4 --> FeI 3d6 4s2   a5DE 4
+   10    0  1.930E-05    VOIGT   61 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  4.930E+03  0.000E+00
+# multiplet:   1     516.890  [nm]    FeI 3d6 4s 4p z7DO 3 --> FeI 3d6 4s2   a5DE 3
+   11    1  1.530E-05    VOIGT   53 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  3.830E+03  0.000E+00
+# multiplet:   1     520.471  [nm]    FeI 3d6 4s 4p z7DO 2 --> FeI 3d6 4s2   a5DE 2
+   12    2  9.310E-06    VOIGT   45 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  2.290E+03  0.000E+00
+# multiplet:   1     522.542  [nm]    FeI 3d6 4s 4p z7DO 1 --> FeI 3d6 4s2   a5DE 1
+   13    3  5.420E-06    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.320E+03  0.000E+00
+# multiplet:   1     506.009  [nm]    FeI 3d6 4s 4p z7DO 3 --> FeI 3d6 4s2   a5DE 4
+   11    0  3.900E-07    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.300E+02  0.000E+00
+# multiplet:   1     512.780  [nm]    FeI 3d6 4s 4p z7DO 2 --> FeI 3d6 4s2   a5DE 3
+   12    1  1.070E-07    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  3.800E+01  0.000E+00
+# multiplet:   4     385.991  [nm]    FeI 3d6 4s 4p   z5DO --> FeI 3d6 4s2   a5DE 4
+   14    0  6.301E-02    VOIGT  121 ASYMM       2.0    68.7   UNSOLD   1.00   0.00   1.00   0.00  1.135E+07  0.000E+00
+# multiplet:   5     371.993  [nm]    FeI 3d6 4s 4p   z5FO --> FeI 3d6 4s2   a5DE 4
+   15    0  1.243E-01    VOIGT  121 ASYMM       2.0    89.2   UNSOLD   1.00   0.00   1.00   0.00  1.204E+07  0.000E+00
+# multiplet:   6     344.099  [nm]    FeI 3d6 4s 4p z5PO 2 --> FeI 3d6 4s2   a5DE 3
+   17    1  1.100E-02    VOIGT  121 ASYMM       2.0    38.5   UNSOLD   1.00   0.00   1.00   0.00  8.400E+06  0.000E+00
+# multiplet:   6     344.384  [nm]    FeI 3d6 4s 4p z5PO 1 --> FeI 3d6 4s2   a5DE 2
+   18    2  6.600E-03    VOIGT  121 ASYMM       2.0    28.4   UNSOLD   1.00   0.00   1.00   0.00  6.200E+06  0.000E+00
+# multiplet:   6     349.784  [nm]    FeI 3d6 4s 4p z5PO 2 --> FeI 3d6 4s2   a5DE 1
+   17    3  8.000E-03    VOIGT  121 ASYMM       2.0    24.8   UNSOLD   1.00   0.00   1.00   0.00  2.600E+06  0.000E+00
+# multiplet:   6     347.667  [nm]    FeI 3d6 4s 4p z5PO 1 --> FeI 3d6 4s2   a5DE 0
+   18    4  3.000E-02    VOIGT  121 ASYMM       2.0    26.6   UNSOLD   1.00   0.00   1.00   0.00  5.400E+06  0.000E+00
+# multiplet:   9     302.108  [nm]    FeI 3d7 4p    y5DO 3 --> FeI 3d6 4s2   a5DE 3
+   20    1  6.240E-02    VOIGT  121 ASYMM       2.0    77.7   UNSOLD   1.00   0.00   1.00   0.00  4.560E+07  0.000E+00
+# multiplet:   9     301.763  [nm]    FeI 3d7 4p    y5DO 1 --> FeI 3d6 4s2   a5DE 1
+   23    3  9.310E-03    VOIGT  121 ASYMM       2.0    30.2   UNSOLD   1.00   0.00   1.00   0.00  6.820E+06  0.000E+00
+# multiplet:   9     298.358  [nm]    FeI 3d7 4p    y5DO 3 --> FeI 3d6 4s2   a5DE 4
+   20    0  2.900E-02    VOIGT  121 ASYMM       2.0    68.8   UNSOLD   1.00   0.00   1.00   0.00  2.800E+07  0.000E+00
+# multiplet:   9     299.439  [nm]    FeI 3d7 4p    y5DO 2 --> FeI 3d6 4s2   a5DE 3
+   22    1  4.200E-02    VOIGT  121 ASYMM       2.0    68.8   UNSOLD   1.00   0.00   1.00   0.00  4.400E+07  0.000E+00
+# multiplet:   9     300.096  [nm]    FeI 3d7 4p    y5DO 1 --> FeI 3d6 4s2   a5DE 2
+   23    2  5.200E-02    VOIGT  121 ASYMM       2.0    64.3   UNSOLD   1.00   0.00   1.00   0.00  6.420E+07  0.000E+00
+# multiplet:   9     300.810  [nm]    FeI 3d7 4p    y5DO 0 --> FeI 3d6 4s2   a5DE 1
+   24    3  4.850E-02    VOIGT  121 ASYMM       2.0    52.2   UNSOLD   1.00   0.00   1.00   0.00  1.070E+08  0.000E+00
+# multiplet:   9     305.908  [nm]    FeI 3d7 4p    y5DO 4 --> FeI 3d6 4s2   a5DE 3
+   19    1  3.100E-02    VOIGT  121 ASYMM       2.0    60.9   UNSOLD   1.00   0.00   1.00   0.00  1.700E+07  0.000E+00
+# multiplet:   9     304.762  [nm]    FeI 3d7 4p    y5DO 3 --> FeI 3d6 4s2   a5DE 2
+   20    2  5.530E-02    VOIGT  121 ASYMM       2.0    64.7   UNSOLD   1.00   0.00   1.00   0.00  2.840E+07  0.000E+00
+# multiplet:   9     303.735  [nm]    FeI 3d7 4p    y5DO 2 --> FeI 3d6 4s2   a5DE 1
+   22    3  7.400E-02    VOIGT  121 ASYMM       2.0    59.4   UNSOLD   1.00   0.00   1.00   0.00  3.200E+07  0.000E+00
+# multiplet:   9     302.585  [nm]    FeI 3d7 4p    y5DO 1 --> FeI 3d6 4s2   a5DE 0
+   23    4  1.430E-01    VOIGT  121 ASYMM       2.0    51.2   UNSOLD   1.00   0.00   1.00   0.00  3.480E+07  0.000E+00
+# multiplet:  12     804.761  [nm]    FeI 3d6 4s 4p z7DO 5 --> FeI 3d7 4s      a5FE
+    9    5  6.531E-07    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  2.719E+02  0.000E+00
+# multiplet:  15     526.953  [nm]    FeI 3d6 4s 4p   z5DO --> FeI 3d7 4s      a5FE
+   14    5  4.729E-03    VOIGT  121 ASYMM       2.0    18.5   UNSOLD   1.00   0.00   1.00   0.00  2.034E+06  0.000E+00
+# multiplet:  16     501.207  [nm]    FeI 3d6 4s 4p   z5FO --> FeI 3d7 4s      a5FE
+   15    5  2.962E-04    VOIGT  105 ASYMM       2.0     7.8   UNSOLD   1.00   0.00   1.00   0.00  7.895E+04  0.000E+00
+# multiplet:  17     451.788  [nm]    FeI 3d6 4s 4p z5PO 3 --> FeI 3d7 4s      a5FE
+   16    5  1.714E-07    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.543E+02  0.000E+00
+# multiplet:  20     382.043  [nm]    FeI 3d7 4p    y5DO 4 --> FeI 3d7 4s      a5FE
+   19    5  1.031E-01    VOIGT  121 ASYMM       2.0    70.6   UNSOLD   1.00   0.00   1.00   0.00  2.438E+08  0.000E+00
+# multiplet:  21     373.486  [nm]    FeI 3d7 4p      y5FO --> FeI 3d7 4s      a5FE
+   21    5  1.930E-01    VOIGT  121 ASYMM       2.0    88.9   UNSOLD   1.00   0.00   1.00   0.00  9.372E+07  0.000E+00
+# multiplet:  26     335.039  [nm]    FeI 3d6 4s 4p   y5PO --> FeI 3d7 4s      a5FE
+   25    5  7.400E-05    VOIGT   73 ASYMM       2.0     7.4   UNSOLD   1.00   0.00   1.00   0.00  1.323E+05  0.000E+00
+# multiplet:  60     868.873  [nm]    FeI 3d6 4s 4p z5PO 3 --> FeI 3d7 4s    a5PE 3
+   16    6  8.770E-03    VOIGT   81 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  7.750E+05  0.000E+00
+# multiplet:  60     851.409  [nm]    FeI 3d6 4s 4p z5PO 2 --> FeI 3d7 4s    a5PE 2
+   17    7  1.180E-03    VOIGT   49 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.090E+05  0.000E+00
+# multiplet:  60     846.794  [nm]    FeI 3d6 4s 4p z5PO 1 --> FeI 3d7 4s    a5PE 1
+   18    8  2.820E-03    VOIGT   49 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  2.630E+05  0.000E+00
+# multiplet:  60     838.766  [nm]    FeI 3d6 4s 4p z5PO 2 --> FeI 3d7 4s    a5PE 3
+   17    6  4.590E-03    VOIGT   69 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  6.090E+05  0.000E+00
+# multiplet:  60     832.688  [nm]    FeI 3d6 4s 4p z5PO 1 --> FeI 3d7 4s    a5PE 2
+   18    7  5.970E-03    VOIGT   69 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  9.570E+05  0.000E+00
+# multiplet:  62     643.074  [nm]    FeI 3d7 4p    y5DO 4 --> FeI 3d7 4s    a5PE 3
+   19    6  1.410E-03    VOIGT   53 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.770E+05  0.000E+00
+# multiplet:  62     633.538  [nm]    FeI 3d7 4p    y5DO 3 --> FeI 3d7 4s    a5PE 2
+   20    7  1.200E-03    VOIGT   49 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.400E+05  0.000E+00
+# multiplet:  62     629.747  [nm]    FeI 3d7 4p    y5DO 2 --> FeI 3d7 4s    a5PE 1
+   22    8  6.070E-04    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  6.120E+04  0.000E+00
+# multiplet:  62     626.511  [nm]    FeI 3d7 4p    y5DO 3 --> FeI 3d7 4s    a5PE 3
+   20    6  4.030E-04    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  6.840E+04  0.000E+00
+# multiplet:  62     621.912  [nm]    FeI 3d7 4p    y5DO 2 --> FeI 3d7 4s    a5PE 2
+   22    7  7.380E-04    VOIGT   45 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.270E+05  0.000E+00
+# multiplet:  62     621.332  [nm]    FeI 3d7 4p    y5DO 1 --> FeI 3d7 4s    a5PE 1
+   23    8  7.300E-04    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.300E+05  0.000E+00
+# multiplet:  62     615.138  [nm]    FeI 3d7 4p    y5DO 2 --> FeI 3d7 4s    a5PE 3
+   22    6  7.180E-05    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.770E+04  0.000E+00
+# multiplet:  62     613.703  [nm]    FeI 3d7 4p    y5DO 1 --> FeI 3d7 4s    a5PE 2
+   23    7  2.240E-04    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  6.620E+04  0.000E+00
+# multiplet:  62     617.303  [nm]    FeI 3d7 4p    y5DO 0 --> FeI 3d7 4s    a5PE 1
+   24    8  4.390E-04    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  2.310E+05  0.000E+00
+# multiplet:  63     619.207  [nm]    FeI 3d7 4p      y5FO --> FeI 3d7 4s    a5PE 3
+   21    6  2.657E-05    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.223E+03  0.000E+00
+# multiplet:  66     520.233  [nm]    FeI 3d6 4s 4p   y5PO --> FeI 3d7 4s    a5PE 3
+   25    6  6.103E-03    VOIGT   73 ASYMM       2.0     4.8   UNSOLD   1.00   0.00   1.00   0.00  7.165E+05  0.000E+00
+# multiplet: 153     398.056  [nm]    FeI 3d6 4s 5s e5DE 4 --> FeI 3d6 4s 4p z7DO 4
+   26   10  5.300E-05    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  2.200E+04  0.000E+00
+# multiplet: 153     401.171  [nm]    FeI 3d6 4s 5s e5DE 4 --> FeI 3d6 4s 4p z7DO 3
+   26   11  2.900E-04    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  9.400E+04  0.000E+00
+# multiplet: 153     397.518  [nm]    FeI 3d6 4s 5s e5DE 3 --> FeI 3d6 4s 4p z7DO 2
+   27   12  3.500E-04    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.000E+05  0.000E+00
+# multiplet: 553     532.418  [nm]    FeI 3d6 4s 5s e5DE 4 --> FeI 3d6 4s 4p   z5DO
+   26   14  6.025E-02    VOIGT  109 ASYMM       2.0     7.5   UNSOLD   1.00   0.00   1.00   0.00  3.712E+07  0.000E+00
+# multiplet: 686     561.564  [nm]    FeI 3d6 4s 5s e5DE 4 --> FeI 3d6 4s 4p   z5FO
+   26   15  7.226E-02    VOIGT  117 ASYMM       2.0     7.7   UNSOLD   1.00   0.00   1.00   0.00  8.200E+07  0.000E+00
+# multiplet: 816     639.987  [nm]    FeI 3d6 4s 5s e5DE 4 --> FeI 3d6 4s 4p z5PO 3
+   26   16  4.300E-02    VOIGT   57 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  5.500E+06  0.000E+00
+# multiplet: 816     641.177  [nm]    FeI 3d6 4s 5s e5DE 3 --> FeI 3d6 4s 4p z5PO 2
+   27   17  3.000E-02    VOIGT   49 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  3.500E+06  0.000E+00
+# multiplet: 816     624.632  [nm]    FeI 3d6 4s 5s e5DE 3 --> FeI 3d6 4s 4p z5PO 3
+   27   16  1.600E-02    VOIGT   49 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  2.700E+06  0.000E+00
+# multiplet: 816     633.699  [nm]    FeI 3d6 4s 5s e5DE 1 --> FeI 3d6 4s 4p z5PO 1
+   29   18  3.000E-02    VOIGT   45 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  4.900E+06  0.000E+00
+# multiplet: 816     614.156  [nm]    FeI 3d6 4s 5s e5DE 2 --> FeI 3d6 4s 4p z5PO 3
+   28   16  3.500E-03    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  8.700E+05  0.000E+00
+# multiplet: 816     630.263  [nm]    FeI 3d6 4s 5s e5DE 0 --> FeI 3d6 4s 4p z5PO 1
+   30   18  6.500E-03    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  3.200E+06  0.000E+00
+# multiplet: 816     630.144  [nm]    FeI 3d6 4s 5s e5DE 2 --> FeI 3d6 4s 4p z5PO 2
+   28   17  1.090E-02    VOIGT   41 ASYMM       2.0     4.0   UNSOLD   1.00   0.00   1.00   0.00  1.800E+06  0.000E+00
+#
+# B-F transitions 
+#   j    i alpha[m^-2]   Nlambda   Wavel. Dep.   lamb_min [nm]
+# FeI 3d6 4s2   a5DE 4      156.895 [nm]
+   31    0   6.025E-22      30     HYDROGENIC        52.3
+# FeI 3d6 4s2   a5DE 3      157.925 [nm]
+   31    1   6.006E-22      30     HYDROGENIC        52.6
+# FeI 3d6 4s2   a5DE 2      158.647 [nm]
+   31    2   5.992E-22      30     HYDROGENIC        52.9
+# FeI 3d6 4s2   a5DE 1      159.112 [nm]
+   31    3   5.983E-22      30     HYDROGENIC        53.0
+# FeI 3d6 4s2   a5DE 0      159.340 [nm]
+   31    4   5.979E-22      30     HYDROGENIC        53.1
+# FeI 3d7 4s      a5FE      176.029 [nm]
+   31    5   5.688E-22      30     HYDROGENIC        58.7
+# FeI 3d7 4s    a5PE 3      216.444 [nm]
+   31    6   5.129E-22      30     HYDROGENIC        72.2
+# FeI 3d7 4s    a5PE 2      217.276 [nm]
+   31    7   5.119E-22      30     HYDROGENIC        72.4
+# FeI 3d7 4s    a5PE 1      218.226 [nm]
+   31    8   5.108E-22      30     HYDROGENIC        72.8
+# FeI 3d6 4s 4p z7DO 5      225.226 [nm]
+   31    9   5.028E-22      30     HYDROGENIC        75.1
+# FeI 3d6 4s 4p z7DO 4      226.305 [nm]
+   31   10   5.016E-22      30     HYDROGENIC        75.5
+# FeI 3d6 4s 4p z7DO 3      227.306 [nm]
+   31   11   5.005E-22      30     HYDROGENIC        75.8
+# FeI 3d6 4s 4p z7DO 2      228.112 [nm]
+   31   12   4.996E-22      30     HYDROGENIC        76.1
+# FeI 3d6 4s 4p z7DO 1      228.671 [nm]
+   31   13   4.990E-22      30     HYDROGENIC        76.2
+# FeI 3d6 4s 4p   z5DO      264.213 [nm]
+   31   14   4.642E-22      30     HYDROGENIC        88.1
+# FeI 3d6 4s 4p   z5FO      271.198 [nm]
+   31   15   4.582E-22      30     HYDROGENIC        90.4
+# FeI 3d6 4s 4p z5PO 3      288.260 [nm]
+   31   16   4.445E-22      30     HYDROGENIC        96.1
+# FeI 3d6 4s 4p z5PO 2      291.732 [nm]
+   31   17   4.418E-22      30     HYDROGENIC        97.3
+# FeI 3d6 4s 4p z5PO 1      293.995 [nm]
+   31   18   4.401E-22      30     HYDROGENIC        98.0
+# FeI 3d7 4p    y5DO 4      326.265 [nm]
+   31   19   4.178E-22      30     HYDROGENIC       108.8
+# FeI 3d7 4p    y5DO 3      330.703 [nm]
+   31   20   4.150E-22      30     HYDROGENIC       110.3
+# FeI 3d7 4p      y5FO      332.776 [nm]
+   31   21   4.137E-22      30     HYDROGENIC       111.0
+# FeI 3d7 4p    y5DO 2      333.956 [nm]
+   31   22   4.129E-22      30     HYDROGENIC       111.4
+# FeI 3d7 4p    y5DO 1      336.378 [nm]
+   31   23   4.114E-22      30     HYDROGENIC       112.2
+# FeI 3d7 4p    y5DO 0      337.565 [nm]
+   31   24   4.107E-22      30     HYDROGENIC       112.6
+# FeI 3d6 4s 4p   y5PO      370.676 [nm]
+   31   25   3.919E-22      30     HYDROGENIC       123.6
+# FeI 3d6 4s 5s e5DE 4      524.513 [nm]
+   31   26   3.295E-22      30     HYDROGENIC       174.9
+# FeI 3d6 4s 5s e5DE 3      535.307 [nm]
+   31   27   3.262E-22      30     HYDROGENIC       178.5
+# FeI 3d6 4s 5s e5DE 2      543.235 [nm]
+   31   28   3.238E-22      30     HYDROGENIC       181.1
+# FeI 3d6 4s 5s e5DE 1      548.458 [nm]
+   31   29   3.222E-22      30     HYDROGENIC       182.9
+# FeI 3d6 4s 5s e5DE 0      551.056 [nm]
+   31   30   3.215E-22      30     HYDROGENIC       183.7
+#
+# Fixed transitions
+# j   i      Strength        Trad      Option
+ 
+# FeII 3d6 4s     a6DE      76.5914 [nm]
+   32   31   4.312E-22       5000.     TRAD_ATMOSPHERIC
+ 
+
+# Collisional rate coefficients from impact.c
+
+ TEMP    7          3000.0     5000.0     7000.0    10000.0    20000.0    30000.0   100000.0
+
+ CE      1  0    3.584E-13  3.044E-13  2.733E-13  2.438E-13  1.953E-13  1.715E-13  1.167E-13   (van Regemorter)
+ CE      2  0    1.481E-13  1.257E-13  1.129E-13  1.007E-13  8.068E-14  7.086E-14  4.820E-14   (van Regemorter)
+ CE      3  0    1.002E-13  8.509E-14  7.641E-14  6.817E-14  5.461E-14  4.796E-14  3.263E-14   (van Regemorter)
+ CE      4  0    8.521E-14  7.236E-14  6.498E-14  5.797E-14  4.644E-14  4.079E-14  2.775E-14   (van Regemorter)
+ CE      5  0    3.178E-15  2.698E-15  2.423E-15  2.162E-15  1.732E-15  1.521E-15  1.035E-15   (van Regemorter)
+ CE      6  0    6.667E-16  5.662E-16  5.084E-16  4.535E-16  3.633E-16  3.191E-16  2.171E-16   (van Regemorter)
+ CE      7  0    6.556E-16  5.567E-16  4.999E-16  4.460E-16  3.573E-16  3.138E-16  2.135E-16   (van Regemorter)
+ CE      8  0    6.433E-16  5.463E-16  4.905E-16  4.376E-16  3.506E-16  3.079E-16  2.095E-16   (van Regemorter)
+ CE      9  0    9.583E-19  5.816E-19  4.201E-19  2.988E-19  1.568E-19  1.089E-19  3.910E-20   (Seaton IP)
+ CE     10  0    2.567E-18  1.558E-18  1.125E-18  8.002E-19  4.197E-19  2.914E-19  1.047E-19   (Seaton IP)
+ CE     11  0    5.110E-20  3.101E-20  2.240E-20  1.593E-20  8.354E-21  5.800E-21  2.083E-21   (Seaton IP)
+ CE     12  0    5.393E-16  4.579E-16  4.112E-16  3.668E-16  2.939E-16  2.581E-16  1.756E-16   (van Regemorter)
+ CE     13  0    5.344E-16  4.538E-16  4.075E-16  3.636E-16  2.912E-16  2.558E-16  1.740E-16   (van Regemorter)
+ CE     14  0    5.477E-15  3.318E-15  2.392E-15  1.698E-15  8.863E-16  6.135E-16  2.198E-16   (Seaton IP)
+ CE     15  0    1.020E-14  6.180E-15  4.456E-15  3.162E-15  1.649E-15  1.141E-15  4.086E-16   (Seaton IP)
+ CE     16  0    2.858E-16  2.427E-16  2.179E-16  1.944E-16  1.558E-16  1.368E-16  9.306E-17   (van Regemorter)
+ CE     17  0    2.791E-16  2.370E-16  2.128E-16  1.899E-16  1.521E-16  1.336E-16  9.088E-17   (van Regemorter)
+ CE     18  0    2.750E-16  2.335E-16  2.097E-16  1.871E-16  1.498E-16  1.316E-16  8.953E-17   (van Regemorter)
+ CE     19  0    2.297E-16  1.950E-16  1.751E-16  1.562E-16  1.252E-16  1.099E-16  7.478E-17   (van Regemorter)
+ CE     20  0    1.683E-15  1.018E-15  7.331E-16  5.195E-16  2.699E-16  1.863E-16  6.645E-17   (Seaton IP)
+ CE     21  0    9.063E-15  5.483E-15  3.949E-15  2.798E-15  1.453E-15  1.003E-15  3.577E-16   (Seaton IP)
+ CE     22  0    2.217E-16  1.882E-16  1.690E-16  1.508E-16  1.208E-16  1.061E-16  7.218E-17   (van Regemorter)
+ CE     23  0    2.193E-16  1.862E-16  1.672E-16  1.492E-16  1.195E-16  1.050E-16  7.141E-17   (van Regemorter)
+ CE     24  0    2.182E-16  1.853E-16  1.664E-16  1.484E-16  1.189E-16  1.044E-16  7.104E-17   (van Regemorter)
+ CE     25  0    1.702E-14  1.029E-14  7.410E-15  5.247E-15  2.722E-15  1.876E-15  6.680E-16   (Seaton IP)
+ CE     26  0    1.387E-16  1.178E-16  1.058E-16  9.438E-17  7.560E-17  6.640E-17  4.517E-17   (van Regemorter)
+ CE     27  0    1.368E-16  1.161E-16  1.043E-16  9.303E-17  7.452E-17  6.546E-17  4.453E-17   (van Regemorter)
+ CE     28  0    1.354E-16  1.150E-16  1.032E-16  9.209E-17  7.377E-17  6.480E-17  4.408E-17   (van Regemorter)
+ CE     29  0    1.345E-16  1.142E-16  1.026E-16  9.150E-17  7.330E-17  6.438E-17  4.379E-17   (van Regemorter)
+ CE     30  0    1.341E-16  1.139E-16  1.022E-16  9.121E-17  7.306E-17  6.417E-17  4.365E-17   (van Regemorter)
+ CE      2  1    6.643E-13  5.641E-13  5.065E-13  4.519E-13  3.620E-13  3.180E-13  2.163E-13   (van Regemorter)
+ CE      3  1    2.896E-13  2.459E-13  2.208E-13  1.970E-13  1.578E-13  1.386E-13  9.429E-14   (van Regemorter)
+ CE      4  1    2.161E-13  1.835E-13  1.648E-13  1.470E-13  1.177E-13  1.034E-13  7.035E-14   (van Regemorter)
+ CE      5  1    3.526E-15  2.994E-15  2.688E-15  2.398E-15  1.921E-15  1.688E-15  1.148E-15   (van Regemorter)
+ CE      6  1    6.941E-16  5.895E-16  5.293E-16  4.722E-16  3.783E-16  3.322E-16  2.260E-16   (van Regemorter)
+ CE      7  1    6.823E-16  5.794E-16  5.202E-16  4.641E-16  3.718E-16  3.266E-16  2.221E-16   (van Regemorter)
+ CE      8  1    6.692E-16  5.683E-16  5.103E-16  4.552E-16  3.647E-16  3.203E-16  2.179E-16   (van Regemorter)
+ CE      9  1    5.869E-16  4.984E-16  4.475E-16  3.992E-16  3.198E-16  2.809E-16  1.911E-16   (van Regemorter)
+ CE     10  1    5.760E-16  4.891E-16  4.392E-16  3.918E-16  3.139E-16  2.757E-16  1.875E-16   (van Regemorter)
+ CE     11  1    2.059E-18  1.249E-18  9.025E-19  6.421E-19  3.369E-19  2.340E-19  8.409E-20   (Seaton IP)
+ CE     12  1    1.423E-20  8.634E-21  6.236E-21  4.436E-21  2.327E-21  1.616E-21  5.809E-22   (Seaton IP)
+ CE     13  1    5.536E-16  4.701E-16  4.221E-16  3.766E-16  3.017E-16  2.650E-16  1.803E-16   (van Regemorter)
+ CE     14  1    3.563E-16  3.026E-16  2.717E-16  2.424E-16  1.942E-16  1.705E-16  1.160E-16   (van Regemorter)
+ CE     15  1    3.345E-16  2.841E-16  2.551E-16  2.276E-16  1.823E-16  1.601E-16  1.089E-16   (van Regemorter)
+ CE     16  1    2.928E-16  2.487E-16  2.233E-16  1.992E-16  1.596E-16  1.402E-16  9.534E-17   (van Regemorter)
+ CE     17  1    7.949E-16  4.813E-16  3.468E-16  2.460E-16  1.281E-16  8.861E-17  3.171E-17   (Seaton IP)
+ CE     18  1    2.816E-16  2.391E-16  2.147E-16  1.915E-16  1.534E-16  1.348E-16  9.168E-17   (van Regemorter)
+ CE     19  1    1.860E-15  1.125E-15  8.106E-16  5.745E-16  2.986E-16  2.062E-16  7.365E-17   (Seaton IP)
+ CE     20  1    3.670E-15  2.220E-15  1.599E-15  1.133E-15  5.890E-16  4.067E-16  1.452E-16   (Seaton IP)
+ CE     21  1    2.276E-16  1.932E-16  1.735E-16  1.548E-16  1.240E-16  1.089E-16  7.409E-17   (van Regemorter)
+ CE     22  1    2.435E-15  1.473E-15  1.061E-15  7.520E-16  3.908E-16  2.698E-16  9.631E-17   (Seaton IP)
+ CE     23  1    2.239E-16  1.901E-16  1.707E-16  1.523E-16  1.220E-16  1.072E-16  7.290E-17   (van Regemorter)
+ CE     24  1    2.227E-16  1.891E-16  1.698E-16  1.515E-16  1.214E-16  1.066E-16  7.252E-17   (van Regemorter)
+ CE     25  1    1.962E-16  1.666E-16  1.496E-16  1.335E-16  1.069E-16  9.390E-17  6.388E-17   (van Regemorter)
+ CE     26  1    1.409E-16  1.197E-16  1.075E-16  9.587E-17  7.680E-17  6.746E-17  4.589E-17   (van Regemorter)
+ CE     27  1    1.389E-16  1.180E-16  1.059E-16  9.449E-17  7.569E-17  6.648E-17  4.523E-17   (van Regemorter)
+ CE     28  1    1.375E-16  1.168E-16  1.048E-16  9.353E-17  7.492E-17  6.581E-17  4.477E-17   (van Regemorter)
+ CE     29  1    1.366E-16  1.160E-16  1.042E-16  9.292E-17  7.444E-17  6.538E-17  4.447E-17   (van Regemorter)
+ CE     30  1    1.362E-16  1.156E-16  1.038E-16  9.262E-17  7.420E-17  6.517E-17  4.433E-17   (van Regemorter)
+ CE      3  2    1.409E-12  1.197E-12  1.074E-12  9.586E-13  7.679E-13  6.744E-13  4.588E-13   (van Regemorter)
+ CE      4  2    7.223E-13  6.134E-13  5.508E-13  4.914E-13  3.936E-13  3.457E-13  2.352E-13   (van Regemorter)
+ CE      5  2    3.804E-15  3.231E-15  2.901E-15  2.588E-15  2.073E-15  1.821E-15  1.239E-15   (van Regemorter)
+ CE      6  2    7.142E-16  6.065E-16  5.446E-16  4.858E-16  3.892E-16  3.418E-16  2.325E-16   (van Regemorter)
+ CE      7  2    7.018E-16  5.959E-16  5.351E-16  4.774E-16  3.824E-16  3.359E-16  2.285E-16   (van Regemorter)
+ CE      8  2    6.881E-16  5.843E-16  5.247E-16  4.681E-16  3.750E-16  3.293E-16  2.240E-16   (van Regemorter)
+ CE      9  2    6.022E-16  5.114E-16  4.592E-16  4.096E-16  3.281E-16  2.882E-16  1.961E-16   (van Regemorter)
+ CE     10  2    5.909E-16  5.018E-16  4.505E-16  4.019E-16  3.220E-16  2.828E-16  1.924E-16   (van Regemorter)
+ CE     11  2    3.098E-19  1.881E-19  1.359E-19  9.667E-20  5.075E-20  3.526E-20  1.268E-20   (Seaton IP)
+ CE     12  2    1.261E-18  7.654E-19  5.529E-19  3.934E-19  2.065E-19  1.434E-19  5.157E-20   (Seaton IP)
+ CE     13  2    5.676E-16  4.820E-16  4.328E-16  3.861E-16  3.093E-16  2.716E-16  1.848E-16   (van Regemorter)
+ CE     14  2    3.632E-16  3.084E-16  2.769E-16  2.470E-16  1.979E-16  1.738E-16  1.182E-16   (van Regemorter)
+ CE     15  2    3.407E-16  2.893E-16  2.598E-16  2.318E-16  1.857E-16  1.631E-16  1.109E-16   (van Regemorter)
+ CE     16  2    2.978E-16  2.529E-16  2.271E-16  2.026E-16  1.623E-16  1.426E-16  9.698E-17   (van Regemorter)
+ CE     17  2    2.907E-16  2.469E-16  2.217E-16  1.978E-16  1.584E-16  1.391E-16  9.465E-17   (van Regemorter)
+ CE     18  2    4.755E-16  2.879E-16  2.075E-16  1.472E-16  7.668E-17  5.303E-17  1.899E-17   (Seaton IP)
+ CE     19  2    2.381E-16  2.022E-16  1.816E-16  1.620E-16  1.298E-16  1.140E-16  7.753E-17   (van Regemorter)
+ CE     20  2    3.283E-15  1.987E-15  1.431E-15  1.014E-15  5.272E-16  3.641E-16  1.301E-16   (Seaton IP)
+ CE     21  2    2.309E-16  1.961E-16  1.761E-16  1.571E-16  1.258E-16  1.105E-16  7.518E-17   (van Regemorter)
+ CE     22  2    2.297E-16  1.950E-16  1.751E-16  1.562E-16  1.251E-16  1.099E-16  7.477E-17   (van Regemorter)
+ CE     23  2    3.012E-15  1.822E-15  1.313E-15  9.301E-16  4.834E-16  3.338E-16  1.192E-16   (Seaton IP)
+ CE     24  2    2.260E-16  1.919E-16  1.723E-16  1.537E-16  1.231E-16  1.082E-16  7.358E-17   (van Regemorter)
+ CE     25  2    1.988E-16  1.688E-16  1.516E-16  1.353E-16  1.083E-16  9.516E-17  6.474E-17   (van Regemorter)
+ CE     26  2    1.425E-16  1.210E-16  1.086E-16  9.693E-17  7.765E-17  6.820E-17  4.639E-17   (van Regemorter)
+ CE     27  2    1.404E-16  1.192E-16  1.071E-16  9.552E-17  7.652E-17  6.721E-17  4.572E-17   (van Regemorter)
+ CE     28  2    1.390E-16  1.180E-16  1.060E-16  9.455E-17  7.574E-17  6.652E-17  4.525E-17   (van Regemorter)
+ CE     29  2    1.381E-16  1.172E-16  1.053E-16  9.393E-17  7.524E-17  6.609E-17  4.496E-17   (van Regemorter)
+ CE     30  2    1.376E-16  1.169E-16  1.049E-16  9.362E-17  7.500E-17  6.587E-17  4.481E-17   (van Regemorter)
+ CE      4  3    4.695E-12  3.987E-12  3.580E-12  3.194E-12  2.559E-12  2.247E-12  1.529E-12   (van Regemorter)
+ CE      5  3    4.001E-15  3.398E-15  3.051E-15  2.722E-15  2.180E-15  1.915E-15  1.303E-15   (van Regemorter)
+ CE      6  3    7.275E-16  6.178E-16  5.547E-16  4.949E-16  3.964E-16  3.482E-16  2.369E-16   (van Regemorter)
+ CE      7  3    7.147E-16  6.069E-16  5.450E-16  4.862E-16  3.895E-16  3.421E-16  2.327E-16   (van Regemorter)
+ CE      8  3    7.006E-16  5.950E-16  5.343E-16  4.766E-16  3.818E-16  3.353E-16  2.281E-16   (van Regemorter)
+ CE      9  3    6.123E-16  5.200E-16  4.669E-16  4.165E-16  3.337E-16  2.931E-16  1.994E-16   (van Regemorter)
+ CE     10  3    6.007E-16  5.101E-16  4.580E-16  4.086E-16  3.273E-16  2.875E-16  1.956E-16   (van Regemorter)
+ CE     11  3    5.903E-16  5.013E-16  4.501E-16  4.016E-16  3.217E-16  2.825E-16  1.922E-16   (van Regemorter)
+ CE     12  3    7.868E-19  4.776E-19  3.451E-19  2.455E-19  1.289E-19  8.956E-20  3.221E-20   (Seaton IP)
+ CE     13  3    7.368E-19  4.472E-19  3.231E-19  2.299E-19  1.207E-19  8.384E-20  3.016E-20   (Seaton IP)
+ CE     14  3    3.677E-16  3.122E-16  2.803E-16  2.501E-16  2.004E-16  1.760E-16  1.197E-16   (van Regemorter)
+ CE     15  3    3.448E-16  2.928E-16  2.629E-16  2.346E-16  1.879E-16  1.650E-16  1.123E-16   (van Regemorter)
+ CE     16  3    3.011E-16  2.557E-16  2.296E-16  2.048E-16  1.641E-16  1.441E-16  9.804E-17   (van Regemorter)
+ CE     17  3    5.890E-16  3.566E-16  2.571E-16  1.824E-16  9.504E-17  6.575E-17  2.356E-17   (Seaton IP)
+ CE     18  3    2.894E-16  2.457E-16  2.206E-16  1.968E-16  1.577E-16  1.385E-16  9.421E-17   (van Regemorter)
+ CE     19  3    2.404E-16  2.042E-16  1.833E-16  1.635E-16  1.310E-16  1.151E-16  7.828E-17   (van Regemorter)
+ CE     20  3    2.353E-16  1.999E-16  1.795E-16  1.601E-16  1.282E-16  1.126E-16  7.663E-17   (van Regemorter)
+ CE     21  3    2.331E-16  1.979E-16  1.777E-16  1.586E-16  1.270E-16  1.116E-16  7.589E-17   (van Regemorter)
+ CE     22  3    4.357E-15  2.636E-15  1.899E-15  1.346E-15  6.997E-16  4.832E-16  1.727E-16   (Seaton IP)
+ CE     23  3    5.425E-16  3.282E-16  2.364E-16  1.675E-16  8.709E-17  6.014E-17  2.149E-17   (Seaton IP)
+ CE     24  3    2.812E-15  1.701E-15  1.225E-15  8.684E-16  4.514E-16  3.117E-16  1.114E-16   (Seaton IP)
+ CE     25  3    2.005E-16  1.703E-16  1.529E-16  1.364E-16  1.093E-16  9.599E-17  6.530E-17   (van Regemorter)
+ CE     26  3    1.435E-16  1.219E-16  1.094E-16  9.762E-17  7.820E-17  6.868E-17  4.672E-17   (van Regemorter)
+ CE     27  3    1.414E-16  1.201E-16  1.078E-16  9.619E-17  7.706E-17  6.768E-17  4.604E-17   (van Regemorter)
+ CE     28  3    1.400E-16  1.188E-16  1.067E-16  9.520E-17  7.627E-17  6.699E-17  4.557E-17   (van Regemorter)
+ CE     29  3    1.390E-16  1.181E-16  1.060E-16  9.458E-17  7.576E-17  6.654E-17  4.527E-17   (van Regemorter)
+ CE     30  3    1.386E-16  1.177E-16  1.057E-16  9.427E-17  7.552E-17  6.633E-17  4.512E-17   (van Regemorter)
+ CE      5  4    4.103E-15  3.484E-15  3.129E-15  2.791E-15  2.236E-15  1.964E-15  1.336E-15   (van Regemorter)
+ CE      6  4    7.341E-16  6.234E-16  5.598E-16  4.994E-16  4.001E-16  3.514E-16  2.390E-16   (van Regemorter)
+ CE      7  4    7.212E-16  6.124E-16  5.499E-16  4.906E-16  3.930E-16  3.452E-16  2.348E-16   (van Regemorter)
+ CE      8  4    7.069E-16  6.003E-16  5.390E-16  4.809E-16  3.852E-16  3.383E-16  2.302E-16   (van Regemorter)
+ CE      9  4    6.173E-16  5.242E-16  4.707E-16  4.200E-16  3.364E-16  2.955E-16  2.010E-16   (van Regemorter)
+ CE     10  4    6.056E-16  5.143E-16  4.618E-16  4.120E-16  3.300E-16  2.898E-16  1.972E-16   (van Regemorter)
+ CE     11  4    5.951E-16  5.053E-16  4.537E-16  4.048E-16  3.243E-16  2.848E-16  1.938E-16   (van Regemorter)
+ CE     12  4    5.869E-16  4.984E-16  4.475E-16  3.992E-16  3.198E-16  2.809E-16  1.911E-16   (van Regemorter)
+ CE     13  4    1.572E-18  9.545E-19  6.896E-19  4.907E-19  2.576E-19  1.790E-19  6.440E-20   (Seaton IP)
+ CE     14  4    3.699E-16  3.141E-16  2.820E-16  2.516E-16  2.016E-16  1.770E-16  1.204E-16   (van Regemorter)
+ CE     15  4    3.468E-16  2.945E-16  2.644E-16  2.359E-16  1.890E-16  1.660E-16  1.129E-16   (van Regemorter)
+ CE     16  4    3.027E-16  2.571E-16  2.308E-16  2.059E-16  1.650E-16  1.449E-16  9.857E-17   (van Regemorter)
+ CE     17  4    2.954E-16  2.509E-16  2.253E-16  2.010E-16  1.610E-16  1.414E-16  9.618E-17   (van Regemorter)
+ CE     18  4    2.185E-15  1.323E-15  9.535E-16  6.764E-16  3.525E-16  2.438E-16  8.737E-17   (Seaton IP)
+ CE     19  4    2.415E-16  2.051E-16  1.842E-16  1.643E-16  1.316E-16  1.156E-16  7.865E-17   (van Regemorter)
+ CE     20  4    2.364E-16  2.008E-16  1.803E-16  1.608E-16  1.288E-16  1.132E-16  7.698E-17   (van Regemorter)
+ CE     21  4    2.342E-16  1.988E-16  1.785E-16  1.593E-16  1.276E-16  1.121E-16  7.624E-17   (van Regemorter)
+ CE     22  4    2.329E-16  1.978E-16  1.776E-16  1.584E-16  1.269E-16  1.115E-16  7.583E-17   (van Regemorter)
+ CE     23  4    8.356E-15  5.056E-15  3.642E-15  2.581E-15  1.342E-15  9.267E-16  3.312E-16   (Seaton IP)
+ CE     24  4    2.291E-16  1.946E-16  1.747E-16  1.559E-16  1.249E-16  1.097E-16  7.460E-17   (van Regemorter)
+ CE     25  4    2.014E-16  1.710E-16  1.536E-16  1.370E-16  1.097E-16  9.639E-17  6.557E-17   (van Regemorter)
+ CE     26  4    1.440E-16  1.223E-16  1.098E-16  9.795E-17  7.847E-17  6.892E-17  4.688E-17   (van Regemorter)
+ CE     27  4    1.419E-16  1.205E-16  1.082E-16  9.652E-17  7.732E-17  6.791E-17  4.620E-17   (van Regemorter)
+ CE     28  4    1.404E-16  1.193E-16  1.071E-16  9.553E-17  7.653E-17  6.721E-17  4.572E-17   (van Regemorter)
+ CE     29  4    1.395E-16  1.185E-16  1.064E-16  9.490E-17  7.602E-17  6.677E-17  4.542E-17   (van Regemorter)
+ CE     30  4    1.391E-16  1.181E-16  1.060E-16  9.459E-17  7.577E-17  6.655E-17  4.527E-17   (van Regemorter)
+ CE      6  5    1.550E-15  1.316E-15  1.182E-15  1.054E-15  8.446E-16  7.418E-16  5.047E-16   (van Regemorter)
+ CE      7  5    1.508E-15  1.280E-15  1.150E-15  1.026E-15  8.215E-16  7.216E-16  4.908E-16   (van Regemorter)
+ CE      8  5    1.462E-15  1.241E-15  1.115E-15  9.943E-16  7.965E-16  6.996E-16  4.759E-16   (van Regemorter)
+ CE      9  5    1.550E-19  9.449E-20  6.851E-20  4.898E-20  2.600E-20  1.818E-20  6.605E-21   (Seaton IP)
+ CE     10  5    1.158E-15  9.834E-16  8.830E-16  7.878E-16  6.311E-16  5.543E-16  3.771E-16   (van Regemorter)
+ CE     11  5    1.129E-15  9.585E-16  8.607E-16  7.678E-16  6.151E-16  5.402E-16  3.675E-16   (van Regemorter)
+ CE     12  5    1.106E-15  9.393E-16  8.434E-16  7.524E-16  6.028E-16  5.294E-16  3.601E-16   (van Regemorter)
+ CE     13  5    1.091E-15  9.264E-16  8.319E-16  7.421E-16  5.945E-16  5.222E-16  3.552E-16   (van Regemorter)
+ CE     14  5    5.984E-16  3.635E-16  2.628E-16  1.872E-16  9.864E-17  6.872E-17  2.501E-17   (Seaton IP)
+ CE     15  5    3.472E-17  2.109E-17  1.524E-17  1.085E-17  5.712E-18  3.977E-18  1.447E-18   (Seaton IP)
+ CE     16  5    1.712E-20  1.039E-20  7.505E-21  5.340E-21  2.805E-21  1.951E-21  7.095E-22   (Seaton IP)
+ CE     17  5    4.379E-16  3.718E-16  3.339E-16  2.979E-16  2.386E-16  2.096E-16  1.426E-16   (van Regemorter)
+ CE     18  5    4.294E-16  3.646E-16  3.274E-16  2.921E-16  2.340E-16  2.055E-16  1.398E-16   (van Regemorter)
+ CE     19  5    7.915E-15  4.799E-15  3.463E-15  2.461E-15  1.288E-15  8.945E-16  3.249E-16   (Seaton IP)
+ CE     20  5    3.320E-16  2.819E-16  2.531E-16  2.258E-16  1.809E-16  1.589E-16  1.081E-16   (van Regemorter)
+ CE     21  5    1.429E-14  8.664E-15  6.251E-15  4.441E-15  2.324E-15  1.613E-15  5.858E-16   (Seaton IP)
+ CE     22  5    3.259E-16  2.767E-16  2.485E-16  2.217E-16  1.776E-16  1.560E-16  1.061E-16   (van Regemorter)
+ CE     23  5    3.215E-16  2.731E-16  2.452E-16  2.187E-16  1.752E-16  1.539E-16  1.047E-16   (van Regemorter)
+ CE     24  5    3.195E-16  2.713E-16  2.436E-16  2.173E-16  1.741E-16  1.529E-16  1.040E-16   (van Regemorter)
+ CE     25  5    4.603E-18  2.789E-18  2.011E-18  1.427E-18  7.456E-19  5.169E-19  1.874E-19   (Seaton IP)
+ CE     26  5    1.841E-16  1.564E-16  1.404E-16  1.253E-16  1.003E-16  8.813E-17  5.995E-17   (van Regemorter)
+ CE     27  5    1.810E-16  1.537E-16  1.380E-16  1.231E-16  9.865E-17  8.665E-17  5.894E-17   (van Regemorter)
+ CE     28  5    1.789E-16  1.519E-16  1.364E-16  1.217E-16  9.748E-17  8.562E-17  5.824E-17   (van Regemorter)
+ CE     29  5    1.775E-16  1.507E-16  1.354E-16  1.208E-16  9.673E-17  8.496E-17  5.780E-17   (van Regemorter)
+ CE     30  5    1.769E-16  1.502E-16  1.349E-16  1.203E-16  9.637E-17  8.465E-17  5.758E-17   (van Regemorter)
+ CE      7  6    1.509E-12  1.281E-12  1.150E-12  1.026E-12  8.220E-13  7.220E-13  4.912E-13   (van Regemorter)
+ CE      8  6    4.224E-13  3.587E-13  3.221E-13  2.873E-13  2.302E-13  2.022E-13  1.375E-13   (van Regemorter)
+ CE      9  6    3.056E-14  2.595E-14  2.330E-14  2.079E-14  1.665E-14  1.463E-14  9.951E-15   (van Regemorter)
+ CE     10  6    2.536E-14  2.154E-14  1.934E-14  1.725E-14  1.382E-14  1.214E-14  8.257E-15   (van Regemorter)
+ CE     11  6    2.172E-14  1.844E-14  1.656E-14  1.477E-14  1.183E-14  1.039E-14  7.071E-15   (van Regemorter)
+ CE     12  6    1.937E-14  1.645E-14  1.477E-14  1.318E-14  1.056E-14  9.271E-15  6.307E-15   (van Regemorter)
+ CE     13  6    1.798E-14  1.527E-14  1.371E-14  1.223E-14  9.797E-15  8.605E-15  5.854E-15   (van Regemorter)
+ CE     14  6    2.322E-15  1.972E-15  1.771E-15  1.580E-15  1.266E-15  1.112E-15  7.561E-16   (van Regemorter)
+ CE     15  6    1.929E-15  1.638E-15  1.471E-15  1.312E-15  1.051E-15  9.234E-16  6.281E-16   (van Regemorter)
+ CE     16  6    1.983E-15  1.212E-15  8.815E-16  6.326E-16  3.391E-16  2.387E-16  8.875E-17   (Seaton IP)
+ CE     17  6    9.842E-16  6.015E-16  4.373E-16  3.137E-16  1.680E-16  1.183E-16  4.400E-17   (Seaton IP)
+ CE     18  6    1.231E-15  1.045E-15  9.387E-16  8.375E-16  6.709E-16  5.892E-16  4.008E-16   (van Regemorter)
+ CE     19  6    2.012E-16  1.227E-16  8.901E-17  6.369E-17  3.395E-17  2.386E-17  8.909E-18   (Seaton IP)
+ CE     20  6    5.522E-17  3.366E-17  2.441E-17  1.747E-17  9.306E-18  6.538E-18  2.442E-18   (Seaton IP)
+ CE     21  6    3.575E-18  2.179E-18  1.580E-18  1.130E-18  6.021E-19  4.229E-19  1.580E-19   (Seaton IP)
+ CE     22  6    9.561E-18  5.827E-18  4.226E-18  3.023E-18  1.610E-18  1.131E-18  4.225E-19   (Seaton IP)
+ CE     23  6    7.420E-16  6.301E-16  5.658E-16  5.048E-16  4.044E-16  3.552E-16  2.416E-16   (van Regemorter)
+ CE     24  6    7.342E-16  6.235E-16  5.598E-16  4.994E-16  4.001E-16  3.514E-16  2.391E-16   (van Regemorter)
+ CE     25  6    6.231E-16  3.793E-16  2.747E-16  1.962E-16  1.041E-16  7.304E-17  2.733E-17   (Seaton IP)
+ CE     26  6    3.208E-16  2.724E-16  2.446E-16  2.182E-16  1.748E-16  1.535E-16  1.044E-16   (van Regemorter)
+ CE     27  6    3.133E-16  2.661E-16  2.389E-16  2.131E-16  1.707E-16  1.500E-16  1.020E-16   (van Regemorter)
+ CE     28  6    3.082E-16  2.617E-16  2.350E-16  2.096E-16  1.679E-16  1.475E-16  1.003E-16   (van Regemorter)
+ CE     29  6    3.049E-16  2.589E-16  2.325E-16  2.074E-16  1.662E-16  1.459E-16  9.928E-17   (van Regemorter)
+ CE     30  6    3.033E-16  2.576E-16  2.313E-16  2.064E-16  1.653E-16  1.452E-16  9.877E-17   (van Regemorter)
+ CE      8  7    1.222E-12  1.038E-12  9.320E-13  8.315E-13  6.660E-13  5.850E-13  3.980E-13   (van Regemorter)
+ CE      9  7    3.636E-14  3.087E-14  2.772E-14  2.473E-14  1.981E-14  1.740E-14  1.184E-14   (van Regemorter)
+ CE     10  7    2.960E-14  2.513E-14  2.257E-14  2.013E-14  1.613E-14  1.417E-14  9.637E-15   (van Regemorter)
+ CE     11  7    2.499E-14  2.122E-14  1.905E-14  1.700E-14  1.362E-14  1.196E-14  8.136E-15   (van Regemorter)
+ CE     12  7    2.207E-14  1.875E-14  1.683E-14  1.502E-14  1.203E-14  1.057E-14  7.187E-15   (van Regemorter)
+ CE     13  7    2.037E-14  1.730E-14  1.553E-14  1.386E-14  1.110E-14  9.749E-15  6.632E-15   (van Regemorter)
+ CE     14  7    2.407E-15  2.044E-15  1.836E-15  1.638E-15  1.312E-15  1.152E-15  7.838E-16   (van Regemorter)
+ CE     15  7    1.992E-15  1.692E-15  1.519E-15  1.355E-15  1.086E-15  9.535E-16  6.487E-16   (van Regemorter)
+ CE     16  7    1.391E-15  1.181E-15  1.061E-15  9.461E-16  7.579E-16  6.657E-16  4.528E-16   (van Regemorter)
+ CE     17  7    2.580E-16  1.577E-16  1.146E-16  8.226E-17  4.408E-17  3.104E-17  1.155E-17   (Seaton IP)
+ CE     18  7    1.262E-15  7.713E-16  5.607E-16  4.022E-16  2.155E-16  1.517E-16  5.647E-17   (Seaton IP)
+ CE     19  7    8.332E-16  7.076E-16  6.354E-16  5.668E-16  4.541E-16  3.988E-16  2.713E-16   (van Regemorter)
+ CE     20  7    1.667E-16  1.016E-16  7.372E-17  5.275E-17  2.812E-17  1.976E-17  7.383E-18   (Seaton IP)
+ CE     21  7    7.814E-16  6.635E-16  5.958E-16  5.315E-16  4.258E-16  3.740E-16  2.544E-16   (van Regemorter)
+ CE     22  7    9.961E-17  6.072E-17  4.404E-17  3.150E-17  1.679E-17  1.179E-17  4.408E-18   (Seaton IP)
+ CE     23  7    2.961E-17  1.805E-17  1.309E-17  9.361E-18  4.987E-18  3.503E-18  1.310E-18   (Seaton IP)
+ CE     24  7    7.475E-16  6.348E-16  5.700E-16  5.085E-16  4.074E-16  3.578E-16  2.434E-16   (van Regemorter)
+ CE     25  7    5.814E-16  4.937E-16  4.433E-16  3.955E-16  3.168E-16  2.783E-16  1.893E-16   (van Regemorter)
+ CE     26  7    3.243E-16  2.754E-16  2.473E-16  2.206E-16  1.767E-16  1.552E-16  1.056E-16   (van Regemorter)
+ CE     27  7    3.167E-16  2.690E-16  2.415E-16  2.154E-16  1.726E-16  1.516E-16  1.031E-16   (van Regemorter)
+ CE     28  7    3.115E-16  2.645E-16  2.375E-16  2.119E-16  1.697E-16  1.491E-16  1.014E-16   (van Regemorter)
+ CE     29  7    3.082E-16  2.617E-16  2.350E-16  2.096E-16  1.679E-16  1.475E-16  1.003E-16   (van Regemorter)
+ CE     30  7    3.066E-16  2.604E-16  2.338E-16  2.086E-16  1.671E-16  1.467E-16  9.982E-17   (van Regemorter)
+ CE      9  8    4.536E-14  3.852E-14  3.459E-14  3.086E-14  2.472E-14  2.171E-14  1.477E-14   (van Regemorter)
+ CE     10  8    3.594E-14  3.052E-14  2.741E-14  2.445E-14  1.959E-14  1.720E-14  1.170E-14   (van Regemorter)
+ CE     11  8    2.975E-14  2.527E-14  2.269E-14  2.024E-14  1.621E-14  1.424E-14  9.688E-15   (van Regemorter)
+ CE     12  8    2.595E-14  2.203E-14  1.978E-14  1.765E-14  1.414E-14  1.242E-14  8.448E-15   (van Regemorter)
+ CE     13  8    2.375E-14  2.017E-14  1.811E-14  1.616E-14  1.294E-14  1.137E-14  7.734E-15   (van Regemorter)
+ CE     14  8    2.510E-15  2.131E-15  1.914E-15  1.707E-15  1.368E-15  1.201E-15  8.172E-16   (van Regemorter)
+ CE     15  8    2.068E-15  1.756E-15  1.577E-15  1.407E-15  1.127E-15  9.897E-16  6.733E-16   (van Regemorter)
+ CE     16  8    1.433E-15  1.217E-15  1.093E-15  9.749E-16  7.810E-16  6.859E-16  4.666E-16   (van Regemorter)
+ CE     17  8    1.348E-15  1.145E-15  1.028E-15  9.171E-16  7.346E-16  6.452E-16  4.389E-16   (van Regemorter)
+ CE     18  8    6.092E-16  3.724E-16  2.708E-16  1.943E-16  1.041E-16  7.333E-17  2.730E-17   (Seaton IP)
+ CE     19  8    8.518E-16  7.234E-16  6.495E-16  5.795E-16  4.642E-16  4.077E-16  2.773E-16   (van Regemorter)
+ CE     20  8    8.144E-16  6.916E-16  6.210E-16  5.540E-16  4.438E-16  3.898E-16  2.652E-16   (van Regemorter)
+ CE     21  8    7.981E-16  6.778E-16  6.086E-16  5.429E-16  4.349E-16  3.820E-16  2.599E-16   (van Regemorter)
+ CE     22  8    8.321E-17  5.073E-17  3.679E-17  2.633E-17  1.403E-17  9.863E-18  3.688E-18   (Seaton IP)
+ CE     23  8    9.798E-17  5.972E-17  4.332E-17  3.099E-17  1.652E-17  1.161E-17  4.340E-18   (Seaton IP)
+ CE     24  8    5.832E-17  3.555E-17  2.578E-17  1.845E-17  9.829E-18  6.906E-18  2.583E-18   (Seaton IP)
+ CE     25  8    5.919E-16  5.026E-16  4.513E-16  4.026E-16  3.225E-16  2.833E-16  1.927E-16   (van Regemorter)
+ CE     26  8    3.284E-16  2.789E-16  2.504E-16  2.234E-16  1.790E-16  1.572E-16  1.069E-16   (van Regemorter)
+ CE     27  8    3.207E-16  2.723E-16  2.445E-16  2.181E-16  1.747E-16  1.535E-16  1.044E-16   (van Regemorter)
+ CE     28  8    3.153E-16  2.678E-16  2.404E-16  2.145E-16  1.718E-16  1.509E-16  1.027E-16   (van Regemorter)
+ CE     29  8    3.120E-16  2.649E-16  2.379E-16  2.122E-16  1.700E-16  1.493E-16  1.016E-16   (van Regemorter)
+ CE     30  8    3.103E-16  2.635E-16  2.366E-16  2.111E-16  1.691E-16  1.485E-16  1.010E-16   (van Regemorter)
+ CE     10  9    1.116E-12  9.477E-13  8.509E-13  7.592E-13  6.081E-13  5.341E-13  3.634E-13   (van Regemorter)
+ CE     11  9    3.730E-13  3.168E-13  2.845E-13  2.538E-13  2.033E-13  1.785E-13  1.215E-13   (van Regemorter)
+ CE     12  9    2.164E-13  1.838E-13  1.650E-13  1.472E-13  1.179E-13  1.036E-13  7.047E-14   (van Regemorter)
+ CE     13  9    1.614E-13  1.371E-13  1.231E-13  1.098E-13  8.795E-14  7.725E-14  5.255E-14   (van Regemorter)
+ CE     14  9    3.493E-15  2.966E-15  2.663E-15  2.376E-15  1.903E-15  1.672E-15  1.137E-15   (van Regemorter)
+ CE     15  9    2.767E-15  2.349E-15  2.110E-15  1.882E-15  1.508E-15  1.324E-15  9.008E-16   (van Regemorter)
+ CE     16  9    1.804E-15  1.532E-15  1.375E-15  1.227E-15  9.829E-16  8.633E-16  5.873E-16   (van Regemorter)
+ CE     17  9    1.682E-15  1.428E-15  1.282E-15  1.144E-15  9.165E-16  8.049E-16  5.476E-16   (van Regemorter)
+ CE     18  9    1.611E-15  1.368E-15  1.228E-15  1.096E-15  8.777E-16  7.709E-16  5.244E-16   (van Regemorter)
+ CE     19  9    1.005E-15  8.536E-16  7.665E-16  6.838E-16  5.478E-16  4.811E-16  3.273E-16   (van Regemorter)
+ CE     20  9    9.566E-16  8.124E-16  7.294E-16  6.508E-16  5.213E-16  4.579E-16  3.115E-16   (van Regemorter)
+ CE     21  9    9.356E-16  7.945E-16  7.134E-16  6.365E-16  5.099E-16  4.478E-16  3.046E-16   (van Regemorter)
+ CE     22  9    9.241E-16  7.847E-16  7.046E-16  6.286E-16  5.036E-16  4.423E-16  3.009E-16   (van Regemorter)
+ CE     23  9    9.014E-16  7.655E-16  6.873E-16  6.132E-16  4.912E-16  4.314E-16  2.935E-16   (van Regemorter)
+ CE     24  9    8.907E-16  7.564E-16  6.792E-16  6.059E-16  4.854E-16  4.263E-16  2.900E-16   (van Regemorter)
+ CE     25  9    6.754E-16  5.735E-16  5.150E-16  4.594E-16  3.680E-16  3.233E-16  2.199E-16   (van Regemorter)
+ CE     26  9    3.600E-16  3.057E-16  2.745E-16  2.449E-16  1.962E-16  1.723E-16  1.172E-16   (van Regemorter)
+ CE     27  9    3.510E-16  2.981E-16  2.677E-16  2.388E-16  1.913E-16  1.680E-16  1.143E-16   (van Regemorter)
+ CE     28  9    3.449E-16  2.929E-16  2.630E-16  2.346E-16  1.879E-16  1.651E-16  1.123E-16   (van Regemorter)
+ CE     29  9    3.410E-16  2.896E-16  2.600E-16  2.320E-16  1.858E-16  1.632E-16  1.110E-16   (van Regemorter)
+ CE     30  9    3.391E-16  2.880E-16  2.586E-16  2.307E-16  1.848E-16  1.623E-16  1.104E-16   (van Regemorter)
+ CE     11 10    1.284E-12  1.090E-12  9.791E-13  8.735E-13  6.998E-13  6.146E-13  4.181E-13   (van Regemorter)
+ CE     12 10    4.788E-13  4.066E-13  3.651E-13  3.257E-13  2.609E-13  2.292E-13  1.559E-13   (van Regemorter)
+ CE     13 10    3.057E-13  2.596E-13  2.331E-13  2.080E-13  1.666E-13  1.463E-13  9.955E-14   (van Regemorter)
+ CE     14 10    3.691E-15  3.134E-15  2.814E-15  2.511E-15  2.011E-15  1.766E-15  1.202E-15   (van Regemorter)
+ CE     15 10    2.902E-15  2.465E-15  2.213E-15  1.974E-15  1.582E-15  1.389E-15  9.450E-16   (van Regemorter)
+ CE     16 10    1.872E-15  1.589E-15  1.427E-15  1.273E-15  1.020E-15  8.958E-16  6.094E-16   (van Regemorter)
+ CE     17 10    1.743E-15  1.480E-15  1.329E-15  1.185E-15  9.496E-16  8.340E-16  5.674E-16   (van Regemorter)
+ CE     18 10    1.667E-15  1.416E-15  1.271E-15  1.134E-15  9.086E-16  7.980E-16  5.429E-16   (van Regemorter)
+ CE     19 10    1.032E-15  8.761E-16  7.867E-16  7.019E-16  5.622E-16  4.938E-16  3.359E-16   (van Regemorter)
+ CE     20 10    9.811E-16  8.332E-16  7.481E-16  6.674E-16  5.347E-16  4.696E-16  3.195E-16   (van Regemorter)
+ CE     21 10    9.593E-16  8.146E-16  7.315E-16  6.526E-16  5.227E-16  4.591E-16  3.123E-16   (van Regemorter)
+ CE     22 10    9.473E-16  8.044E-16  7.223E-16  6.444E-16  5.162E-16  4.534E-16  3.084E-16   (van Regemorter)
+ CE     23 10    9.237E-16  7.844E-16  7.043E-16  6.283E-16  5.034E-16  4.421E-16  3.007E-16   (van Regemorter)
+ CE     24 10    9.126E-16  7.750E-16  6.958E-16  6.208E-16  4.973E-16  4.368E-16  2.971E-16   (van Regemorter)
+ CE     25 10    6.894E-16  5.854E-16  5.257E-16  4.690E-16  3.757E-16  3.300E-16  2.245E-16   (van Regemorter)
+ CE     26 10    3.317E-18  2.016E-18  1.458E-18  1.039E-18  5.498E-19  3.851E-19  1.452E-19   (Seaton IP)
+ CE     27 10    3.559E-16  3.023E-16  2.714E-16  2.421E-16  1.940E-16  1.704E-16  1.159E-16   (van Regemorter)
+ CE     28 10    3.496E-16  2.969E-16  2.666E-16  2.378E-16  1.905E-16  1.673E-16  1.138E-16   (van Regemorter)
+ CE     29 10    3.457E-16  2.936E-16  2.636E-16  2.352E-16  1.884E-16  1.655E-16  1.126E-16   (van Regemorter)
+ CE     30 10    3.438E-16  2.919E-16  2.621E-16  2.339E-16  1.873E-16  1.645E-16  1.119E-16   (van Regemorter)
+ CE     12 11    1.872E-12  1.590E-12  1.428E-12  1.274E-12  1.020E-12  8.962E-13  6.097E-13   (van Regemorter)
+ CE     13 11    7.761E-13  6.591E-13  5.918E-13  5.280E-13  4.229E-13  3.715E-13  2.527E-13   (van Regemorter)
+ CE     14 11    3.889E-15  3.303E-15  2.966E-15  2.646E-15  2.119E-15  1.861E-15  1.266E-15   (van Regemorter)
+ CE     15 11    3.037E-15  2.579E-15  2.316E-15  2.066E-15  1.655E-15  1.454E-15  9.888E-16   (van Regemorter)
+ CE     16 11    1.938E-15  1.646E-15  1.478E-15  1.318E-15  1.056E-15  9.276E-16  6.310E-16   (van Regemorter)
+ CE     17 11    1.802E-15  1.530E-15  1.374E-15  1.226E-15  9.818E-16  8.623E-16  5.866E-16   (van Regemorter)
+ CE     18 11    1.722E-15  1.463E-15  1.313E-15  1.172E-15  9.386E-16  8.243E-16  5.608E-16   (van Regemorter)
+ CE     19 11    1.057E-15  8.977E-16  8.061E-16  7.191E-16  5.761E-16  5.060E-16  3.442E-16   (van Regemorter)
+ CE     20 11    1.005E-15  8.531E-16  7.660E-16  6.834E-16  5.474E-16  4.808E-16  3.271E-16   (van Regemorter)
+ CE     21 11    9.819E-16  8.338E-16  7.487E-16  6.679E-16  5.351E-16  4.700E-16  3.197E-16   (van Regemorter)
+ CE     22 11    9.694E-16  8.232E-16  7.392E-16  6.595E-16  5.283E-16  4.640E-16  3.156E-16   (van Regemorter)
+ CE     23 11    9.450E-16  8.025E-16  7.205E-16  6.428E-16  5.149E-16  4.523E-16  3.077E-16   (van Regemorter)
+ CE     24 11    9.334E-16  7.927E-16  7.118E-16  6.350E-16  5.087E-16  4.468E-16  3.039E-16   (van Regemorter)
+ CE     25 11    7.027E-16  5.967E-16  5.358E-16  4.780E-16  3.829E-16  3.363E-16  2.288E-16   (van Regemorter)
+ CE     26 11    1.829E-17  1.112E-17  8.042E-18  5.735E-18  3.034E-18  2.126E-18  8.019E-19   (Seaton IP)
+ CE     27 11    3.606E-16  3.062E-16  2.749E-16  2.453E-16  1.965E-16  1.726E-16  1.174E-16   (van Regemorter)
+ CE     28 11    3.541E-16  3.007E-16  2.700E-16  2.409E-16  1.930E-16  1.695E-16  1.153E-16   (van Regemorter)
+ CE     29 11    3.501E-16  2.973E-16  2.669E-16  2.381E-16  1.908E-16  1.676E-16  1.140E-16   (van Regemorter)
+ CE     30 11    3.481E-16  2.956E-16  2.655E-16  2.368E-16  1.897E-16  1.666E-16  1.133E-16   (van Regemorter)
+ CE     13 12    3.500E-12  2.972E-12  2.668E-12  2.381E-12  1.907E-12  1.675E-12  1.139E-12   (van Regemorter)
+ CE     14 12    4.060E-15  3.448E-15  3.096E-15  2.762E-15  2.213E-15  1.943E-15  1.322E-15   (van Regemorter)
+ CE     15 12    3.152E-15  2.676E-15  2.403E-15  2.144E-15  1.717E-15  1.508E-15  1.026E-15   (van Regemorter)
+ CE     16 12    1.994E-15  1.693E-15  1.520E-15  1.356E-15  1.086E-15  9.542E-16  6.491E-16   (van Regemorter)
+ CE     17 12    1.851E-15  1.572E-15  1.411E-15  1.259E-15  1.009E-15  8.860E-16  6.027E-16   (van Regemorter)
+ CE     18 12    1.768E-15  1.502E-15  1.348E-15  1.203E-15  9.636E-16  8.464E-16  5.758E-16   (van Regemorter)
+ CE     19 12    1.078E-15  9.156E-16  8.221E-16  7.334E-16  5.875E-16  5.160E-16  3.510E-16   (van Regemorter)
+ CE     20 12    1.024E-15  8.695E-16  7.808E-16  6.966E-16  5.580E-16  4.901E-16  3.334E-16   (van Regemorter)
+ CE     21 12    1.001E-15  8.497E-16  7.629E-16  6.806E-16  5.452E-16  4.789E-16  3.258E-16   (van Regemorter)
+ CE     22 12    9.877E-16  8.388E-16  7.532E-16  6.719E-16  5.383E-16  4.728E-16  3.216E-16   (van Regemorter)
+ CE     23 12    9.625E-16  8.174E-16  7.339E-16  6.548E-16  5.245E-16  4.607E-16  3.134E-16   (van Regemorter)
+ CE     24 12    9.507E-16  8.073E-16  7.249E-16  6.467E-16  5.181E-16  4.550E-16  3.095E-16   (van Regemorter)
+ CE     25 12    7.136E-16  6.060E-16  5.441E-16  4.854E-16  3.889E-16  3.415E-16  2.323E-16   (van Regemorter)
+ CE     26 12    3.739E-16  3.175E-16  2.851E-16  2.543E-16  2.037E-16  1.789E-16  1.217E-16   (van Regemorter)
+ CE     27 12    2.165E-17  1.316E-17  9.517E-18  6.785E-18  3.590E-18  2.515E-18  9.494E-19   (Seaton IP)
+ CE     28 12    3.578E-16  3.038E-16  2.728E-16  2.434E-16  1.950E-16  1.712E-16  1.165E-16   (van Regemorter)
+ CE     29 12    3.537E-16  3.003E-16  2.697E-16  2.406E-16  1.927E-16  1.693E-16  1.152E-16   (van Regemorter)
+ CE     30 12    3.517E-16  2.986E-16  2.682E-16  2.392E-16  1.916E-16  1.683E-16  1.145E-16   (van Regemorter)
+ CE     14 13    4.185E-15  3.554E-15  3.191E-15  2.847E-15  2.281E-15  2.003E-15  1.363E-15   (van Regemorter)
+ CE     15 13    3.235E-15  2.747E-15  2.467E-15  2.201E-15  1.763E-15  1.548E-15  1.053E-15   (van Regemorter)
+ CE     16 13    2.033E-15  1.727E-15  1.551E-15  1.383E-15  1.108E-15  9.733E-16  6.621E-16   (van Regemorter)
+ CE     17 13    1.887E-15  1.602E-15  1.438E-15  1.283E-15  1.028E-15  9.029E-16  6.142E-16   (van Regemorter)
+ CE     18 13    1.801E-15  1.530E-15  1.373E-15  1.225E-15  9.816E-16  8.621E-16  5.865E-16   (van Regemorter)
+ CE     19 13    1.093E-15  9.282E-16  8.335E-16  7.436E-16  5.956E-16  5.232E-16  3.559E-16   (van Regemorter)
+ CE     20 13    1.038E-15  8.812E-16  7.912E-16  7.059E-16  5.655E-16  4.967E-16  3.379E-16   (van Regemorter)
+ CE     21 13    1.014E-15  8.609E-16  7.730E-16  6.896E-16  5.524E-16  4.852E-16  3.301E-16   (van Regemorter)
+ CE     22 13    1.001E-15  8.498E-16  7.630E-16  6.807E-16  5.453E-16  4.790E-16  3.258E-16   (van Regemorter)
+ CE     23 13    9.749E-16  8.279E-16  7.434E-16  6.632E-16  5.313E-16  4.666E-16  3.174E-16   (van Regemorter)
+ CE     24 13    9.628E-16  8.176E-16  7.342E-16  6.550E-16  5.247E-16  4.608E-16  3.135E-16   (van Regemorter)
+ CE     25 13    7.213E-16  6.125E-16  5.500E-16  4.907E-16  3.931E-16  3.452E-16  2.348E-16   (van Regemorter)
+ CE     26 13    3.766E-16  3.198E-16  2.872E-16  2.562E-16  2.052E-16  1.802E-16  1.226E-16   (van Regemorter)
+ CE     27 13    3.669E-16  3.116E-16  2.798E-16  2.496E-16  2.000E-16  1.756E-16  1.195E-16   (van Regemorter)
+ CE     28 13    3.603E-16  3.060E-16  2.747E-16  2.451E-16  1.964E-16  1.725E-16  1.173E-16   (van Regemorter)
+ CE     29 13    3.562E-16  3.025E-16  2.716E-16  2.423E-16  1.941E-16  1.705E-16  1.160E-16   (van Regemorter)
+ CE     30 13    3.542E-16  3.007E-16  2.700E-16  2.409E-16  1.930E-16  1.695E-16  1.153E-16   (van Regemorter)
+ CE     15 14    8.573E-14  7.280E-14  6.537E-14  5.832E-14  4.672E-14  4.103E-14  2.791E-14   (van Regemorter)
+ CE     16 14    1.190E-14  1.011E-14  9.077E-15  8.098E-15  6.487E-15  5.698E-15  3.876E-15   (van Regemorter)
+ CE     17 14    9.684E-15  8.224E-15  7.384E-15  6.588E-15  5.277E-15  4.635E-15  3.153E-15   (van Regemorter)
+ CE     18 14    8.591E-15  7.295E-15  6.551E-15  5.844E-15  4.682E-15  4.112E-15  2.797E-15   (van Regemorter)
+ CE     19 14    2.981E-15  2.532E-15  2.273E-15  2.028E-15  1.625E-15  1.427E-15  9.707E-16   (van Regemorter)
+ CE     20 14    2.716E-15  2.306E-15  2.071E-15  1.847E-15  1.480E-15  1.300E-15  8.842E-16   (van Regemorter)
+ CE     21 14    2.606E-15  2.213E-15  1.987E-15  1.773E-15  1.420E-15  1.248E-15  8.486E-16   (van Regemorter)
+ CE     22 14    2.548E-15  2.164E-15  1.943E-15  1.733E-15  1.388E-15  1.219E-15  8.296E-16   (van Regemorter)
+ CE     23 14    2.435E-15  2.068E-15  1.857E-15  1.657E-15  1.327E-15  1.166E-15  7.929E-16   (van Regemorter)
+ CE     24 14    2.383E-15  2.024E-15  1.817E-15  1.621E-15  1.299E-15  1.141E-15  7.760E-16   (van Regemorter)
+ CE     25 14    1.492E-15  1.267E-15  1.137E-15  1.015E-15  8.129E-16  7.140E-16  4.857E-16   (van Regemorter)
+ CE     26 14    5.131E-15  3.131E-15  2.273E-15  1.629E-15  8.735E-16  6.177E-16  2.388E-16   (Seaton IP)
+ CE     27 14    5.753E-16  4.885E-16  4.386E-16  3.913E-16  3.135E-16  2.753E-16  1.873E-16   (van Regemorter)
+ CE     28 14    5.618E-16  4.770E-16  4.284E-16  3.821E-16  3.061E-16  2.689E-16  1.829E-16   (van Regemorter)
+ CE     29 14    5.534E-16  4.699E-16  4.219E-16  3.764E-16  3.015E-16  2.649E-16  1.802E-16   (van Regemorter)
+ CE     30 14    5.493E-16  4.665E-16  4.189E-16  3.737E-16  2.993E-16  2.629E-16  1.789E-16   (van Regemorter)
+ CE     16 15    2.214E-14  1.880E-14  1.688E-14  1.506E-14  1.206E-14  1.060E-14  7.208E-15   (van Regemorter)
+ CE     17 15    1.655E-14  1.405E-14  1.262E-14  1.126E-14  9.017E-15  7.920E-15  5.388E-15   (van Regemorter)
+ CE     18 15    1.406E-14  1.194E-14  1.072E-14  9.567E-15  7.664E-15  6.731E-15  4.579E-15   (van Regemorter)
+ CE     19 15    3.807E-15  3.233E-15  2.903E-15  2.590E-15  2.075E-15  1.822E-15  1.240E-15   (van Regemorter)
+ CE     20 15    3.419E-15  2.903E-15  2.607E-15  2.326E-15  1.863E-15  1.636E-15  1.113E-15   (van Regemorter)
+ CE     21 15    3.262E-15  2.770E-15  2.487E-15  2.219E-15  1.778E-15  1.561E-15  1.062E-15   (van Regemorter)
+ CE     22 15    3.178E-15  2.699E-15  2.424E-15  2.162E-15  1.732E-15  1.521E-15  1.035E-15   (van Regemorter)
+ CE     23 15    3.019E-15  2.564E-15  2.302E-15  2.054E-15  1.645E-15  1.445E-15  9.830E-16   (van Regemorter)
+ CE     24 15    2.946E-15  2.502E-15  2.247E-15  2.004E-15  1.606E-15  1.410E-15  9.593E-16   (van Regemorter)
+ CE     25 15    1.747E-15  1.483E-15  1.332E-15  1.188E-15  9.519E-16  8.360E-16  5.687E-16   (van Regemorter)
+ CE     26 15    6.529E-15  3.987E-15  2.897E-15  2.078E-15  1.117E-15  7.913E-16  3.072E-16   (Seaton IP)
+ CE     27 15    6.280E-16  5.333E-16  4.788E-16  4.272E-16  3.422E-16  3.006E-16  2.045E-16   (van Regemorter)
+ CE     28 15    6.125E-16  5.201E-16  4.670E-16  4.166E-16  3.338E-16  2.932E-16  1.994E-16   (van Regemorter)
+ CE     29 15    6.028E-16  5.119E-16  4.597E-16  4.101E-16  3.285E-16  2.885E-16  1.963E-16   (van Regemorter)
+ CE     30 15    5.982E-16  5.080E-16  4.561E-16  4.069E-16  3.260E-16  2.863E-16  1.948E-16   (van Regemorter)
+ CE     17 16    3.631E-13  3.084E-13  2.769E-13  2.470E-13  1.979E-13  1.738E-13  1.182E-13   (van Regemorter)
+ CE     18 16    1.583E-13  1.345E-13  1.207E-13  1.077E-13  8.628E-14  7.578E-14  5.155E-14   (van Regemorter)
+ CE     19 16    7.865E-15  6.679E-15  5.997E-15  5.350E-15  4.286E-15  3.764E-15  2.561E-15   (van Regemorter)
+ CE     20 16    6.683E-15  5.675E-15  5.096E-15  4.546E-15  3.642E-15  3.199E-15  2.176E-15   (van Regemorter)
+ CE     21 16    6.233E-15  5.293E-15  4.753E-15  4.240E-15  3.397E-15  2.984E-15  2.030E-15   (van Regemorter)
+ CE     22 16    6.001E-15  5.096E-15  4.576E-15  4.082E-15  3.270E-15  2.872E-15  1.954E-15   (van Regemorter)
+ CE     23 16    5.569E-15  4.730E-15  4.247E-15  3.789E-15  3.035E-15  2.666E-15  1.813E-15   (van Regemorter)
+ CE     24 16    5.378E-15  4.567E-15  4.101E-15  3.658E-15  2.931E-15  2.574E-15  1.751E-15   (van Regemorter)
+ CE     25 16    2.655E-15  2.254E-15  2.024E-15  1.806E-15  1.447E-15  1.271E-15  8.644E-16   (van Regemorter)
+ CE     26 16    4.507E-15  2.758E-15  2.008E-15  1.444E-15  7.813E-16  5.556E-16  2.175E-16   (Seaton IP)
+ CE     27 16    1.610E-15  9.848E-16  7.167E-16  5.154E-16  2.787E-16  1.982E-16  7.762E-17   (Seaton IP)
+ CE     28 16    3.422E-16  2.093E-16  1.523E-16  1.095E-16  5.919E-17  4.208E-17  1.649E-17   (Seaton IP)
+ CE     29 16    7.431E-16  6.310E-16  5.666E-16  5.055E-16  4.049E-16  3.557E-16  2.420E-16   (van Regemorter)
+ CE     30 16    7.366E-16  6.255E-16  5.617E-16  5.011E-16  4.014E-16  3.526E-16  2.398E-16   (van Regemorter)
+ CE     18 17    7.706E-13  6.544E-13  5.876E-13  5.242E-13  4.199E-13  3.688E-13  2.509E-13   (van Regemorter)
+ CE     19 17    9.426E-15  8.004E-15  7.187E-15  6.412E-15  5.136E-15  4.511E-15  3.069E-15   (van Regemorter)
+ CE     20 17    7.870E-15  6.683E-15  6.001E-15  5.353E-15  4.289E-15  3.767E-15  2.562E-15   (van Regemorter)
+ CE     21 17    7.290E-15  6.190E-15  5.558E-15  4.959E-15  3.972E-15  3.489E-15  2.373E-15   (van Regemorter)
+ CE     22 17    6.992E-15  5.938E-15  5.332E-15  4.756E-15  3.810E-15  3.347E-15  2.277E-15   (van Regemorter)
+ CE     23 17    6.444E-15  5.473E-15  4.914E-15  4.384E-15  3.512E-15  3.084E-15  2.098E-15   (van Regemorter)
+ CE     24 17    6.203E-15  5.268E-15  4.730E-15  4.220E-15  3.380E-15  2.969E-15  2.020E-15   (van Regemorter)
+ CE     25 17    2.912E-15  2.473E-15  2.220E-15  1.981E-15  1.587E-15  1.394E-15  9.481E-16   (van Regemorter)
+ CE     26 17    8.481E-16  7.202E-16  6.467E-16  5.769E-16  4.622E-16  4.059E-16  2.761E-16   (van Regemorter)
+ CE     27 17    3.110E-15  1.903E-15  1.386E-15  9.971E-16  5.399E-16  3.842E-16  1.507E-16   (Seaton IP)
+ CE     28 17    1.097E-15  6.715E-16  4.888E-16  3.516E-16  1.903E-16  1.354E-16  5.315E-17   (Seaton IP)
+ CE     29 17    7.755E-16  6.586E-16  5.913E-16  5.276E-16  4.226E-16  3.712E-16  2.525E-16   (van Regemorter)
+ CE     30 17    7.686E-16  6.527E-16  5.861E-16  5.228E-16  4.188E-16  3.679E-16  2.502E-16   (van Regemorter)
+ CE     19 18    1.070E-14  9.087E-15  8.159E-15  7.279E-15  5.831E-15  5.121E-15  3.484E-15   (van Regemorter)
+ CE     20 18    8.815E-15  7.486E-15  6.722E-15  5.997E-15  4.804E-15  4.219E-15  2.870E-15   (van Regemorter)
+ CE     21 18    8.123E-15  6.898E-15  6.194E-15  5.526E-15  4.427E-15  3.888E-15  2.645E-15   (van Regemorter)
+ CE     22 18    7.770E-15  6.598E-15  5.925E-15  5.286E-15  4.234E-15  3.719E-15  2.530E-15   (van Regemorter)
+ CE     23 18    7.125E-15  6.050E-15  5.433E-15  4.847E-15  3.883E-15  3.410E-15  2.320E-15   (van Regemorter)
+ CE     24 18    6.842E-15  5.810E-15  5.217E-15  4.654E-15  3.729E-15  3.275E-15  2.228E-15   (van Regemorter)
+ CE     25 18    3.097E-15  2.630E-15  2.362E-15  2.107E-15  1.688E-15  1.483E-15  1.009E-15   (van Regemorter)
+ CE     26 18    8.734E-16  7.417E-16  6.660E-16  5.941E-16  4.760E-16  4.180E-16  2.844E-16   (van Regemorter)
+ CE     27 18    8.369E-16  7.107E-16  6.382E-16  5.693E-16  4.561E-16  4.006E-16  2.725E-16   (van Regemorter)
+ CE     28 18    8.125E-16  6.900E-16  6.196E-16  5.527E-16  4.428E-16  3.889E-16  2.646E-16   (van Regemorter)
+ CE     29 18    3.021E-15  1.849E-15  1.346E-15  9.685E-16  5.245E-16  3.734E-16  1.467E-16   (Seaton IP)
+ CE     30 18    6.485E-16  3.969E-16  2.890E-16  2.079E-16  1.126E-16  8.013E-17  3.150E-17   (Seaton IP)
+ CE     20 19    3.654E-13  3.103E-13  2.786E-13  2.486E-13  1.991E-13  1.749E-13  1.190E-13   (van Regemorter)
+ CE     21 19    1.940E-13  1.647E-13  1.479E-13  1.319E-13  1.057E-13  9.283E-14  6.315E-14   (van Regemorter)
+ CE     22 19    1.475E-13  1.252E-13  1.125E-13  1.003E-13  8.037E-14  7.059E-14  4.802E-14   (van Regemorter)
+ CE     23 19    9.424E-14  8.003E-14  7.186E-14  6.411E-14  5.136E-14  4.511E-14  3.069E-14   (van Regemorter)
+ CE     24 19    7.868E-14  6.681E-14  5.999E-14  5.352E-14  4.288E-14  3.766E-14  2.562E-14   (van Regemorter)
+ CE     25 19    9.236E-15  7.843E-15  7.043E-15  6.283E-15  5.033E-15  4.421E-15  3.007E-15   (van Regemorter)
+ CE     26 19    1.340E-15  1.138E-15  1.022E-15  9.118E-16  7.304E-16  6.416E-16  4.364E-16   (van Regemorter)
+ CE     27 19    1.269E-15  1.078E-15  9.675E-16  8.632E-16  6.915E-16  6.073E-16  4.131E-16   (van Regemorter)
+ CE     28 19    1.222E-15  1.038E-15  9.316E-16  8.311E-16  6.658E-16  5.848E-16  3.978E-16   (van Regemorter)
+ CE     29 19    1.193E-15  1.013E-15  9.096E-16  8.115E-16  6.501E-16  5.710E-16  3.884E-16   (van Regemorter)
+ CE     30 19    1.179E-15  1.001E-15  8.991E-16  8.021E-16  6.426E-16  5.644E-16  3.839E-16   (van Regemorter)
+ CE     21 20    1.357E-12  1.153E-12  1.035E-12  9.233E-13  7.397E-13  6.497E-13  4.419E-13   (van Regemorter)
+ CE     22 20    6.403E-13  5.438E-13  4.883E-13  4.356E-13  3.489E-13  3.065E-13  2.085E-13   (van Regemorter)
+ CE     23 20    2.545E-13  2.161E-13  1.940E-13  1.731E-13  1.387E-13  1.218E-13  8.286E-14   (van Regemorter)
+ CE     24 20    1.861E-13  1.580E-13  1.419E-13  1.266E-13  1.014E-13  8.906E-14  6.058E-14   (van Regemorter)
+ CE     25 20    1.128E-14  9.576E-15  8.598E-15  7.671E-15  6.145E-15  5.397E-15  3.672E-15   (van Regemorter)
+ CE     26 20    1.424E-15  1.210E-15  1.086E-15  9.689E-16  7.762E-16  6.817E-16  4.638E-16   (van Regemorter)
+ CE     27 20    1.346E-15  1.143E-15  1.026E-15  9.154E-16  7.333E-16  6.441E-16  4.381E-16   (van Regemorter)
+ CE     28 20    1.294E-15  1.099E-15  9.867E-16  8.802E-16  7.051E-16  6.193E-16  4.213E-16   (van Regemorter)
+ CE     29 20    1.262E-15  1.072E-15  9.626E-16  8.587E-16  6.879E-16  6.042E-16  4.110E-16   (van Regemorter)
+ CE     30 20    1.247E-15  1.059E-15  9.511E-16  8.485E-16  6.797E-16  5.970E-16  4.061E-16   (van Regemorter)
+ CE     22 21    3.553E-12  3.018E-12  2.710E-12  2.417E-12  1.936E-12  1.701E-12  1.157E-12   (van Regemorter)
+ CE     23 21    5.518E-13  4.686E-13  4.208E-13  3.754E-13  3.007E-13  2.641E-13  1.797E-13   (van Regemorter)
+ CE     24 21    3.440E-13  2.922E-13  2.623E-13  2.340E-13  1.875E-13  1.647E-13  1.120E-13   (van Regemorter)
+ CE     25 21    1.246E-14  1.058E-14  9.502E-15  8.477E-15  6.791E-15  5.964E-15  4.057E-15   (van Regemorter)
+ CE     26 21    1.466E-15  1.245E-15  1.118E-15  9.970E-16  7.987E-16  7.015E-16  4.772E-16   (van Regemorter)
+ CE     27 21    1.383E-15  1.175E-15  1.055E-15  9.410E-16  7.538E-16  6.621E-16  4.504E-16   (van Regemorter)
+ CE     28 21    1.329E-15  1.129E-15  1.014E-15  9.043E-16  7.244E-16  6.363E-16  4.328E-16   (van Regemorter)
+ CE     29 21    1.296E-15  1.101E-15  9.885E-16  8.819E-16  7.064E-16  6.205E-16  4.221E-16   (van Regemorter)
+ CE     30 21    1.281E-15  1.088E-15  9.765E-16  8.712E-16  6.979E-16  6.130E-16  4.170E-16   (van Regemorter)
+ CE     23 22    1.082E-12  9.184E-13  8.247E-13  7.357E-13  5.894E-13  5.176E-13  3.521E-13   (van Regemorter)
+ CE     24 22    5.567E-13  4.728E-13  4.245E-13  3.787E-13  3.034E-13  2.665E-13  1.813E-13   (van Regemorter)
+ CE     25 22    1.322E-14  1.123E-14  1.008E-14  8.993E-15  7.204E-15  6.328E-15  4.304E-15   (van Regemorter)
+ CE     26 22    1.490E-15  1.265E-15  1.136E-15  1.013E-15  8.118E-16  7.130E-16  4.850E-16   (van Regemorter)
+ CE     27 22    1.405E-15  1.193E-15  1.072E-15  9.560E-16  7.658E-16  6.726E-16  4.576E-16   (van Regemorter)
+ CE     28 22    1.350E-15  1.146E-15  1.029E-15  9.183E-16  7.356E-16  6.461E-16  4.395E-16   (van Regemorter)
+ CE     29 22    1.316E-15  1.118E-15  1.004E-15  8.953E-16  7.172E-16  6.300E-16  4.285E-16   (van Regemorter)
+ CE     30 22    1.300E-15  1.104E-15  9.913E-16  8.844E-16  7.085E-16  6.223E-16  4.233E-16   (van Regemorter)
+ CE     24 23    3.651E-12  3.100E-12  2.784E-12  2.483E-12  1.989E-12  1.747E-12  1.189E-12   (van Regemorter)
+ CE     25 23    1.501E-14  1.274E-14  1.144E-14  1.021E-14  8.178E-15  7.183E-15  4.886E-15   (van Regemorter)
+ CE     26 23    1.541E-15  1.308E-15  1.175E-15  1.048E-15  8.396E-16  7.374E-16  5.016E-16   (van Regemorter)
+ CE     27 23    1.452E-15  1.233E-15  1.107E-15  9.875E-16  7.911E-16  6.948E-16  4.727E-16   (van Regemorter)
+ CE     28 23    1.393E-15  1.183E-15  1.062E-15  9.479E-16  7.593E-16  6.669E-16  4.537E-16   (van Regemorter)
+ CE     29 23    1.358E-15  1.153E-15  1.035E-15  9.237E-16  7.400E-16  6.499E-16  4.421E-16   (van Regemorter)
+ CE     30 23    1.341E-15  1.139E-15  1.023E-15  9.122E-16  7.308E-16  6.418E-16  4.366E-16   (van Regemorter)
+ CE     25 24    1.602E-14  1.360E-14  1.221E-14  1.090E-14  8.728E-15  7.666E-15  5.215E-15   (van Regemorter)
+ CE     26 24    1.566E-15  1.330E-15  1.194E-15  1.066E-15  8.536E-16  7.497E-16  5.100E-16   (van Regemorter)
+ CE     27 24    1.475E-15  1.253E-15  1.125E-15  1.003E-15  8.038E-16  7.060E-16  4.803E-16   (van Regemorter)
+ CE     28 24    1.415E-15  1.202E-15  1.079E-15  9.628E-16  7.713E-16  6.774E-16  4.608E-16   (van Regemorter)
+ CE     29 24    1.379E-15  1.171E-15  1.051E-15  9.380E-16  7.514E-16  6.600E-16  4.490E-16   (van Regemorter)
+ CE     30 24    1.362E-15  1.156E-15  1.038E-15  9.262E-16  7.420E-16  6.517E-16  4.433E-16   (van Regemorter)
+ CE     26 25    2.543E-15  2.160E-15  1.939E-15  1.730E-15  1.386E-15  1.217E-15  8.281E-16   (van Regemorter)
+ CE     27 25    2.348E-15  1.994E-15  1.791E-15  1.598E-15  1.280E-15  1.124E-15  7.646E-16   (van Regemorter)
+ CE     28 25    2.224E-15  1.889E-15  1.696E-15  1.513E-15  1.212E-15  1.065E-15  7.242E-16   (van Regemorter)
+ CE     29 25    2.150E-15  1.826E-15  1.639E-15  1.462E-15  1.172E-15  1.029E-15  7.000E-16   (van Regemorter)
+ CE     30 25    2.115E-15  1.796E-15  1.613E-15  1.439E-15  1.152E-15  1.012E-15  6.886E-16   (van Regemorter)
+ CE     27 26    4.093E-13  3.476E-13  3.121E-13  2.784E-13  2.230E-13  1.959E-13  1.333E-13   (van Regemorter)
+ CE     28 26    1.663E-13  1.412E-13  1.268E-13  1.131E-13  9.064E-14  7.961E-14  5.416E-14   (van Regemorter)
+ CE     29 26    1.118E-13  9.493E-14  8.524E-14  7.605E-14  6.092E-14  5.351E-14  3.640E-14   (van Regemorter)
+ CE     30 26    9.478E-14  8.048E-14  7.227E-14  6.447E-14  5.165E-14  4.536E-14  3.086E-14   (van Regemorter)
+ CE     28 27    7.291E-13  6.192E-13  5.560E-13  4.960E-13  3.973E-13  3.490E-13  2.374E-13   (van Regemorter)
+ CE     29 27    3.166E-13  2.688E-13  2.414E-13  2.154E-13  1.725E-13  1.515E-13  1.031E-13   (van Regemorter)
+ CE     30 27    2.357E-13  2.002E-13  1.797E-13  1.604E-13  1.285E-13  1.128E-13  7.675E-14   (van Regemorter)
+ CE     29 28    1.531E-12  1.300E-12  1.167E-12  1.041E-12  8.341E-13  7.326E-13  4.984E-13   (van Regemorter)
+ CE     30 28    7.831E-13  6.650E-13  5.971E-13  5.327E-13  4.267E-13  3.748E-13  2.550E-13   (van Regemorter)
+ CE     30 29    5.070E-12  4.305E-12  3.866E-12  3.449E-12  2.763E-12  2.426E-12  1.651E-12   (van Regemorter)
+ CI     31  0    1.018E-16  1.018E-16  1.018E-16  1.018E-16  1.018E-16  1.018E-16  1.018E-16 
+ CI     31  1    1.022E-16  1.022E-16  1.022E-16  1.022E-16  1.022E-16  1.022E-16  1.022E-16 
+ CI     31  2    1.024E-16  1.024E-16  1.024E-16  1.024E-16  1.024E-16  1.024E-16  1.024E-16 
+ CI     31  3    1.026E-16  1.026E-16  1.026E-16  1.026E-16  1.026E-16  1.026E-16  1.026E-16 
+ CI     31  4    1.026E-16  1.026E-16  1.026E-16  1.026E-16  1.026E-16  1.026E-16  1.026E-16 
+ CI     31  5    1.079E-16  1.079E-16  1.079E-16  1.079E-16  1.079E-16  1.079E-16  1.079E-16 
+ CI     31  6    1.196E-16  1.196E-16  1.196E-16  1.196E-16  1.196E-16  1.196E-16  1.196E-16 
+ CI     31  7    1.199E-16  1.199E-16  1.199E-16  1.199E-16  1.199E-16  1.199E-16  1.199E-16 
+ CI     31  8    1.201E-16  1.201E-16  1.201E-16  1.201E-16  1.201E-16  1.201E-16  1.201E-16 
+ CI     31  9    1.220E-16  1.220E-16  1.220E-16  1.220E-16  1.220E-16  1.220E-16  1.220E-16 
+ CI     31 10    1.223E-16  1.223E-16  1.223E-16  1.223E-16  1.223E-16  1.223E-16  1.223E-16 
+ CI     31 11    1.226E-16  1.226E-16  1.226E-16  1.226E-16  1.226E-16  1.226E-16  1.226E-16 
+ CI     31 12    1.228E-16  1.228E-16  1.228E-16  1.228E-16  1.228E-16  1.228E-16  1.228E-16 
+ CI     31 13    1.230E-16  1.230E-16  1.230E-16  1.230E-16  1.230E-16  1.230E-16  1.230E-16 
+ CI     31 14    1.322E-16  1.322E-16  1.322E-16  1.322E-16  1.322E-16  1.322E-16  1.322E-16 
+ CI     31 15    1.339E-16  1.339E-16  1.339E-16  1.339E-16  1.339E-16  1.339E-16  1.339E-16 
+ CI     31 16    1.381E-16  1.381E-16  1.381E-16  1.381E-16  1.381E-16  1.381E-16  1.381E-16 
+ CI     31 17    1.389E-16  1.389E-16  1.389E-16  1.389E-16  1.389E-16  1.389E-16  1.389E-16 
+ CI     31 18    1.394E-16  1.394E-16  1.394E-16  1.394E-16  1.394E-16  1.394E-16  1.394E-16 
+ CI     31 19    1.469E-16  1.469E-16  1.469E-16  1.469E-16  1.469E-16  1.469E-16  1.469E-16 
+ CI     31 20    1.479E-16  1.479E-16  1.479E-16  1.479E-16  1.479E-16  1.479E-16  1.479E-16 
+ CI     31 21    1.484E-16  1.484E-16  1.484E-16  1.484E-16  1.484E-16  1.484E-16  1.484E-16 
+ CI     31 22    1.486E-16  1.486E-16  1.486E-16  1.486E-16  1.486E-16  1.486E-16  1.486E-16 
+ CI     31 23    1.491E-16  1.491E-16  1.491E-16  1.491E-16  1.491E-16  1.491E-16  1.491E-16 
+ CI     31 24    1.494E-16  1.494E-16  1.494E-16  1.494E-16  1.494E-16  1.494E-16  1.494E-16 
+ CI     31 25    1.565E-16  1.565E-16  1.565E-16  1.565E-16  1.565E-16  1.565E-16  1.565E-16 
+ CI     31 26    1.862E-16  1.862E-16  1.862E-16  1.862E-16  1.862E-16  1.862E-16  1.862E-16 
+ CI     31 27    1.882E-16  1.882E-16  1.882E-16  1.882E-16  1.882E-16  1.882E-16  1.882E-16 
+ CI     31 28    1.896E-16  1.896E-16  1.896E-16  1.896E-16  1.896E-16  1.896E-16  1.896E-16 
+ CI     31 29    1.904E-16  1.904E-16  1.904E-16  1.904E-16  1.904E-16  1.904E-16  1.904E-16 
+ CI     31 30    1.909E-16  1.909E-16  1.909E-16  1.909E-16  1.909E-16  1.909E-16  1.909E-16 
+ CI     32 31    7.116E-17  7.116E-17  7.116E-17  7.116E-17  7.116E-17  7.116E-17  7.116E-17 
+
+ END

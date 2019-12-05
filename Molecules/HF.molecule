@@ -1,0 +1,29 @@
+# <<One-line molecular model description>>
+  HF
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  H, F
+
+# Ediss [eV]
+  5.869
+
+# Fit type for partion function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3  9.0E+3
+
+# pf_coef
+  4    2.4164   -1.6132   0.6357   -0.1767
+
+# eqc_coef
+  3   11.2835   -0.9228   -0.5642
+
+# Filenames with line data
+
+## /home/uitenbr/src/rh_v2/Molecules/HF/HF_X-X.asc
+ /Users/uitenbr/Source/rh_v2/Molecules/HF/HF_X-X.zeeman
+## end

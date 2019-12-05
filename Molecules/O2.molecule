@@ -1,0 +1,27 @@
+# <<One-line molecular model description>>
+  O2
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  2O
+
+# Ediss [eV]
+  5.1156
+
+# Fit type for partition function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3    9.0E+3
+
+# pf_coef
+  4    4.0636   -2.0779    0.7660   -0.2111
+
+# eqc_coef
+  3   11.8558   -0.5309   -0.6214
+
+# Filenames with line data
+
+## end

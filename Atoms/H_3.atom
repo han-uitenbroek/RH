@@ -1,0 +1,44 @@
+# <<One-line atomic model description>>
+  H 
+
+# Nlevel  Nline   Ncont   Nfixed
+    3       1       2        0
+
+#   E[cm^-1]    g           label[20]         stage   levelNo
+#                     '|----|----|----|----'
+      0.000    2.00   'H I 1S 2SE          '    0       0
+  82258.211    8.00   'H I 2P 2PO          '    0       1
+ 109677.617    1.00   'H II                '    1       2
+
+# j   i       f     type  Nlambda symmetr  qcore  qwing  vdWapprx          vdWaals            radiative  Stark
+#                                                                        H            He
+  1   0  4.162E-01  VOIGT    100    ASYMM  15.0   600.0   UNSOLD   1.000  0.000  1.000  0.000  4.70E+08  0.0e+00
+
+# Photoionization Cross Sectionss
+
+# j   i  alpha [m^-2]     Nlambda     Wavel. Dep.   lamb_min [nm]
+#
+
+#   H I 1S 2SE          
+  2   0      6.152E-22       20       HYDROGENIC       22.794
+
+#   H I 2P 2PO          
+  2   1      1.379E-21       20       HYDROGENIC       91.176
+
+# Fixed Transitions
+
+# j   i      Strength       Trad       Option
+
+
+# Collisional rate coefficients from Johnson_CE.c
+
+ TEMP    6          3000.0     5000.0     7000.0    10000.0    20000.0    30000.0
+
+ CE      1  0    9.750e-16  6.098e-16  4.535e-16  3.365e-16  2.008e-16  1.560e-16   (Johnson)
+
+# Collisional rate coefficients from Johnson_CI.c
+
+ TEMP    6          3000.0     5000.0     7000.0    10000.0    20000.0    30000.0
+
+ CI      0  2    2.635e-17  2.864e-17  3.076e-17  3.365e-17  4.138e-17  4.703e-17   (Johnson)
+ CI      1  2    5.340e-16  6.596e-16  7.546e-16  8.583e-16  1.025e-15  1.069e-15   (Johnson)

@@ -1,0 +1,21 @@
+# Molecules
+# Location of H2.molecule (KEYWORD_REQUIRED) is set in keyword.input 
+
+12
+
+# model file
+
+  ../../Molecules/H2.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/H2+.molecule     PASSIVE    LTE_POPULATIONS
+  ../../Molecules/C2.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/N2.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/O2.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/CH.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/CO.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/CN.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/NH.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/NO.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/OH.molecule      PASSIVE    LTE_POPULATIONS
+  ../../Molecules/H2O.molecule     PASSIVE    LTE_POPULATIONS
+
+#end

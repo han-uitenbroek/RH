@@ -1,0 +1,27 @@
+# <<One-line molecular model description>>
+  OH
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  O, H
+
+# Ediss [eV]
+  4.392 
+
+# Fit type for partition function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3  9.0E+3
+
+# pf_coef
+  4    3.0929   -1.6778    0.6743   -0.1874
+
+# eqc_coef
+  3   10.7881   -0.8762   -0.5436
+
+# Filenames with line data
+##  /home/uitenbr/src/rh_v2/Molecules/OH/OH_X-X_1565.zeeman
+## end

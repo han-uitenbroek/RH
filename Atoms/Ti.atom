@@ -1,0 +1,29 @@
+# Background version of TiI & II, very preliminary version!!!!
+# Data from: 
+
+  TI
+
+# Nlevel  Nline   Ncont    Nfixed
+    5       0       0         0
+
+# Energy levels from C. E. Moore, NSRDS-NBS 35/Vol I
+
+#   E[cm^-1]    g           label[20]         stage   levelNo
+#                     '|----|----|----|----'
+      0.000   19.00   'TI I 3D2 4S2 3FE    '    0       0
+   6700.000   31.00   'TI I 3D3 (4F) 4S 5FO'    0       1
+   7255.369    5.00   'TI I 3D6 4S2 1DE    '    0       2
+   8500.000    7.00   'TI I 3D2 4S2 3PE    '    0       3
+  55010.00     4.00   'TI II 4F            '    1       4
+
+# Lines from TopBase
+
+# j   i       f     type  Nlambda symmetr  qcore  qwing  vdWapprx          vdWaals            radiative  Starck
+#                                                                        H            He
+
+# Photoionization rates from TopBase
+
+# j   i  alpha [m^-2]     Nlambda     Wavel. Dep.   lamb_min [nm]
+#
+
+# Collisional strengths from impact.c

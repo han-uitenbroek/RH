@@ -1,0 +1,27 @@
+# <<One-line molecular model description>>
+  LIH
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  Li, H
+
+# Ediss [eV]
+  2.4287
+
+# Fit type for partion function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3  9.0E+3
+
+# pf_coef
+  4   3.2564  -2.1799   0.7236  -0.1052
+
+# eqc_coef
+  5   9.9506  -0.5163   0.1833  -1.7211   1.2805
+
+# Filenames with line data
+
+## end

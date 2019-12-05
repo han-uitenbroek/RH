@@ -1,0 +1,26 @@
+# <<One-line molecular model description>>
+  SiO
+
+# Charge
+  0
+
+# Constituent elements
+  SI, O
+
+# Ediss [eV]
+  8.26
+
+# Fit type for partion function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3  9.0E+3
+
+# pf_coef
+  5    4.2275  -1.9144   0.7201  -1.3099   1.1657
+
+# eqc_coef
+  5   11.8772  -0.8349  -0.5248   1.1271  -1.1984
+
+# Filenames with line data
+## end

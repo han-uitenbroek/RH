@@ -1,0 +1,86 @@
+# <<One-line atomic model description>>
+  H 
+
+# Nlevel  Nline   Ncont   Nfixed
+    6       10       5        0   
+
+#   E[cm^-1]    g           label[20]         stage   levelNo
+#                     '|----|----|----|----'
+      0.000    2.00   'H I 1S 2SE          '    0       0
+  82258.211    8.00   'H I 2P 2PO          '    0       1
+  97491.219   18.00   'H I 3D 2DE          '    0       2
+ 102822.766   32.00   'H I 4F 2FO          '    0       3
+ 105290.508   50.00   'H I 5G 2GE          '    0       4
+ 109677.617    1.00   'H I 6H 2HO          '    1       5
+
+# j   i       f     type  Nlambda symmetr  qcore  qwing  vdWapprx          vdWaals            radiative  Stark
+#
+# Lyman series                                                           H            He
+  1   0  4.162E-01  VOIGT    100    ASYMM  15.0   600.0   UNSOLD   1.000  0.000  1.000  0.000  4.70E+08  1.0E+00
+  2   0  7.910E-02  VOIGT     50    ASYMM  10.0   250.0   UNSOLD   1.000  0.000  1.000  0.000  9.98E+07  1.0E+00
+  3   0  2.899E-02  VOIGT     20     SYMM   3.0   100.0   UNSOLD   1.000  0.000  1.000  0.000  3.02E+07  1.0E+00
+  4   0  1.394E-02  VOIGT     20     SYMM   3.0   100.0   UNSOLD   1.000  0.000  1.000  0.000  1.15E+07  1.0E+00
+
+# Balmer series												 
+  2   1  6.407E-01  VOIGT     70    ASYMM   3.0   250.0   UNSOLD   1.000  0.000  1.000  0.000  9.98E+07  1.0E+00
+  3   1  1.193E-01  VOIGT     40     SYMM   3.0   250.0   UNSOLD   1.000  0.000  1.000  0.000  3.02E+07  1.0E+00
+  4   1  4.467E-02  VOIGT     40     SYMM   3.0   250.0   UNSOLD   1.000  0.000  1.000  0.000  1.15E+07  1.0E+00
+
+# Paschen series
+  3   2  8.420E-01  VOIGT     20     SYMM   2.0    30.0   UNSOLD   1.000  0.000  1.000  0.000  3.02E+07  1.0E+00
+  4   2  1.506E-01  VOIGT     20     SYMM   2.0    30.0   UNSOLD   1.000  0.000  1.000  0.000  1.15E+07  1.0E+00
+
+# Brackett series
+  4   3  1.036E+00  VOIGT     20     SYMM   1.0    30.0   UNSOLD   1.000  0.000  1.000  0.000  1.15E+07  1.0E+00
+
+# Photoionization Cross Sectionss
+
+# j   i  alpha [m^-2]     Nlambda     Wavel. Dep.   lamb_min [nm]
+#
+
+#   H I 1S 2SE          
+  5   0      6.152E-22       20       HYDROGENIC       22.794
+
+#   H I 2P 2PO          
+  5   1      1.379E-21       20       HYDROGENIC       91.176
+
+#   H I 3D 2DE          
+  5   2      2.149E-21       20       HYDROGENIC      205.147
+
+#   H I 4F 2FO          
+  5   3      2.923E-21       20       HYDROGENIC      364.705
+
+#   H I 5G 2GE          
+  5   4      3.699E-21       20       HYDROGENIC      569.852
+
+# Fixed Transitions
+
+# j   i      Strength       Trad       Option
+
+
+# Collisional rate coefficients from Johnson_CE.c
+
+ TEMP    6          3000.0     5000.0     7000.0    10000.0    20000.0    30000.0
+
+ CE      1  0    9.750e-16  6.098e-16  4.535e-16  3.365e-16  2.008e-16  1.560e-16   (Johnson)
+ CE      2  0    1.437e-16  9.069e-17  6.798e-17  5.097e-17  3.118e-17  2.461e-17   (Johnson)
+ CE      3  0    4.744e-17  3.001e-17  2.255e-17  1.696e-17  1.044e-17  8.281e-18   (Johnson)
+ CE      4  0    2.154e-17  1.364e-17  1.026e-17  7.723e-18  4.772e-18  3.791e-18   (Johnson)
+ CE      2  1    1.127e-14  8.077e-15  6.716e-15  5.691e-15  4.419e-15  3.890e-15   (Johnson)
+ CE      3  1    1.360e-15  1.011e-15  8.617e-16  7.482e-16  6.068e-16  5.484e-16   (Johnson)
+ CE      4  1    4.040e-16  3.041e-16  2.612e-16  2.287e-16  1.887e-16  1.726e-16   (Johnson)
+ CE      3  2    3.114e-14  2.629e-14  2.434e-14  2.290e-14  2.068e-14  1.917e-14   (Johnson)
+ CE      4  2    3.119e-15  2.700e-15  2.527e-15  2.400e-15  2.229e-15  2.130e-15   (Johnson)
+ CE      4  3    7.728e-14  7.317e-14  7.199e-14  7.109e-14  6.752e-14  6.310e-14   (Johnson)
+
+# Collisional rate coefficients from Johnson_CI.c
+
+ TEMP    6          3000.0     5000.0     7000.0    10000.0    20000.0    30000.0
+
+ CI      0  5    2.635e-17  2.864e-17  3.076e-17  3.365e-17  4.138e-17  4.703e-17   (Johnson)
+ CI      1  5    5.340e-16  6.596e-16  7.546e-16  8.583e-16  1.025e-15  1.069e-15   (Johnson)
+ CI      2  5    2.215e-15  2.792e-15  3.169e-15  3.518e-15  3.884e-15  3.828e-15   (Johnson)
+ CI      3  5    6.182e-15  7.576e-15  8.370e-15  8.992e-15  9.252e-15  8.752e-15   (Johnson)
+ CI      4  5    1.342e-14  1.588e-14  1.710e-14  1.786e-14  1.743e-14  1.601e-14   (Johnson)
+#
+END

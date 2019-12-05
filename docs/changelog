@@ -1,0 +1,470 @@
+Log of changes to the RH code
+
+--	Jun 14 2001: chemequil.c --> ChemicalEquilibrium
+	
+	Found bug that caused population numbers of molecules
+	that include the active atom to be zero when starting from
+	initial solutions other than OLD_POPULATIONS and OLD_POPS_AND_J.
+	Put in appropriate conditional for the initialization of fn0.
+
+--      Jun 20 2001: kurucz.c --> readKuruczLines
+
+	Changed the way Kurucz linelists are read. The keyword
+	KURUCZ_DATA in keyword.input now specifies a file that lists
+	a series of file names, one line each, the each contain
+	a list of Kurucz format line transitions. This allows a
+	list of separate files to be read instead of the one specified
+	previously under KURUCZ_DATA.
+	
+--      Jun 26 2001: initial_xdr.c --> initSolution
+
+	Found bug in initialization of active molecule. The rate
+	matrix mutex lock variable molecule->Gamma_lock was not
+	initialized at all, which meant the program would hang in
+	the case of an active molecule with NTHREADS set to a value
+	of 2 or more.
+
+--      Aug 15 2001: rhsphere:formal.c
+
+	Fixed a typo in the evaluation of angle-averaged mean intensity J.
+	This would cause problems for larger values of Ncore, so that
+	J != B in the deep photosphere.
+
+--      Aug 15 2001: rhsphere:feautrier.c
+
+	Routine was not threadsafe. It still contained some static
+	variables that got overwritten when running multiple threads.
+	Replaced them with purely temporary variables which now get
+	malloced and freed at the beginning and end, respectively.
+
+--      Aug 15 2001: rhsphere:geometry.c, rhsphere:geometry.h
+
+	Tidied up the code a bit. Renamed Ray->Nz and Ray->z to
+	Ray->Ns and Ray->s to reflect more properly the fact that these
+	are pathlength variables rather than vertical distance variables.
+	
+--      Oct  5 2001: rhsc2d:geometry.c
+
+	Solved bug in geometry.c. The interpolation Stencils where not
+	properly filled when ray was exactly vertical. Added a new
+	function setVertStencil for this particular case. There are now
+	three cases for mux > 0.0, mux = 0.0, and mux < 0.0.
+
+--	Oct 17 2001: solvene.c --> Solve_ne
+
+	New routine for calculating LTE electron density in atmosphere
+	given T and Hydrogen density. Set SOLVE_NE = TRUE in keyword.input
+	to activate. Routine is called from routine Background
+
+--	Oct 18 2001: ltepops.c --> SetLTEQuantities
+
+	New routine needed to calculate LTE populations and active
+	atom collisional rates after the electron density is calculated.
+	These quantities can no longer be calculated from readAtom
+	when the electron density is unknown. Atomic models
+	have to be read before the electron density is calculated.
+	Specifically, the hydrogen model is needed to calculate partition
+	function values.
+	
+--      Oct 18 2001: background.c --> Background.c
+
+	Added additional keyword equilibria_only. When this is set
+	the routine exits after calculating electron density,
+	LTE populations, collisional rates for the active atom,
+	and chemical equilibrium. Neede when called from solveray.
+
+--	Oct 18 2001: backgropac_xdr.c --> backgrOpac
+
+	Added calls to Solve_ne and SetLTEQuantities. See previous
+	three items.
+	
+--	Nov  6 2001: chemequil.c --> ChemicalEquilibrium.c
+
+	Modified routine so that it is no longer necessary to include
+	detailed atomic models for all the constituents that can appear
+	in molecules. It is now required that Kurucz partition functions
+	are read in always (KURUCZ_PF_DATA is now KEYWORD_REQUIRED,
+	accordingly). For bound-free background opacities it is still
+	required to specify detailed model atoms in background.input
+	
+--	Nov 29 2001: zeeman.c --> determinate.c
+
+	Slightly improved the atomic label dissection algorithm so
+	that it now recognizes label that contain elements like e5DE
+	in Fe model atoms.
+
+--	Dec 13 2001: voigt.c --> VoigtHumlicek.c
+
+	Older versions (Oct - Nov 2000) had a problem in the check
+	for the four different domains. Instead of fabs(v) abs(v) was
+	used, leading to erroneous choices for the domain. In later
+	versions this was (fortuitously) implemented correctly.
+
+--	Dec 13 2001: humlicek.c, voigt.c
+
+	Cleaned up the expressions for complex arithmatic a bit.
+	Changed the constants a[] and b[] in domain IV of VoigtHumlicek.c
+	to the proper accuracy, consistent with the F90 version in
+	humlicek_.f90.
+
+--	Dec 19 2001: collision.c --> CollisionRate.c
+
+	Fixed error that was result of SetLTEQuantities when proton
+	density was required in calculation of collisional excitation.
+	Routine was still referring to atmos.nH, which is already
+	freed in distribute_nH. Now we make the proper reference through
+	atmos.H->n.
+
+--	Jun 12 2002: initscatter.c, rhf1d.c, rhsc2d.c, rhsc3d.c, rhsphere.c
+
+	Fixed logical error that would prevent calculation of all four
+	Stokes profiles in the case that STOKES_MODE = FIELD_FREE and
+	N_MAX_ITER = 0. This setting could be used for calculating LTE
+	profiles with polarization (set STARTING_SOLUTION = LTE_POPULATIONS
+	of course). Now background scattering is only performed if
+	N_MAX_ITER > 0.
+
+--	Jul 09 2002: initspectrum.c --> initSpectrum.c
+
+	Wavelength table is now read in XDR format to improve cross-platform
+	operability.
+
+--	Jul 15 2002: zeeman.c --> ZeemanStrength.c
+
+	Added check on absolute value of \delta J. Previously strength
+	s could be uninitialized if none of the three values of the case
+	statement on dJ was satisfied. Such lines are now rejected
+	for polarization (see below).
+
+--	Jul 15 2002: readatom.c --> readAtom.c
+
+	Reject polarization calculations for lines that have \delta J
+	of larger than one. See previous entry.
+
+--	Jul 31 2002: writecoll_xdr.c
+
+	New routine to write collisional rates to file. Rates are
+	written when COLLISION_OUTPUT is set to anything other than
+	"none" in keyword.input. Also adapted readatom.pro to read
+	this additional output.
+
+--	Jul 31 2002: writedamp_xdr.c
+
+	New routine to write broadening velocity and damping parameters
+	for each line to file. Rates are written when DAMPING_OUTPUT is
+	set to anything other than "none" in keyword.input. Also adapted
+	readatom.pro to read this additional output.
+
+--	Oct 01 2002: rhf1d/solveray.c
+
+	The ray angle cosines mux and muy where improperly initialized.
+	This lead to problems for full Stokes solutions as the angle
+	with the magnetic field is undetermined.
+
+--	Nov 18 2002: {rhf1d,rhsc2d,rhsc3d}/solveray.
+
+	Improved the section reading the wavelength indices for the
+	wavelengths for which chi and S have to be stored. Indices can
+	now be arbitrarily broken over more than one line in ray.input.
+
+--      Feb 05 2003: readBackground.c, writeBackground.c --> readj.c
+	             MolecularOpacity.c --> opacity.c
+	             Background.c --> background.c
+
+	Added option for polarized transfer in background molecular
+	lines. Streamlined storage of background opacities. These
+	can now deal with emissivity of all four Stokes parameters.
+
+--	Feb 12 2003: molzeeman.c
+
+	New routines to compute Zeeman splitting paterns for molecular
+	transitions. Includes routines to calculate strength and
+	shift of Zeeman multiplets from quantum numbers, and a routine
+	for the calculation of effective Lande factors. Both are capable
+	of dealing with Hund's cases (a) and (b). Enhanced routine
+	ReadMolecularLines.c for the Kurucz case to read additional line
+	parameters.
+	
+--	Mar 31 2003: addtoGamma.c --> fillgamma.c
+
+	Approximate operator now accounts for all four Stokes parameters
+	in the case of polarized transfer in an atomic line.
+
+--	Apr 14 2003: kurucz.c --> rlk_opacity.c
+
+	Added support for polarized background lines. Also changes
+	were made to routines in readj.c to store and retrieve background
+	opacity values.
+
+--	Nov 13 2003: backgrOpac.c --> backropac_xdr.c
+
+	Fixed bug in check for existence of He atomic model that
+	would lead to a bus error if He was not present in the
+	emplyed background input file (by default background.input
+	but user defineable with the -b command line option).
+
+--	Jan 14 2004: readKuruczLines --> kurucz.c
+
+	Fixed bug that caused problems with unitialized Q, U, and V
+	profiles for lines that have no broadening specified (Grad =
+	GStark = GvdWaals = 0.0). These lines now have polarizable = 
+	FALSE.
+
+--	Jan 14 2004: background.c, stokesopac.c, kurucz.c, opacity.c
+
+	Added magneto_optical effects for LTE background lines. This
+	can be set as for the active lines before by setting
+	MAGNETO_OPTICAL = TRUE (the default) in keyword.input.
+
+--	Jan 15 2004: rhsc2d/anglequad.c, rhsc3d/anglequad.c, readvalue.c
+
+	Added support for new angle sets in 2- and 3-D code. You can
+	now specify ANGLESET = SET_GL_NiXNa, where Ni and Na are the
+	number of grid points in inclination and azimuth, respectively.
+	Quadrature in inclination is Gauss-Legendre (hence the name of
+	the set), in azimuth it is equidistant in angle. Number of rays
+	is 2 x Ni x Na in 2-D, and 4 x Ni x Na in 3-D.
+	
+--	Jan 21 2004: rhf1d/formal.c, rhsc2d/formal.c
+
+	Added support for background polarization due to scattering
+	by Thomson and rayleigh processes. Set the keyword
+	BACKGROUND_POLARIZATION = TRUE in keyword.input. The second
+	radiation tensor J^2_0 is written to output file J20.out in
+	this case.
+
+--	Feb 25 2004: rhsc3d/formal.c, rhsc3d/geometry.c, rhsc3d/geometry.h
+	  rhsc3d/shortchar.c rhsc3d/solvelong.c
+
+	Added support for polarized radiation, including through
+	background scattering. Also revised formal solution to be
+	really three-dimensional, with long characteristics in cases
+	where no nearest cell crossing in a horizontal plane occurs.
+	Interpolation in the horizontal plane can be either linear
+	or by cubic convolution. It is linear in vertical planes.
+
+--	May 12 2004: profile.c, initial_xdr.c, readj.c, opacity.c,
+	  {rhf1d,rhsc2d,rhsc3d,rhsphere}/formal.c
+
+	Implemented an LIMIT_MEMORY option that writes profile data
+	and mean intensity J to file instead of keeping it in memory.
+	This strongly limits the amount of memory in multi-dimensional
+	cases, at the cost of I/O overhead of course.
+
+--	Sep 22 2004: writemolec_xdr.c, background.c, chemequil.c:
+
+	Implemented NON_ICE (for Non- Instantaneous Chemical Equilibrium)
+	option for keyword.input. It allows to by-pass the chemical
+	equilibrium calculation by reading the file molecules.out
+	with pre-calculated molecular concentrations. See IDL routine
+	readmolecules.pro for details on how this file can be read
+	and written in IDL. Allocation of atmos.nHmin is now in
+	readatom.c instead of in chemequil.c. Enable by setting
+	NON_ICE = TRUE (default is FALSE). KEYWORD_OPTIONAL
+
+--	Jan 18 2005: readinput.c, multiatmos.c:
+
+	Enabled option for irradiation from the TOP of the atmosphere in 1-D.
+	Set keyword ATMOS_ITOP to the name of the file with irradiation
+	values. This is a binary file in XDR with values for each wavelength
+	and each angle (wavelength is the fastest index).
+
+--	Jan 27 2005: rhsc2d/shortchar.c:
+
+	Included proper boundary conditions at lower boundary when
+	THERMALIZED is chosen.
+	
+--	Jan 27 2005: rhsc3d/shortchar.c:
+
+	Included proper boundary conditions at lower boundary when
+	THERMALIZED is chosen.
+	
+--	Jan 28 2005: rhsphere: readatmos.c, faeutrier.c geometry.h
+
+	Added optional irradiation at outermost layer in the spherical
+	version. Set keyword ATMOS_ITOP to the name of the file with
+	irradiation values. This is a binary file in XDR with values
+	for each wavelength. Infalling radiation is isotropic.
+	
+--      Apr 22 2005: readmolecule.c
+
+	Added new format for molecular line list: KURUCZ_NEW
+	This format allows for better specification of the
+	vibrational levels.
+
+--	Aug 11 2005: solvene.c
+
+	Fixed bug in getKuruczpf where the log of Uk should
+	be taken for stage == 1. Thanks to Sven Wedemeyer-B\"ohm
+	for pointing this out.
+
+--	Dec 23 2005: rhsc3d/solveray.c
+
+	Fixed bug. Call to Bproject() was missing to fill the
+	arrays with the projection angles of the field along
+	the line of sight.
+	
+--	Feb 24 2006: rhsc2d/chartflow.c
+
+	Fixed bug. When LIMIT_MEMORY is set J should be read from
+	file wavelength by wavelength.
+	
+--      Feb 14 2007: writeinput_xdr.c
+
+	Write Endianness of calculating host to input.out.
+	The IDL routines on the analyzing host can now figure
+	out what to do with the J.dat file, swapping bytes or not.
+
+--	Oct 16 2007: zeeman.c
+
+	Fixed bug in adjustStokesMode.c. Cannot free pointer
+	line->phi in case input.limit_memory is set to TRUE.
+
+--	Oct 24 2007: broad.c
+
+	Fixed bug in Damping.c. When line->cStark is positive
+	AND negative the Stark broadening should be computed.
+	For negative values the broadening is fabs(line->cStark) *
+	atmos.ne, in MULTI style (but note we have [ne] = m^-3,
+	See also tools/convertatom.c)
+
+--	Nov  5 2007: barklem.c, broad.c, readatom.c
+
+	Added option for vd Waals broadening in Barklem fashion.
+	Option BARKLEM in .atom file sets this option.
+	
+--	Nov  8 2007: barklem.c, kurucz.c
+
+	Fixed bug. SWAP_VALUE erroneously used int for the values
+	to be swapped. Now defined SWAPDOUBLE macro and put it in
+	rh.h. Bug erroneously ed to integer values for neff1,2 when
+	swapped.
+	
+--	Dec  7 2007: profile.c, sortlambda.c
+	rhf1d/rhf1d.c, rhf1d/solveray.c,
+	rhsc2d/rhsc2d.c, rhsc2d/solveray.c,
+	rhsc3d/rhsc3d.c, rhsc3d/solveray.c,
+	rhspehere/rhsphere.c
+
+	Implemented routine getProfiles in profile.c to manage the
+	calculation of line absorption profiles, only after all
+	hydrogen populations are determined.
+
+--	Jan  4 2008: rhf1d/hydrostat.c
+
+	New routine to solve for hydrostatic equilibrium in 1-D
+	plane geometry. Small changes in other routines to accommodate
+	new routine. H2 is included in the calculation.
+
+--	Aug 29 2008: rhsc2d/solvelong.c, rhsc3d/solvelong.c
+
+	Fixed bug. In case I_uw < 0.0, the just computed value
+	of I_uw would be used in the evaluation of linear interpolation,
+	rendering the result meaningless. Thanks to Rene Holzreuter
+	for finding this problem.
+
+--	Dec 22 2008: readj.c, initial_xdr.c
+
+	Fixed bug that prevented convergence in multi-threaded mode
+	when angle-dependent PRD was used. Routines readImu and writeImu
+	still employed fseek() and fread()/fwrite(), which is not thread-safe.
+	Now pread/pwrite are used. This requires a file descriptor, rather than
+	a file pointer.
+	
+--      Dec 23 2008: fixed various print formatting discrepancies
+	
+--      Apr 22 2009: Major revision to version 2.
+
+	Multiple active atoms, and molecles, as well as wavetable.
+	Input file background.input is replaced by two files:
+	atoms.input and molecules.input
+	
+--      Oct 13 2009: nemetals.c, rhf1d/hydrostat.c
+
+	Fixed bugs in implementation for hydrostatic equilibrium
+	In nemetals.c f_n was not zeroed for every element, and in
+	hydrostat.c atmos.H->ntotal was wrongly used as the total
+	neutral hydrogen density (i.e., without subtracting np).
+
+--	Jan 12 2010: profile.c
+
+	Fixed a bug in the PRD case. When Profile() is called from
+	adjustStokes() the PRD profile should be kept and not
+	reinitialized. Added check for line->rho_prd and only
+	initialize when it == NULL
+	
+--	Jan 14 2010: rhf1d/formal.c, rhsc2d/formal.c, rhsc3d/formal.c
+
+	Fixed bug that resulted in segmentation fault when running
+	with BAKGROUND_POLARIZATION and LIMIT_MEMORY both set to TRUE.
+	In this case no memory for spectrum.J20 is allocated and J20
+	is written to file per wavelength.
+
+--	Mar  3 2010: ohchbf.c, background.c, readmolecule.c
+
+	Added routines to add bound-free opacity from the OH and CH
+	molecules in the UV. Pointers to the OH and CH molecular structure
+	are stored in the atmos structure. This is done in
+	readMolecularModels
+
+	Nov 12 2010: fpehandler.c
+
+	Included the appropriate call to the GNU FPE handler to catch
+	numerical problems properly.
+
+	Nov 16 2010: solvene.c, background.c, readvalue.c
+
+	Changed electron density solver to account for Non-LTE atoms.
+	Keyword SOLVE_NE can now be set to NONE, ONCE, and ITERATION
+
+--	Jun 30 2011: molzeeman.c
+
+	Caught case where Lambda = N = 0 in calculation for Zeeman
+	splitting in Hund's case b. Case is dealt with seperately now.
+	
+--	Jul 12 2011: kurucz.c, background.c, readinput.c atmos.h inputs.h
+
+	Implemented scattering in background atoms from a Kurucz line list.
+	collisional destruction is estimated with an equivalent two-level
+	description and collisional strength is estimated with van Regemorter's
+	approximation. To enable scattering set RLK_SCATTER==TRUE in 
+	keyword.input.
+
+--	Oct 12 2011: readmolecule.c
+
+	Implemented reading of TiO lines and proper isotope fractions
+	for Ti. Fractions are defined at the top TI_46 etc.
+
+--	Dec 15 2011: {rhf1d,rhsc2d,rhsc3d,rhsphere}/formal.c
+
+	Fixed bug in Formal, where J was zeroed when run with 
+	LIMIT_MEMORY==FALSE. This would lead to the wrong source function
+	values to be written by solveray, for instance if chi and S
+	are desired in spectrum_1.00 for certain wavelengts. Now
+	J is only zeroed and calculated and radiative rates are only
+	evaluated when spectrum.updateJ==TRUE. Thanks to Tiago Pereira.
+
+--	Dec 23 2011: readj.c
+
+	Added routine pread_rh.c and pwrite_rh.c to enable reading/writing
+	chunks of data larger than 2^31 - 1 bytes to disk. The original
+	pread() and pwrite() don't support that.
+
+--	Jan 16 2012: readj.c
+
+	Fixed bugs in {read,write}Imu. Now Angle-dependent PRD works again.
+
+--	Jan 4 2013: rhsc2d:{shortchar.c, solvelong.c}, readvalue.c
+
+	Added Bezier interpolation for source function in short characteristics.
+	New switch in keyword.input: S_INTERPOLATION. Possible values are
+	PARABOLIC (default) and BEZIER. Option is KEYWORD_DEFAULT.
+
+--	Oct 27 2014: barklem.c
+
+	Fixed 2 bugs in getBarklemCross and getBarklemCrossActive. First
+	was wrong formulation of reduced mass, failing to divide, second
+	was misinterpretation of ABO formulation of broadening,
+	underestimating results by a factor of 2. Many thanks to Rene
+	Holzreuter and Michiel van Noort for discovering the errors!
+	

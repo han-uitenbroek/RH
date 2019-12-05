@@ -1,0 +1,43 @@
+## --- Machine dependent defs --                       -------------- ##
+#     
+#      CPU = x86_64
+#      OS  = Linux
+#
+#      Version:       rh2.0
+#      Author:        Han Uitenbroek (huitenbroek@nso.edu)
+#      Last modified: Thu May 31 09:10:44 2018 --
+#
+##     --------------------------                      ----------RH-- ##
+
+## --- Choose one if compilation is required for a specific target
+##     machine (use the fpversion command to determine optimal target)##
+
+TARGET =
+XARCH  =
+
+## --- If no f90 compiler is available comment out -DHAVE_F90
+
+CC       = gcc
+CFLAGS   = -O2 -m64 -DHAVE_F90 ##-Wall 
+
+
+## --- Macros for F90 alternative routines --           ------------- ##
+
+F90C     = gfortran ## ifort
+F90FLAGS = -O2 -m64
+
+
+## -- Library settings --                               ------------- ##
+
+ARFLAGS  = rvsU
+ARCHINC  =
+
+## --- GNU make does not automatically define the .f90 suffix and
+##     corresponding suffix rule --                    -------------- ##
+
+.SUFFIXES: .f90
+
+.f90.o:
+	$(F90C) -c $(F90FLAGS) $<
+
+## ---                                                 -------------- ##

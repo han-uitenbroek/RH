@@ -1,0 +1,221 @@
+# Carbon I: 27 levels + continuum
+#
+  C
+
+# Nlevel  Nline   Ncont   Nfix
+    28     53       1      0
+
+# Energy levels from "Tables of Spectra of Hydrogen, Carbon, Nitrogen,
+# and Oxygen Atoms and Ions", Charlotte E. Moore (edited by Jean W. Gallagher),
+# CRC Press.
+
+#  E[cm^-1]      g           label[20]         stage     level
+#                       |----|----|----|----
+       0.000    1.00   'C I 2S2 2P2  3PE 0  '    0         0
+      16.400    3.00   'C I 2S2 2P2  3PE 1  '    0         1
+      43.400    5.00   'C I 2S2 2P2  3PE 2  '    0         2
+   10192.63     5.00   'C I 2S2 2P2  1DE 2  '    0         3
+   21648.01     1.00   'C I 2S2 2P2  1SE 0  '    0         4
+   33735.20     5.00   'C I 2S  2P3  5SO 2  '    0         5
+   60333.43     1.00   'C I 2S2 2P3S 3PO 0  '    0         6
+   60352.63     3.00   'C I 2S2 2P3S 3PO 1  '    0         7
+   60393.14     5.00   'C I 2S2 2P3S 3PO 2  '    0         8
+   61981.82     3.00   'C I 2S2 2P3S 1PO 1  '    0         9
+   64086.92     7.00   'C I 2S  2P3  3DO 3  '    0        10
+   64089.85     3.00   'C I 2S  2P3  3DO 1  '    0        11
+   64090.95     5.00   'C I 2S  2P3  3DO 2  '    0        12
+   68856.33     3.00   'C I 2S2 2P3P 1PE 1  '    0        13
+   69689.48     3.00   'C I 2S2 2P3P 3DE 1  '    0        14
+   69710.66     5.00   'C I 2S2 2P3P 3DE 2  '    0        15
+   69744.03     7.00   'C I 2S2 2P3P 3DE 3  '    0        16
+   70743.95     3.00   'C I 2S2 2P3P 3SE 1  '    0        17
+   71352.51     1.00   'C I 2S2 2P3P 3PE 0  '    0        18
+   71364.90     3.00   'C I 2S2 2P3P 3PE 1  '    0        19
+   71385.38     5.00   'C I 2S2 2P3P 3PE 2  '    0        20
+   72610.72     5.00   'C I 2S2 2P3P 1DE 2  '    0        21
+   73975.91     1.00   'C I 2S2 2P3P 1SE 0  '    0        22
+   75253.97     3.00   'C I 2S  2P3  3PO 1  '    0        23
+   75255.27     5.00   'C I 2S  2P3  3PO 2  '    0        24
+   75256.12     1.00   'C I 2S  2P3  3PO 0  '    0        25
+   77680.50     5.00   'C I 2S2 2P3D 1DO 2  '    0        26
+   90862.71     6.00   'C II 2S2 2P 2PO  1  '    1        27
+
+
+# j   i       f     type  Nlambda symmetr  qcore  qwing  vdWapprx           vdWaals          radiative    Stark
+#                                                                        H            He
+
+#  multiplet 1F   2p2 3PE -- 2p2 1DE        gf = ??
+  3   2  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  3   1  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  3   0  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet 2F   2p2 3PE -- 2p2 1SE        gf = ??
+  4   2  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  4   1  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 1    2p2 3PE -- 2p3 5SO     gf = ??
+  5   1  5.370E-08   VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  5   2  1.585E-07   VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 2    2p2 3PE -- 2p3s 3PO    gf = 1.33E00   gA = 3.23E+09
+  8   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  7   0  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  8   2  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  7   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  6   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  7   2  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 2.01    2p2 3PE -- 3s 1PO   gf = ??
+  9   2  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  9   1  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  9   0  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 3    2p2 3PE -- 2p3 3DO     gf = 6.43E-01  gA = 1.76E+09
+ 10   2  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 12   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 11   0  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 12   2  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 11   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 11   2  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 3.01F    2p2 3PE -- 3p 3DE  gf = ??
+ 16   2  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 15   1  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 14   0  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 3.02F    2p2 3PE -- 3p 3PE  gf = ??
+ 19   1  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 20   2  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 4    2p2 3PE -- 2p3 3PO     gf = 5.54E-01  gA = 2.14E+09
+ 24   2  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 23   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 23   2  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 25   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 24   1  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 23   0  0.000E00    VOIGT  10     ASYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 4.01    2p2 3PE -- 3d 1DO   gf = ??
+ 26   1  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 26   2  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet 3F     2p2 1DE -- 2p2 1SE      gf = ??
+  4   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet 0.01   2p2 1DE -- 2p3 5SO      gf = ??
+  5   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 32  2p2 1DE -- 3s 3PO       gf = ??
+  8   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+  7   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 33  2p2 1DE -- 3s 1PO       gf = 6.04E-01  gA = 1.06E+09
+  9   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 33.01  2p2 1DE -- 2p3 3DO   gf = ??
+ 10   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 12   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 11   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 33.02F  2p2 1DE -- 3p 1PE   gf = ??
+ 13   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 33.03F  2p2 1DE -- 3p 1DE   gf = ??
+ 21   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 33.04  2p2 1DE -- 2p3 3PO   gf = ??
+ 24   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+ 23   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 34   2p2 1DE -- 3d 1DO      gf = ??
+ 26   3  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 60   2p2 1SE -- 3s 3PO      gf = ??
+  7   4  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 61   2p2 1SE -- 3s 1PO      gf = 8.54E-02  gA = 8.66E+07
+  9   4  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 61.01   2p2 1SE -- 2p3 3DO  gf = ??
+ 11   4  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 61.02F  2p2 1SE -- 3p 1PE   gf = ??
+ 13   4  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+#  multiplet UV 61.03   2p2 1SE -- 2p3 3PO  gf = ??
+ 23   4  0.000E00    VOIGT  10      SYMM    1.0    50.0   UNSOLD   1.00   0.00   1.00   0.00   0.00E00  0.0E00 
+
+
+# Bound-free cross-sections from TOPbase (D. Luo & A. K. Pradhan, 1989, J. Phys. B, 22,
+# 3377 (ADOC-11). Low-pass Fourier filtered to remove resonance structure.
+
+# Photoionization rates from TopBase
+
+# j   i  alpha [m^-2]     Nlambda     Wavel. Dep.   lamb_min [nm]
+
+#   C I 2S2 2P2 3PE     
+ 27   0      1.777e-21       50        EXPLICIT         8.071
+  110.769    1.755e-21
+  108.673    1.751e-21
+  106.578    1.744e-21
+  104.482    1.731e-21
+  102.386    1.715e-21
+  100.290    1.698e-21
+   98.194    1.684e-21
+   96.098    1.676e-21
+   94.002    1.670e-21
+   91.906    1.643e-21
+   89.810    1.576e-21
+   87.715    1.484e-21
+   85.619    1.423e-21
+   83.523    1.418e-21
+   81.427    1.426e-21
+   79.331    1.386e-21
+   77.235    1.322e-21
+   75.139    1.276e-21
+   73.043    1.230e-21
+   70.948    1.178e-21
+   68.852    1.133e-21
+   66.756    1.086e-21
+   64.660    1.039e-21
+   62.564    1.006e-21
+   60.468    9.768e-22
+   58.372    9.046e-22
+   56.276    8.544e-22
+   54.180    8.200e-22
+   52.085    7.740e-22
+   49.989    7.409e-22
+   47.893    7.265e-22
+   45.797    6.228e-22
+   43.701    5.985e-22
+   41.605    5.524e-22
+   39.509    5.000e-22
+   37.413    4.350e-22
+   35.317    3.610e-22
+   33.222    3.008e-22
+   31.126    2.477e-22
+   29.030    2.012e-22
+   26.934    1.609e-22
+   24.838    1.263e-22
+   22.742    9.708e-23
+   20.646    7.273e-23
+   18.550    5.282e-23
+   16.455    3.690e-23
+   14.359    2.455e-23
+   12.263    1.531e-23
+   10.167    8.739e-24
+    8.071    4.401e-24
+
+
+
+# Collisional strengths
+
+ TEMP    6        3000.0    5000.0    7000.0   10000.0   20000.0   30000.0
+
+#
+
+# Collisional ionization data
+
+ TEMP  6        3000.0     5000.0     7000.0    10000.0    30000.0   100000.0
+
+ END

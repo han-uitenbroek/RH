@@ -1,0 +1,3 @@
+  COMMON filesCommon, path, geometryFile, atmosFile, $
+   JFile, Junit, opacFile, opacUnit, spectrumFile, metalFile, $
+   moleculeFile, backgroundFile, backgroundunit

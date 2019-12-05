@@ -1,0 +1,30 @@
+# <<One-line molecular model description>>
+  TiO
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  TI, O
+
+# Ediss [eV]
+  6.87
+
+# Fit type for partion function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3  9.0E+3
+
+# pf_coef
+  4    5.3051  -2.3739   0.8940  -0.3641
+
+# eqc_coef
+  4   11.4047  -1.1484   0.6478  -0.6737
+
+# Filenames with line data
+##  ../../Molecules/TiO/TiO_schwenke_5379-5381.asc
+##  ../../Molecules/TiO/TiO_schwenke_5575-5577.asc
+  ../../Molecules/TiO/TiO_schwenke_7089_7092.asc
+
+## end

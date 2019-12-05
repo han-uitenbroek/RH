@@ -1,0 +1,29 @@
+# <<One-line molecular model description>>
+  CO
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  C, O
+
+# Ediss [eV]
+  11.091
+
+# Fit type for partion function and equilibrium constant
+  KURUCZ_85
+
+# Tmin  and Tmax [K]
+  1.0E+3  12.0E+3
+
+# pf_coef
+  7   4.51349  18.4221  -50.0599  102.208  -128.504  87.8414  -24.8533
+
+# eqc_coef
+  6  -49.0414  14.0306  -26.6341  35.3827  -26.5424  8.32385
+
+# Filename with line data
+
+  ../../Molecules/CO/vmax=9_Jmax=120_dv=1_26
+
+## end

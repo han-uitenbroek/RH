@@ -1,0 +1,27 @@
+# <<One-line molecular model description>>
+  C2
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  2C
+
+# Ediss [eV]
+  6.210
+
+# Fit type for partition function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3  16.0E+3
+
+# pf_coef
+  4    4.3091   -2.2406    0.4865   -0.2049
+
+# eqc_coef
+  3   11.4576   -0.4458   -0.1818
+
+##  ../../Molecules/C2/c2da0600_12.kur
+## end
+

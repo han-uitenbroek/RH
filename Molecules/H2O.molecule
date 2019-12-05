@@ -1,0 +1,27 @@
+# <<One-line molecular model description>>
+  H2O
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  2H, O
+
+# Ediss [eV]
+  9.512
+
+# Fit type for partition function and equilibrium constant
+  KURUCZ_70
+
+# Tmin  and Tmax [K]
+  1.0E+3  6.0E+3
+
+# pf_coef
+  0
+
+# eqc_coef
+  5   -9.3179E+01   2.6725E-03   -5.7830E-07   8.5268E-11  -5.1311E-15
+
+# Filenames with line data
+
+## end

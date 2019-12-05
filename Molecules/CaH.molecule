@@ -1,0 +1,29 @@
+# <<One-line molecular model description>>
+  CAH
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  Ca, H
+
+# Ediss [eV]
+  1.7000
+
+# Fit type for partion function and equilibrium constant
+  SAUVAL_TATUM_84
+
+# Tmin  and Tmax [K]
+  1.0E+3  9.0E+3
+
+# pf_coef
+  4   3.8411  -2.3891   1.3578  -0.6893
+
+# eqc_coef
+  5   9.1952  -0.8802  1.1610  -2.5221   1.3514
+
+# Filenames with line data
+
+# /home/uitenbr/src/rh_v2/Molecules/CaH/cah.asc
+
+## end

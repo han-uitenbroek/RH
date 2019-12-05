@@ -1,0 +1,204 @@
+## ------- file: ------------------------- keyword.input ------------ ##
+#
+#      Version:       rh1.0, 1-D plane-parallel
+##     --------------------                            ----------RH-- ##
+
+
+# First specify input files for atmosphere and abundances
+# (both KEYWORD_REQUIRED).
+
+  ATMOS_FILE = ../../Atmos/FALC_03x82.atmos
+  ABUND_FILE = ../../Atoms/abundance.input
+
+# Set choice of angular grid (KEYWORD_OPTIONAL).
+# Options: SET_VERTICAL, SET_A2, SET_A4, SET_A6, SET_A8, SET_B4, SET_B6,
+# SET_B8 (see anglequadr.c)
+
+  ANGLE_SET = SET_GL_3X2
+
+# Input file for all atoms (KEYWORD_REQUIRED).
+
+  ATOMS_FILE = atoms.input
+
+# Input file for all molecules (KEYWORD_REQUIRED).
+
+  MOLECULES_FILE = molecules.input
+
+##  Table of additional wavelengths  KEYWORD_OPTIONAL
+
+##  WAVETABLE = ../../Atoms/wave_files/FeI_6302.wave
+
+# Maximum number of iterations to initialize scattering radiation
+# field in the background (KEYWORD_OPTIONAL).
+
+  N_MAX_SCATTER = 3
+
+# Row of statistical equilibrium equation that is to be eliminated
+# to enforce particle conservation (KEYWORD_REQUIRED). If set to -1
+# the row with the largest population from the previous iteration will
+# be eliminated at each spatial location.
+
+  I_SUM = -1
+
+# Set number of maximum iterations and convergence limit
+# (both KEYWORD_REQUIRED).
+
+  N_MAX_ITER = 25
+  ITER_LIMIT = 1.0E-2
+
+# Parameters for Ng convergence acceleration (all are KEYWORD_OPTIONAL)
+# (default for NG_ORDER = 0 --> no acceleration)
+
+  NG_DELAY  = 6
+  NG_ORDER  = 2
+  NG_PERIOD = 3
+
+# PRD specific parameters. PRD_N_MAX_ITER is the maximum number of
+# PRD iterations per main iteration. PRD_ITER_LIMIT is the convergence
+# limit of PRD iterations in each main iteration. If PRD_ITER_LIMIT is
+# negative, the dpopsmax of the current main iteration is taken as the
+# PRD convergence limit. Both are KEYWORD_OPTIONAL. If PRD_N_MAX_ITER
+# all lines will be treated in CRD.
+
+  PRD_N_MAX_ITER = 3
+  PRD_ITER_LIMIT = 1.0E-2
+
+# PRD_NG_?? are the Ng accelleration parameters for PRD iterations
+# (all are KEYWORD_OPTIONAL).
+
+#  PRD_NG_DELAY   = 0
+#  PRD_NG_ORDER   = 2
+#  PRD_NG_PERIOD  = 3
+
+# If PRD_ANGLE_DEP is set to TRUE angle-dependent PRD is used
+# (KEYWORD_DEFAULT). The default is FALSE.
+
+  PRD_ANGLE_DEP = FALSE
+  XRD = FALSE
+
+# Temporary files for mean intensities and background opacities
+# (KEYWORD_REQUIRED).
+
+  J_FILE          = J.dat
+  STARTING_J      = NEW_J
+  BACKGROUND_FILE = background.dat
+
+# Apply multiplicative factor to all background metals. METALLICITY
+# is specified in terms of dex, ie -1.0 means a tenfold decrease in metals
+# Type is KEYWORD_DEFAULT.
+
+#  METALLICITY = 0.4
+
+# Data file with lines in Bob Kurucz's format. Type is KEYWORD_OPTIONAL.
+# When KURUCZ_DATA is set to ``none'' (the default value) no data is read.
+# Solve for electron density if SOLVE_NE is set to true.
+# Type is KEYWORD_DEFAULT. Default value is FALSE.
+# KURUCZ_PF_DATA should point to the file with Kurucz partition function
+# tables (as function of T) for the first 100 peridic table elements.
+# It is needed when either KURUCZ_DATA or SOLVE_NE is set an is of
+# type KEYWORD_OPTIONAL
+
+  KURUCZ_PF_DATA = ../../Atoms/pf_Kurucz.input
+##  KURUCZ_DATA = kurucz.input
+##  SOLVE_NE = TRUE
+
+# Set HYDROGEN_LTE = TRUE if hydrogen in the background has to be
+# treated with LTE populations (KEYWORD_DEFAULT). Default is FALSE
+
+##  HYDROGEN_LTE = TRUE
+
+# Data file for background opacity fudge to compensate for missing
+# UV line haze. Type is KEYWORD_OPTIONAL. When set to ``none'' (the
+# default value) no data is read.
+
+#  OPACITY_FUDGE = ../../Atmos/opacity_fudge.input
+
+# Output files for atomic data, spectrum, populations, and geometry
+# (all KEYWORD_DEFAULT).
+
+# DEFAULT -->   SPECTRUM_OUTPUT = spectrum.out
+
+# OPACITY_OUTPUT, RADRATE_OUTPUT, COLLRATE_OUTPUT, and DAMPING_OUTPUT
+# are all KEYWORD_OPTIONAL
+# When set to ``none'' (which is the default) no output is produced.
+# For keyword OPACITY_OUTPUT and emissivity of active transitions of
+# the solution is written to the specified file.
+# For keyword RADRATE_OUTPUT radiative rates for active transitions are
+# written to the specified file.
+# For keyword COLLRATE_OUTPUT collisional rates for active transitions are
+# written to the specified file.
+# For keyword DAMPING_OUTPUT damping parameters for active transitions are
+# written to the specified file, as well as the broadening velocity
+# for the specific atom.
+
+  OPACITY_OUTPUT  = opacity.out
+  RADRATE_OUTPUT  = radrate.out
+  COLLRATE_OUTPUT = collrate.out
+  DAMPING_OUTPUT  = damping.out
+
+# Typical value of ``micro-turbulence'' in [km/s]. Used in getlambda.c
+# to convert doppler units to real wavelengths.
+
+  VMICRO_CHAR = 3.0
+
+# Treshold value of macroscopic velocity in [km/s] above which line
+# absorption coefficients are calculated seperately for the different mu
+# values (KEYWORD_OPTIONAL).
+
+  VMACRO_TRESH = 1.0E-1
+
+# Reference wavelength in [nm] (KEYWORD_DEFAULT). When not specified
+# or set to 0.0 no additional wavelength point will be added.
+
+ LAMBDA_REF = 0.0
+
+# If VACUUM_TO_AIR (KEYWORD_OPTIONAL) is set to TRUE wavelengths at and above
+# VACUUM_TO_AIR_LIMIT (see spectrum.h) will be converted to air wavelengths
+# in the output files.
+
+ VACUUM_TO_AIR = TRUE
+
+ S_INTERPOLATION = S_PARABOLIC
+
+# Input file for the magnetic field (KEYWORD_OPTIONAL). Default is "none".
+
+##  STOKES_INPUT = ../../Atmos/
+
+
+# Input Stokes mode (KEYWORD_OPTIONAL). 
+# Options are: NO_STOKES, FIELD_FREE, POLARIZATION_FREE, and FULL_STOKES.
+
+##  STOKES_MODE = FIELD_FREE
+
+# Include magneto-optical effects (KEYWORD_DEFAULT). Default is TRUE.
+
+#  MAGNETO_OPTICAL = FALSE
+
+# Typical value of magnetic field in Tesla (1 T = 1.0E+4 Gauss)
+# (KEYWORD_DEFAULT).
+
+##  B_STRENGTH_CHAR = 0.1
+
+# Include scattering polarization in the background (KEYWORD_DEFAULT).
+# Default is FALSE.
+
+##  BACKGROUND_POLARIZATION = TRUE
+
+##  LIMIT_MEMORY = TRUE
+
+#  ALLOW_PASSIVE_BB = FALSE
+
+# Set this value to TRUE to get printout on CPU usage (may take some
+# extra CPU usage though!).
+
+  PRINT_CPU = TRUE
+
+# Enable program to do the formal solution for N_THREADS wavelengths
+# concurrently (KEYWORD_OPTIONAL). Maximum number of threads is limited
+# by the value of N_THREAD_LIMIT in routine setThreadValue in file
+# readvalue.c. Typically, N_THREADS should be equal to the number of
+# processors in a multi-processor machine, or zero (the default) otherwise.
+
+  N_THREADS = 0
+
+# End

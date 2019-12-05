@@ -1,0 +1,27 @@
+# <<One-line molecular model description>>
+  H2
+
+# Charge
+  0
+
+# List of constituent atoms of the form nA, mB, pC for molecule AmBnCp
+  2H
+
+# Ediss [eV]
+  4.478
+
+# Fit type for partion function and equilibrium constant
+  KURUCZ_85
+
+# Tmin  and Tmax [K]
+  1.0E+3  9.0E+3
+
+# pf_coef
+  7   0.582145  16.3760  -49.4684  112.049  -149.953  106.531  -30.9791
+
+# eqc_coef
+  7  -46.4584  16.3660  -49.3992  111.822  -149.567  106.206  -30.8720
+
+# Filenames with line data
+## ../../Molecules/H2/H2_X-B.DAT
+## end
