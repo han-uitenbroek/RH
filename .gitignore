@@ -1,2 +1,16 @@
 *.o
 *.a
+rhf1d/backgrcontr
+rhf1d/rhf1d
+rhf1d/solve1d
+rhf1d/solveray
+rhsc2d/backgrcontr
+rhsc2d/chartflow
+rhsc2d/formal2d
+rhsc2d/rhsc2d
+rhsc2d/solve2d
+rhsc2d/solveray
+rhsc3d/formal3d
+rhsc3d/rhsc3d
+rhsc3d/solveray
+rhsphere/rhsphere
