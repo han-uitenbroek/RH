@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Jul  8 15:36:04 2011 --
+       Last modified: Fri Feb 14 16:18:45 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -13,7 +13,7 @@
        atmospheric quantities. --                      -------------- */
 
 
-#define  ATMOS_ID_WIDTH  80
+#define  ATMOS_ID_WIDTH  200
 
 /* --- Maximum values of number of angles per octant in azimuth and
        inclination in case of Gauss-Legendre quadrature in inclination.
