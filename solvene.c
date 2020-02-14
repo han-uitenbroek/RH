@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Nov 17 16:29:32 2010 --
+       Last modified: Fri Dec  6 10:25:24 2019 --
 
        --------------------------                      ----------RH-- */
 
@@ -21,6 +21,9 @@
        When keyword fromscratch is set the electron density is
        calculated from scratch, using pure Hydrogen ionization
        as initial guess. Otherwise, the values passed in ne are used.
+
+       Correction from Chris Osborne, Glasgow University (CMO) in
+         getfjk().
        --                                              -------------- */
  
 #include <math.h>
@@ -155,7 +158,9 @@ void getfjk(Element *element, double ne, int k, double *fjk, double *dfjk)
   Atom *atom;
 
   /* --- Get the fractional population f_j(ne, T) = N_j/N for element
-         element and its partial derivative with ne. -- ------------- */
+         element and its partial derivative with ne. 
+
+         CMO correction in evaluation of fjk --         ------------- */
 
   if (element->model  &&  element->model->NLTEpops) {
 
@@ -168,7 +173,10 @@ void getfjk(Element *element, double ne, int k, double *fjk, double *dfjk)
       dfjk[j] = 0.0;
     }
     for (i = 0;  i < atom->Nlevel;  i++)
-      fjk[atom->stage[i]] += atom->stage[i] * atom->n[i][k];
+      
+      /* --- Correction (CMO): no multiplication with stage[i] -- --- */
+
+      fjk[atom->stage[i]] += atom->n[i][k];
 
     for (j = 0;  j < element->Nstage;  j++) fjk[j] /= atom->ntotal[k];
   } else {

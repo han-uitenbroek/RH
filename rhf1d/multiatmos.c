@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon May 21 13:51:30 2018 --
+       Last modified: Fri Dec  6 10:09:22 2019 --
 
        --------------------------                      ----------RH-- */
 
@@ -177,7 +177,7 @@ void MULTIatmos(Atmosphere *atmos, Geometry *geometry)
   }
   atmos->moving = FALSE;
   for (k = 0;  k < Ndep;  k++) {
-    if (fabs(geometry->vel[k]) >= atmos->vmacro_tresh) {
+    if (fabs(geometry->vel[k]) > atmos->vmacro_tresh) {
       atmos->moving = TRUE;
       break;
     }

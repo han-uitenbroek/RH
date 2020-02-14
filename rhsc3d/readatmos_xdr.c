@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 3-D Cartesian, short characteristics
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Jun 28 14:42:46 2018 --
+       Last modified: Fri Dec  6 10:10:24 2019 --
 
        --------------------------                      ----------RH-- */
 
@@ -205,9 +205,9 @@ void readAtmos(Atmosphere *atmos, Geometry *geometry)
 
   atmos->moving = FALSE;
   for (k = 0;  k < Nspace;  k++) {
-    if ((fabs(geometry->vx[k]) >= atmos->vmacro_tresh) || 
-	(fabs(geometry->vy[k]) >= atmos->vmacro_tresh) ||
-        (fabs(geometry->vz[k]) >= atmos->vmacro_tresh)) {
+    if ((fabs(geometry->vx[k]) > atmos->vmacro_tresh) || 
+	(fabs(geometry->vy[k]) > atmos->vmacro_tresh) ||
+        (fabs(geometry->vz[k]) > atmos->vmacro_tresh)) {
       atmos->moving = TRUE;
       break;
     }

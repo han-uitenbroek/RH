@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Mar  4 14:30:38 2010 --
+       Last modified: Fri Dec  6 09:51:28 2019 --
 
        --------------------------                      ----------RH-- */
 
@@ -47,7 +47,7 @@ void backgrOpac(int Nlambda, double *lambda)
   const char routineName[] = "backgrOpac";
   register int nspect, n;
 
-  char    metalID[12], format[12], contribution_out[MAX_LINE_SIZE];
+  char    metalID[12], format[21], contribution_out[MAX_LINE_SIZE];
   enum    opac_type type;
   double  *chi, *eta, *scatt, *thomson;
   Atom   *He;

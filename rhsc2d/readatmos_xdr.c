@@ -243,8 +243,8 @@ void readAtmos(Atmosphere *atmos, Geometry *geometry)
 
   atmos->moving = FALSE;
   for (k = 0;  k < Nspace;  k++) {
-    if ((fabs(geometry->vx[k]) >= atmos->vmacro_tresh) || 
-	(fabs(geometry->vz[k]) >= atmos->vmacro_tresh)) {
+    if ((fabs(geometry->vx[k]) > atmos->vmacro_tresh) || 
+	(fabs(geometry->vz[k]) > atmos->vmacro_tresh)) {
       atmos->moving = TRUE;
       break;
     }

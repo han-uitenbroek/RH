@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Oct  9 16:26:55 2019 --
+       Last modified: Mon Jan  6 16:00:10 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -144,7 +144,7 @@ void readInput()
 
     {"VMICRO_CHAR", "",     FALSE, KEYWORD_REQUIRED, &atmos.vmicro_char,
      setdoubleValue},
-    {"VMACRO_TRESH", "0.1", FALSE, KEYWORD_OPTIONAL, &atmos.vmacro_tresh,
+    {"VMACRO_TRESH", "0.0", FALSE, KEYWORD_OPTIONAL, &atmos.vmacro_tresh,
      setdoubleValue},
     {"LAMBDA_REF",   "500.0", FALSE, KEYWORD_DEFAULT, &atmos.lambda_ref,
      setdoubleValue},
@@ -168,7 +168,7 @@ void readInput()
 
     {"S_INTERPOLATION", "S_BEZIER3", FALSE, KEYWORD_DEFAULT,
      &input.S_interpolation, set_S_Interpolation},
-    {"S_INTERPOLATION_STOKES", "DELO_PARABOLIC", FALSE, KEYWORD_DEFAULT,
+    {"S_INTERPOLATION_STOKES", "DELO_BEZIER3", FALSE, KEYWORD_DEFAULT,
      &input.S_interpolation_stokes, set_S_interpolation_stokes},
 
     {"INTERPOLATE_3D", "BICUBIC_3D", FALSE, KEYWORD_DEFAULT,

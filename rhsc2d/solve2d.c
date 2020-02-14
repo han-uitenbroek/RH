@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
   commandline.logfile = stderr;
   input.Eddington = FALSE;
 
-  input.S_interpolation = S_PARABOLIC;
+  input.S_interpolation = S_BEZIER3;
 
   getCPU(0, TIME_START, NULL);
   SetFPEtraps();
