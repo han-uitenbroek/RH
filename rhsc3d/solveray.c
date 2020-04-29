@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 3-D Cartesian, short characteristics
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Jun  5 10:35:16 2018 --
+       Last modified: Tue Apr 28 18:14:38 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -108,8 +108,7 @@ int main(int argc, char *argv[])
 	    "Value of muy = %f does not lie in interval <0.0, 1.0>\n", muy);
     Error(ERROR_LEVEL_2, argv[0], messageStr);
   }
-  if (input.StokesMode == FIELD_FREE ||
-      input.StokesMode == POLARIZATION_FREE) {
+  if (input.StokesMode == FIELD_FREE) {
     input.StokesMode = FULL_STOKES;
   }
 

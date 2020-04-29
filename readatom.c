@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Feb 26 16:11:25 2014 --
+       Last modified: Tue Apr 28 22:07:03 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -327,12 +327,6 @@ void readAtom(Atom *atom, char *atom_file, bool_t active)
 	     determinate(atom->label[j], atom->g[j], &nq, &S, &L, &Ju) &&
 	     fabs(Ju - Jl) <= 1.0)) {
 
-          if (line->Ncomponent > 1) {
-	    sprintf(messageStr,
-		    "Line %3d -> %3d: cannot treat composite line "
-                    "with polarization", j, i);
-	    Error(ERROR_LEVEL_2, routineName, messageStr);
-	  }
 	  line->polarizable = TRUE;
 	} else {
 	  sprintf(messageStr,

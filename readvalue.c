@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Jun 11 14:46:13 2018 --
+       Last modified: Tue Apr 28 21:17:27 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -269,8 +269,6 @@ void setStokesMode(char *value, void *pointer)
     StokesMode = NO_STOKES;
   else if (!strcmp(value, "FIELD_FREE"))
     StokesMode = FIELD_FREE;
-  else if (!strcmp(value, "POLARIZATION_FREE"))
-    StokesMode = POLARIZATION_FREE;
   else if (!strcmp(value, "FULL_STOKES"))
     StokesMode = FULL_STOKES;
   else {

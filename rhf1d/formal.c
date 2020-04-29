@@ -2,7 +2,7 @@
 
        Version:       rh1.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Jun 11 14:59:00 2018 --
+       Last modified: Tue Apr 28 15:30:50 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -127,7 +127,7 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 
   /* --- Store current anisotropy, initialize new one to zero ---- -- */
 
-  if (input.backgr_pol) {
+  if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
     J20dag = (double *) malloc(Nspace * sizeof(double));
     if (input.limit_memory) {
       J20 = (double *) malloc(Nspace * sizeof(double));
@@ -145,7 +145,7 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
   if (angle_dep) {
     for (mu = 0;  mu < Nrays;  mu++) {
       wmu  = 0.5 * geometry.wmu[mu];
-      if (input.backgr_pol) {
+      if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
 	musq = SQ(geometry.muz[mu]);
 	threemu1 = TWOSQRTTWO * (3.0*musq - 1.0);
 	threemu2 = (3.0 * TWOSQRTTWO) * (musq - 1.0);
@@ -239,7 +239,7 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 
 	  /* --- Accumulate anisotropy --            -------------- */
 
-	  if (input.backgr_pol) {
+	  if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
 	    for (k = 0;  k < Nspace;  k++)
 	      J20[k] +=
 		(threemu1 * Ipol[0][k] + threemu2 * Ipol[1][k]) * wmu;
@@ -294,7 +294,8 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
     }
     if (input.limit_memory) {
       writeJlambda(nspect, J);
-      if (input.backgr_pol) writeJ20lambda(nspect, J20);
+      if (input.backgr_pol && input.StokesMode == FULL_STOKES)
+	writeJ20lambda(nspect, J20);
     }
   }
   /* --- Clean up --                                 ---------------- */
@@ -313,7 +314,7 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 
   free(Jdag);
   if (input.limit_memory) free(J);
-  if (input.backgr_pol) {
+  if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
     free(J20dag);
     if (input.limit_memory) free(J20);
   }

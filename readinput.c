@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Jan  6 16:00:10 2020 --
+       Last modified: Tue Apr 28 22:03:49 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -255,26 +255,14 @@ void readInput()
 	    "Value of LAMBDA_REF should be larger than or equal 0.0");
     break;
   }
-  /* --- Stokes for the moment only in 1D plane --     -------------- */
  
   if (strcmp(input.Stokes_input, "none")) {
+
+    /* --- Magnetic field is specified --              -------------- */
+
     switch (topology) {
     case ONE_D_PLANE:
     case TWO_D_PLANE:
-      if (atmos.B_char == 0.0) {
-	Error(WARNING, routineName,
-	      "Parameter atmos.B_char not set or set to zero\n"
-	      " Wavelength grids of line profiles do not take account "
-	      " of Zeeman splitting");
-      }
-      if (input.StokesMode == NO_STOKES) {
-        sprintf(messageStr, "%s",
-	      "Keyword STOKES_MODE == NO_STOKES.\n"
-	      " Set to FIELD_FREE, POLARIZATION_FREE, or FULL_STOKES\n"
-	      " when doing polarization calculations");
-	Error(ERROR_LEVEL_1, routineName, messageStr);
-      }
-      break;
     case THREE_D_PLANE:
       if (atmos.B_char == 0.0) {
 	Error(WARNING, routineName,
@@ -285,7 +273,7 @@ void readInput()
       if (input.StokesMode == NO_STOKES) {
         sprintf(messageStr, "%s",
 	      "Keyword STOKES_MODE == NO_STOKES.\n"
-	      " Set to FIELD_FREE, POLARIZATION_FREE, or FULL_STOKES\n"
+	      " Set to FIELD_FREE or FULL_STOKES\n"
 	      " when doing polarization calculations");
 	Error(ERROR_LEVEL_1, routineName, messageStr);
       }
@@ -295,15 +283,21 @@ void readInput()
 	    "Cannot accomodate magnetic fields in this topology");
     }
   } else {
+
+    /* --- No magnetic field input specified --        -------------- */
+    
     if (atmos.B_char != 0.0) {
       Error(WARNING, routineName,
 	    "Ignoring value of keyword B_STRENGTH_CHAR when no "
 	    "magnetic field is read");
     }
-    if (input.StokesMode > NO_STOKES) {
-      Error(WARNING, routineName,
-	    "Ignoring value of keyword STOKES_MODE when no "
-	    "magnetic field is read");
+    if ((input.StokesMode == FIELD_FREE ||
+	 input.StokesMode == FULL_STOKES) &&
+	input.backgr_pol == FALSE) {
+      Error(ERROR_LEVEL_2, routineName,
+	    "Should not run STOKES_MODE == FIELD_FREE or FULL_STOKES\n "
+	    "when no magnetic field is read and "
+	    "BACKGROUND_POLARIZATION == FALSE");
     }
   }
   /* --- Hydrostatic equilibrium only in 1-D plane parallel -- ------ */

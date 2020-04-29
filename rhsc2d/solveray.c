@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 2-D Cartesian
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Jan 20 14:52:27 2012 --
+       Last modified: Tue Apr 28 18:13:38 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -111,8 +111,7 @@ int main(int argc, char *argv[])
 	    "Value of muz = %f does not lie in interval <0.0, 1.0]\n", muz);
     Error(ERROR_LEVEL_2, argv[0], messageStr);
   }
-  if (input.StokesMode == FIELD_FREE ||
-      input.StokesMode == POLARIZATION_FREE) {
+  if (input.StokesMode == FIELD_FREE) {
     input.StokesMode = FULL_STOKES;
   }
   /* --- Redefine geometry for just this one ray and fill mesh -- --- */

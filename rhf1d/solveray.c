@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Jan 20 14:51:15 2012 --
+       Last modified: Tue Apr 28 18:12:12 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -102,8 +102,7 @@ int main(int argc, char *argv[])
     Error(ERROR_LEVEL_2, argv[0], messageStr);
   }
 
-  if (input.StokesMode == FIELD_FREE ||
-      input.StokesMode == POLARIZATION_FREE) {
+  if (input.StokesMode == FIELD_FREE) {
     input.StokesMode = FULL_STOKES;
   }
   /* --- redefine geometry for just this one ray --    -------------- */

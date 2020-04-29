@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Sun Feb 12 15:51:25 2012 --
+       Last modified: Tue Apr 28 18:25:26 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -131,7 +131,7 @@ void Profile(AtomicLine *line)
       Error(ERROR_LEVEL_2, routineName, messageStr);
     }
 
-    if (line->polarizable && (input.StokesMode > FIELD_FREE)) {
+    if (line->polarizable && (input.StokesMode == FULL_STOKES)) {
       NrecStokes = (input.magneto_optical) ? 7 : 4;
       phi = (double *) malloc(NrecStokes*atmos.Nspace * sizeof(double));
 
@@ -152,11 +152,11 @@ void Profile(AtomicLine *line)
     }
   } else {
     if (atmos.moving || 
-	(line->polarizable && (input.StokesMode > FIELD_FREE))) {
+	(line->polarizable && (input.StokesMode == FULL_STOKES))) {
       Nlamu = 2*atmos.Nrays*line->Nlambda;
       line->phi = matrix_double(Nlamu, atmos.Nspace);
 
-      if (line->polarizable && (input.StokesMode > FIELD_FREE)) {
+      if (line->polarizable && (input.StokesMode == FULL_STOKES)) {
 	line->phi_Q = matrix_double(Nlamu, atmos.Nspace);
 	line->phi_U = matrix_double(Nlamu, atmos.Nspace);
 	line->phi_V = matrix_double(Nlamu, atmos.Nspace);
@@ -171,7 +171,7 @@ void Profile(AtomicLine *line)
       line->phi = matrix_double(line->Nlambda, atmos.Nspace);
   }
 
-  if (line->polarizable && (input.StokesMode > FIELD_FREE)) {
+  if (line->polarizable && (input.StokesMode == FULL_STOKES)) {
 
     /* --- Temporary storage for inner loop variables, vB is the
            Zeeman splitting due to the local magnetic field -- ------ */  
@@ -188,24 +188,26 @@ void Profile(AtomicLine *line)
   /* --- Calculate the absorption profile and store for each line -- */
 
   if (atmos.moving ||
-      (line->polarizable && (input.StokesMode > FIELD_FREE))) {
+      (line->polarizable && (input.StokesMode == FULL_STOKES))) {
 
-    v_los = matrix_double(atmos.Nrays, atmos.Nspace);
-    for (mu = 0;  mu < atmos.Nrays;  mu++) {
-      for (k = 0;  k < atmos.Nspace;  k++) {
-	v_los[mu][k] = vproject(k, mu) / vbroad[k];
+    if (atmos.moving) {
+      v_los = matrix_double(atmos.Nrays, atmos.Nspace);
+      for (mu = 0;  mu < atmos.Nrays;  mu++) {
+	for (k = 0;  k < atmos.Nspace;  k++) {
+	  v_los[mu][k] = vproject(k, mu) / vbroad[k];
+	}
       }
     }
     v = matrix_double(atmos.Nspace, line->Ncomponent);
-
+    
     for (la = 0;  la < line->Nlambda;  la++) {
       for (n = 0;  n < line->Ncomponent;  n++) {
 	for (k = 0;  k < atmos.Nspace;  k++) {
-	  v[k][n] = (line->lambda[la] - line->lambda0 - line->c_shift[n]) *
+	  v[k][n] = (line->lambda[la] - line->lambda0 -
+		     line->c_shift[n]) *
 	    CLIGHT / (vbroad[k] * line->lambda0);
 	}
       }
-
       for (mu = 0;  mu < atmos.Nrays;  mu++) {
 	wlamu = getwlambda_line(line, la) * 0.5*atmos.wmu[mu];
 
@@ -222,7 +224,7 @@ void Profile(AtomicLine *line)
 	    for (k = 0;  k< NrecStokes*atmos.Nspace;  k++) phi[k] = 0.0;
 	  } else {
 	    phi = line->phi[lamu];
-	    if (line->polarizable && (input.StokesMode > FIELD_FREE)) {
+	    if (line->polarizable && (input.StokesMode == FULL_STOKES)) {
 	      phi_Q = line->phi_Q[lamu];
 	      phi_U = line->phi_U[lamu];
 	      phi_V = line->phi_V[lamu];
@@ -235,7 +237,7 @@ void Profile(AtomicLine *line)
 	    }
 	  }
 	    
-	  if (line->polarizable && (input.StokesMode > FIELD_FREE)) {
+	  if (line->polarizable && (input.StokesMode == FULL_STOKES)) {
 	    for (k = 0;  k < atmos.Nspace;  k++) {
 	      sin2_gamma = 1.0 - SQ(atmos.cos_gamma[mu][k]);
 
@@ -250,7 +252,8 @@ void Profile(AtomicLine *line)
               /* --- Sum over isotopes --              -------------- */
 
 	      for (n = 0;  n < line->Ncomponent;  n++) {
-		vk = v[k][n] + sign * v_los[mu][k];
+		vk = v[k][n];
+		if (atmos.moving) vk += sign * v_los[mu][k];
 
 		phi_sm = phi_pi = phi_sp = 0.0;
 		psi_sm = psi_pi = psi_sp = 0.0;
@@ -354,14 +357,16 @@ void Profile(AtomicLine *line)
   free(adamp);
   if (input.limit_memory) free(phi);
 
-  if (line->polarizable && (input.StokesMode > FIELD_FREE)) {
+  if (atmos.moving) freeMatrix((void **) v_los);
+  if (atmos.moving ||
+      (line->polarizable && (input.StokesMode == FULL_STOKES))) {
+    freeMatrix((void **) v);
+  }
+  if (line->polarizable && (input.StokesMode == FULL_STOKES)) {
     freeZeeman(zm);
     free(zm);
     free(vB);
     free(sv);
-
-    freeMatrix((void **) v);
-    freeMatrix((void **) v_los);
 
     sprintf(messageStr, "Stokes prof %7.1f", line->lambda0);
   } else

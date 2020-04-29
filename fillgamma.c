@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Jul 24 12:34:18 2009 --
+       Last modified: Tue Apr 28 18:04:13 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -85,8 +85,7 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
   register int nact, n, k, m;
 
   int    i, j, ij, ji, jp, nt;
-  double twohnu3_c2, twohc, wlamu, *Ieff,
-        *Stokes_Q, *Stokes_U, *Stokes_V, *eta_Q, *eta_U, *eta_V;
+  double twohnu3_c2, twohc, wlamu, *Ieff;
 
   Atom *atom;
   AtomicLine *line;
@@ -102,16 +101,6 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
 
   if (containsActive(as)) {
     Ieff = (double *) malloc(atmos.Nspace * sizeof(double));
-
-    if (input.StokesMode == FULL_STOKES  &&  containsPolarized(as)) {
-
-      /* --- Use pointers to the bottom 3/4 of I and
-             atom->rhth.eta --                         -------------- */
-
-      Stokes_Q = I + atmos.Nspace;
-      Stokes_U = I + 2*atmos.Nspace;
-      Stokes_V = I + 3*atmos.Nspace;
-    }
   }
   /* --- Contributions from the active transitions in atoms -- ------ */
 
@@ -119,21 +108,8 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
     atom = atmos.activeatoms[nact];
 
     if (as->Nactiveatomrt[nact] > 0) {
-      if (input.StokesMode == FULL_STOKES  &&  containsPolarized(as)) {
-
-	eta_Q = atom->rhth[nt].eta + atmos.Nspace;
-	eta_U = atom->rhth[nt].eta + 2*atmos.Nspace;
-	eta_V = atom->rhth[nt].eta + 3*atmos.Nspace;
-
-	for (k = 0;  k < atmos.Nspace;  k++) {
-	  Ieff[k] = I[k] + Stokes_Q[k] + Stokes_U[k] + Stokes_V[k] - 
-	    Psi[k] * (atom->rhth[nt].eta[k] +
-		      eta_Q[k] + eta_U[k] + eta_V[k]);
-	}
-      } else { 
-	for (k = 0;  k < atmos.Nspace;  k++) {
-	  Ieff[k] = I[k] - Psi[k] * atom->rhth[nt].eta[k];
-	}
+      for (k = 0;  k < atmos.Nspace;  k++) {
+	Ieff[k] = I[k] - Psi[k] * atom->rhth[nt].eta[k];
       }
     }
 
@@ -398,15 +374,6 @@ void addtoRates(int nspect, int mu, bool_t to_obs, double wmu,
 
   as = &spectrum.as[nspect];
   nt = nspect % input.Nthreads;
-
-  if (input.StokesMode == FULL_STOKES  && containsPolarized(as)){
-
-    /* --- Use pointers to the bottom 3/4 of I and as->eta -- ------- */
-
-    Stokes_Q = I + atmos.Nspace;
-    Stokes_U = I + 2*atmos.Nspace;
-    Stokes_V = I + 3*atmos.Nspace;
-  }
 
   for (nact = 0;  nact < atmos.Nactiveatom;  nact++) {
     atom = atmos.activeatoms[nact];

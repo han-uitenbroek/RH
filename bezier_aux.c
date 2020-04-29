@@ -14,7 +14,7 @@
    Adapted for RH:
            Han Uitenbroek
 
-       Last modified: Tue Dec 31 13:51:22 2019 --
+       Last modified: Tue Apr 28 14:30:54 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -95,16 +95,6 @@ void solveLinearFast(double A[4][4], double B[4])
 }
 
 /* ------- end ---------------------------- solveLinearFast.c ------- */
-
-
-/* ------- begin -------------------------- signFortran.c ----------- */
-
-inline double signFortran(const double val)
-{
-  return ((val >= 0.0)? 1.0 : -1.0);
-}
-
-/* ------- end ---------------------------- signFortran.c ----------- */
 
 
 /* ------- begin -------------------------- cent_deriv.c ------------ */
