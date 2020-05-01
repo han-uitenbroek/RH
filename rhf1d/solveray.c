@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 18:12:12 2020 --
+       Last modified: Fri May  1 09:57:08 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -102,7 +102,11 @@ int main(int argc, char *argv[])
     Error(ERROR_LEVEL_2, argv[0], messageStr);
   }
 
-  if (input.StokesMode == FIELD_FREE) {
+  if ((atmos.Stokes && input.StokesMode == FIELD_FREE) ||
+      input.backgr_pol) {
+    
+    /* --- Want formal solution to be polarized in these cases -- --- */
+    
     input.StokesMode = FULL_STOKES;
   }
   /* --- redefine geometry for just this one ray --    -------------- */
@@ -124,7 +128,10 @@ int main(int argc, char *argv[])
 
   /* --- Open file with background opacities --        -------------- */
 
-  if (atmos.moving || input.StokesMode) {
+  if (atmos.moving || atmos.Stokes) {
+    
+    /* --- Case of angle-dependent background opacities -- ---------- */
+      
     strcpy(input.background_File, input.background_ray_File);
     Background(analyze_output=FALSE, equilibria_only=FALSE);
   } else {
@@ -252,7 +259,8 @@ int main(int argc, char *argv[])
     free_as(wave_index[n], crosscoupling=FALSE);
   }
 
-  /* --- If magnetic fields are present --             -------------- */
+  /* --- If magnetic fields are present or background is polarized --
+                                                       -------------- */
   
   if (atmos.Stokes || input.backgr_pol) {
     result = xdr_vector(&xdrs, (char *) spectrum.Stokes_Q[0],

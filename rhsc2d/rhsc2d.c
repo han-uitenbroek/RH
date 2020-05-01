@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 2-D Cartesian
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Apr 22 09:47:17 2009 --
+       Last modified: Fri May  1 08:25:39 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
 {
   bool_t analyze_output, equilibria_only;
   int    niter, nact;
+  double deltaJ;
 
   Atom *atom;
   Molecule *molecule;
@@ -89,12 +90,18 @@ int main(int argc, char *argv[])
 
   Iterate(input.NmaxIter, input.iterLimit);
 
+  /* --- If appropriate final solution(s) should be polarized -- ---- */
+  
   adjustStokesMode(atom);
+
   niter = 0;
-  while (niter < input.NmaxScatter) {  
-    if (solveSpectrum(FALSE, FALSE) <= input.iterLimit) break;
+  while (niter < input.NmaxScatter) {
+    deltaJ = solveSpectrum(FALSE, FALSE);
+    if (!input.backgr_pol && deltaJ <= input.iterLimit) break;
+
     niter++;
   }
+
   /* --- Write output files --                     ------------------ */
  
   getCPU(1, TIME_START, NULL);

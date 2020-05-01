@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 3-D Cartesian, short characteristics
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 18:14:38 2020 --
+       Last modified: Fri May  1 10:19:36 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -108,10 +108,14 @@ int main(int argc, char *argv[])
 	    "Value of muy = %f does not lie in interval <0.0, 1.0>\n", muy);
     Error(ERROR_LEVEL_2, argv[0], messageStr);
   }
-  if (input.StokesMode == FIELD_FREE) {
+  
+  if ((atmos.Stokes && input.StokesMode == FIELD_FREE) ||
+      input.backgr_pol) {
+    
+    /* --- Want formal solution to be polarized in these cases -- --- */
+    
     input.StokesMode = FULL_STOKES;
   }
-
   /* --- Redefine geometry for just this one ray --    -------------- */
 
   atmos.Nrays = geometry.Nrays = 1;
@@ -131,7 +135,7 @@ int main(int argc, char *argv[])
 
   /* --- Open file with background opacities --        -------------- */
 
-  if (atmos.moving || input.StokesMode) {
+  if (atmos.moving || atmos.Stokes) {
     strcpy(input.background_File, input.background_ray_File);
     Background(analyze_output=FALSE, equilibria_only=FALSE);
   } else {

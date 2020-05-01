@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 2-D Cartesian
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 15:29:22 2020 --
+       Last modified: Fri May  1 09:51:57 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -91,8 +91,8 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
   /* --- Determine if we have to do angle-dependent opacity and
          emissivity --                                 -------------- */
 
-  angle_dep     = (polarized_as || polarized_c || PRD_angle_dep ||
-		   (input.backgr_pol && input.StokesMode == FULL_STOKES) ||
+  angle_dep     = (polarized_as || polarized_c
+		   || PRD_angle_dep || input.backgr_pol ||
 		   (atmos.moving &&
 		    (boundbound || atmos.backgrflags[nspect].hasline)));
 
@@ -129,7 +129,7 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 
   /* --- Store current anisotropy, initialize new one to zero ---- -- */
 
-  if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
+  if (input.backgr_pol) {
     J20dag = (double *) malloc(Nspace * sizeof(double));
     if (input.limit_memory) {
       J20 = (double *) malloc(Nspace * sizeof(double));
@@ -147,7 +147,7 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
   if (angle_dep) {
     for (mu = 0;  mu < Nrays;  mu++) {
       wmu = 0.5 * geometry.wmu[mu];
-      if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
+      if (input.backgr_pol) {
 	musq = SQ(geometry.muz[mu]);
 	threemu1 = TWOSQRTTWO * (3.0*musq - 1.0);
 	threemu2 = (3.0 * TWOSQRTTWO) * (musq - 1.0);
@@ -166,6 +166,11 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 	  chi[k] = as->chi[k] + as->chi_c[k];
 	  S[k]   = as->eta[k] + as->eta_c[k] + as->sca_c[k]*Jdag[k];
 	}
+	if (input.backgr_pol) {
+	  for (k = 0;  k < Nspace;  k++) {
+	    S[k] += threemu1 * as->sca_c[k]*J20dag[k];
+	  }
+	} 
 	if (solveStokes) {
 	  for (k = Nspace;  k < 4*Nspace;  k++) Spol[0][k] = 0.0;
 
@@ -183,9 +188,8 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 	  }
 	  /* --- Add emissivity due to background scattering -- ----- */
 
-          if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
+          if (input.backgr_pol) {
             for (k = 0;  k < Nspace;  k++) {
-	      Spol[0][k] += threemu1 * as->sca_c[k]*J20dag[k];
               Spol[1][k] += threemu2 * as->sca_c[k]*J20dag[k];
 	    }
 	  }
@@ -242,12 +246,18 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 
 	  /* --- Accumulate anisotropy --            -------------- */
 
-	  if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
-	    for (k = 0;  k < Nspace;  k++)
-	      J20[k] +=
-		(threemu1 * Ipol[0][k] + threemu2 * Ipol[1][k]) * wmu;
+	  if (input.backgr_pol) {
+            if (solveStokes) {
+	      for (k = 0;  k < Nspace;  k++) {
+		J20[k] += (threemu1 * Ipol[0][k] +
+			   threemu2 * Ipol[1][k]) * wmu;
+	      }
+	    } else {
+	      for (k = 0;  k < Nspace;  k++) {
+		J20[k] += threemu1 * I[k] * wmu;
+	      }
+	    }
 	  }
-
 	  if (PRD_angle_dep) writeImu(nspect, mu, to_obs, I);
 	}
       }
@@ -330,7 +340,11 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
       dJ = fabs(1.0 - Jdag[k]/J[k]);
       dJmax = MAX(dJmax, dJ);
     }
-    if (input.limit_memory) writeJlambda(nspect, J);
+    if (input.limit_memory) {
+      writeJlambda(nspect, J);
+      if (input.backgr_pol)
+	writeJ20lambda(nspect, J20);
+    }
   }
 
   /* --- Clean up --                                 ---------------- */
@@ -349,7 +363,7 @@ double Formal(int nspect, bool_t eval_operator, bool_t redistribute)
 
   free(Jdag);
   if (input.limit_memory) free(J);
-  if (input.backgr_pol && input.StokesMode == FULL_STOKES) {
+  if (input.backgr_pol) {
     free(J20dag);
     if (input.limit_memory) free(J20);
   }
