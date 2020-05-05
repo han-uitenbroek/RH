@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Jan 26 14:44:11 2012 --
+       Last modified: Tue May  5 14:19:47 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -217,7 +217,7 @@ void getProfiles(void);
 void Profile(AtomicLine *line);
 void readProfile(AtomicLine *line, int lamu, double *phi);
 void writeProfile(AtomicLine *line, int lamu, double *phi);
-void readAtom(Atom *atom, char *atomFileName, bool_t active);
+void readAtom(Atom *atom, char *atomFileName);
 void readPopulations(Atom *atom);
 void SortLambda(void);
 void Stark(AtomicLine *line, double *GStark);

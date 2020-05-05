@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 22:07:03 2020 --
+       Last modified: Tue May  5 14:41:48 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -59,7 +59,7 @@ extern char messageStr[];
 
 /* ------- begin -------------------------- readAtom.c -------------- */
 
-void readAtom(Atom *atom, char *atom_file, bool_t active)
+void readAtom(Atom *atom, char *atom_file)
 {
   const char routineName[] = "readAtom";
   register int kr, krp, kf, la, k, n;
@@ -83,16 +83,14 @@ void readAtom(Atom *atom, char *atom_file, bool_t active)
 
   /* --- Open the data file for current model atom --  -------------- */
 
-  initAtom(atom);
   if ((atom->fp_input = fopen(atom_file, "r")) == NULL) {
     sprintf(messageStr, "Unable to open input file %s", atom_file);
     Error(ERROR_LEVEL_2, routineName, atom_file);
   } else {
     sprintf(messageStr, " -- reading input file: %s %s",
-	    atom_file, (active) ? "(active)\n\n" : "(passive)\n");
+	    atom_file, (atom->active) ? "(active)\n\n" : "(passive)\n");
     Error(MESSAGE, routineName, messageStr);
   }
-  atom->active = active;
 
   /* --- Read atom ID and convert to uppercase --     -------------- */
  
@@ -758,7 +756,7 @@ void readAtomicModels(void)
   char    filename[MAX_LINE_SIZE],
           actionKey[MAX_KEYWORD_SIZE], popsKey[MAX_KEYWORD_SIZE],
           popsFile[MAX_LINE_SIZE], inputLine[MAX_LINE_SIZE], *atomID;
-  bool_t  active, exit_on_EOF;
+  bool_t  exit_on_EOF;
   int     Nread, Nrequired, checkPoint;
   FILE   *fp_atoms;
   Atom   *atom;
@@ -808,10 +806,11 @@ void readAtomicModels(void)
     /* --- Set active flag. Active set to TRUE means atom will be
            treated in Non-LTE --                       -------------- */
 
+    
     atom = &atmos.atoms[n];
-    readAtom(atom, filename,
-	     active=(strstr(actionKey, "ACTIVE") ? TRUE : FALSE));
+    initAtom(atom);
 
+    atom->active = (strstr(actionKey, "ACTIVE") ? TRUE : FALSE);
 
     /* --- Set flag for initial soltion --             -------------- */
 
@@ -829,8 +828,7 @@ void readAtomicModels(void)
 	      "Unknown initial solution specified for atom: %s\n",
 	      atomID);
       Error(ERROR_LEVEL_2, routineName, messageStr);
-    } 
-
+    }    
     /* --- If input.startJ == OLD_J then enforce OLD_POPULATIONAS - - */
 
     if (atom->active  &&  input.startJ == OLD_J)
@@ -849,6 +847,7 @@ void readAtomicModels(void)
 	(char *) malloc((strlen(popsFile) + 1) * sizeof(char));
       strcpy(atom->popsinFile, popsFile);
     }
+    readAtom(atom, filename);
   }
   fclose(fp_atoms);  
 
