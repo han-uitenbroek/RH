@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue May 12 17:11:19 2020 --
+       Last modified: Tue May 12 17:52:18 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -104,19 +104,14 @@ void backgrOpac(int Nlambda, double *lambda)
 
   /* --- Temporary storage for this routine --         -------------- */
 
-  chi   = (double *) malloc(atmos.Nspace * sizeof(double));
-  eta   = (double *) malloc(atmos.Nspace * sizeof(double));
-  scatt = (double *) malloc(atmos.Nspace * sizeof(double));
+  chi     = (double *) malloc(atmos.Nspace * sizeof(double));
+  eta     = (double *) malloc(atmos.Nspace * sizeof(double));
+  scatt   = (double *) malloc(atmos.Nspace * sizeof(double));
+  thomson = (double *) malloc(atmos.Nspace * sizeof(double));
 
   /* --- Check whether He is present among the metals --  ----------- */
 
   He = (atmos.elements[1].model) ? atmos.elements[1].model : NULL;
-
-  /* --- Thomson scattering by free electrons is wavelength independent
-         in non-relativistic limit --                  -------------- */
-
-  thomson = (double *) malloc(atmos.Nspace * sizeof(double));
-  Thomson(thomson);
 
   /* --- Go through wavelengths one-by-one --          -------------- */
 
@@ -140,6 +135,9 @@ void backgrOpac(int Nlambda, double *lambda)
 	   (nspect == 0) ? "\n\n " : " ", lambda[nspect]);
     xdr_double(&xdrs, &lambda[nspect]);
 
+    /* --- Thomson scattering by free electrons --     -------------- */
+
+    Thomson(thomson);
     if (do_fudge) {
       Linear(Nfudge, lambda_fudge, fudge[1],
 	     1, &lambda[nspect], &scatt_fudge, FALSE);
