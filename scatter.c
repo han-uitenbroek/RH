@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon May 21 15:18:15 2018 --
+       Last modified: Tue Oct 13 17:12:22 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -323,27 +323,16 @@ void PRDAngleScatter(AtomicLine *PRDline,
 
   cDop = (NM_TO_M * PRDline->lambda0) / (4.0 * PI);
 
-  /* --- When called for the first time open temporary file for
-         storage of redistribution weights --            ------------ */
-
   initialize = FALSE;
   if (PRDline->fp_GII == NULL) {
     sprintf(filename,
 	    (atom->ID[1] == ' ') ? "PRD_%.1s_%d-%d.dat" : "PRD_%s_%d-%d.dat",
 	    atom->ID, PRDline->j, PRDline->i);
 
-    /* --- First try if file exists and can be opened for reading - - */
-
-    if ((PRDline->fp_GII = fopen(filename, "r")) != NULL) {
-      sprintf(messageStr,
-	      "Using file %s with existing redistribution weights", filename);
-      Error(WARNING, routineName, messageStr);
-    } else {
-      initialize = TRUE;
-      if ((PRDline->fp_GII = fopen(filename, "w+")) == NULL) {
-	sprintf(messageStr, "Unable to open temporary file %s", filename);
-	Error(ERROR_LEVEL_2, routineName, messageStr);
-      }
+    initialize = TRUE;
+    if ((PRDline->fp_GII = fopen(filename, "w+")) == NULL) {
+      sprintf(messageStr, "Unable to open temporary file %s", filename);
+      Error(ERROR_LEVEL_2, routineName, messageStr);
     }
   }
   if (!initialize) rewind(PRDline->fp_GII);
@@ -416,7 +405,7 @@ void PRDAngleScatter(AtomicLine *PRDline,
 	lamu = 2*(atmos.Nrays*la + mu) + to_obs;
 
 	if (atmos.moving ||
-	    (PRDline->polarizable && input.StokesMode > FIELD_FREE))
+	    (PRDline->polarizable && input.StokesMode == FULL_STOKES))
 	  phi_emit = PRDline->phi[lamu];
 	else
 	  phi_emit = PRDline->phi[la];

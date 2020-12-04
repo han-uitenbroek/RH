@@ -5,7 +5,7 @@
 #
 #      Version:       rh2.0
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Thu May 31 09:11:05 2018 --
+#      Last modified: Thu Dec  3 16:13:14 2020 --
 #
 ##     --------------------------                      ----------RH-- ##
 
@@ -19,6 +19,11 @@ XARCH  =
 CC       = gcc
 CFLAGS   = -O2 -m64 -I../
 
+ifneq ("$(wildcard /usr/include/tirpc)","")
+    CFLAGS += -I/usr/include/tirpc
+    TIRPC = 1
+endif
+
 
 ## --- If f90 compiler is not available replace loader with cc (LD = cc)
 
@@ -29,6 +34,11 @@ LDFLAGS  = -O2 -m64 -L../
 #      --                                              -------------- ##
 
 ARCHLIBS = -lm -lpthread
+
+ifeq ($(TIRPC), 1)
+ ARCHLIBS += -ltirpc
+endif
+
 ARCHINC  = 
 
 ## ---                                                 -------------- ##

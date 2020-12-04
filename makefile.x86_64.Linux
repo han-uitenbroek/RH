@@ -5,7 +5,7 @@
 #
 #      Version:       rh2.0
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Thu May 31 09:10:44 2018 --
+#      Last modified: Thu Dec  3 16:09:05 2020 --
 #
 ##     --------------------------                      ----------RH-- ##
 
@@ -20,6 +20,9 @@ XARCH  =
 CC       = gcc
 CFLAGS   = -O2 -m64 -DHAVE_F90 ##-Wall 
 
+ifneq ("$(wildcard /usr/include/tirpc)","")
+    CFLAGS += -I/usr/include/tirpc
+endif
 
 ## --- Macros for F90 alternative routines --           ------------- ##
 
