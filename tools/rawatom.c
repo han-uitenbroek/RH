@@ -2,7 +2,7 @@
 
        Version:       rh1.0, tools
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Jun 19 10:13:25 2001 --
+       Last modified: Tue Mar 30 11:55:31 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -28,7 +28,7 @@
 
 /* --- Global variables --                             -------------- */
 
-char messageStr[MAX_LINE_SIZE];
+extern char messageStr[MAX_LINE_SIZE];
 
 
 /* ------- begin -------------------------- rawAtom.c --------------- */
