@@ -2,19 +2,14 @@
 #
 #      Version:       rh2.0, 3-D Cartesian, short characteristics
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Wed Jun  6 13:57:15 2018 --
+#      Last modified: Thu May 20 12:58:48 2021 --
 #
 ##     --------------------------                      ----------RH-- ##
 
 
 GEOMETRY = THREE_D_PLANE
 
-include ../makefiles/makefile.$(CPU).$(OS)
-
-
-## --- If no FORTRAN compiler is available remove -lrh_f90 in following
-
-    LIBS = -lrh -lrh_f90 $(ARCHLIBS)
+include ../makefiles/rhmakefile
 
 
 ## --- Define groups of object files --                -------------- ##

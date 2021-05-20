@@ -2,18 +2,13 @@
 #
 #      Version:       rh2.0, 1-D plane-parallel
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Wed May 30 14:11:06 2018 --
+#      Last modified: Thu May 20 13:10:04 2021 --
 #
 ##     --------------------------                      ----------RH-- ##
 
 GEOMETRY = ONE_D_PLANE
 
-include ../makefiles/makefile.$(CPU).$(OS)
-
-
-## --- If no FORTRAN compiler is available remove -lrh_f90 in following
-
-      LIBS = -lrh -lrh_f90 $(ARCHLIBS)
+include ../makefiles/rhmakefile
 
 
 ## --- Define groups of object files --                -------------- ##
@@ -30,7 +25,7 @@ ONE_D_OBJS = anglequad.o  bezier_1D.o feautrier.o  formal.o  hydrostat.o \
   RAY_OBJS = anglequad.o  bezier_1D.o  feautrier.o  formal.o  hydrostat.o \
              multiatmos.o \
              project.o  piecestokes_1D.o  piecewise_1D.o  riiplane.o \
-             solveray.o
+             solveray.o  writegeom_xdr.o
 
 BACKGROPAC = anglequad.o  backgrcontr.o  multiatmos.o  project.o
 

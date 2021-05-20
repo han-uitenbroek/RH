@@ -2,17 +2,11 @@
 #
 #      Version:       rh1.0, tools
 #      Author:        Han Uitenbroek  (HUitenbroek@cfa.harvard.edu)
-#      Last modified: Fri Oct 10 15:09:17 2003 --
+#      Last modified: Thu May 20 13:12:00 2021 --
 #
 ##     --------------------------                      ----------RH-- ##
 
-include ../makefiles/makefile.$(CPU).$(OS)
-
-
-## --- If no FORTRAN compiler is available remove -lrh_f90 in following
-
-    LIBS = -lrh -lrh_f90 $(ARCHLIBS)
-
+include ../makefiles/rhmakefile
 
 ## --- Rules for the executables --                    -------------- ##
 

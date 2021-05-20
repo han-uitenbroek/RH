@@ -2,18 +2,13 @@
 #
 #      Version:       rh2.0, 2-D Cartesian
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Fri May 25 13:58:27 2018 --
+#      Last modified: Thu May 20 13:06:17 2021 --
 #
 ##     --------------------------                      ----------RH-- ##
 
 GEOMETRY = TWO_D_PLANE
 
-include ../makefiles/makefile.$(CPU).$(OS)
-
-
-## --- If no FORTRAN compiler is available remove -lrh_f90 in following
-
-      LIBS = -lrh -lrh_f90 $(ARCHLIBS)
+include ../makefiles/rhmakefile
 
 
 ## --- Define groups of object files --                -------------- ##
