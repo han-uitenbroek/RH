@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Dec  6 10:25:24 2019 --
+       Last modified: Wed Feb  3 11:23:58 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -38,7 +38,7 @@
 #include "statistics.h"
 
 #define MAX_ELECTRON_ERROR         1.0E-2
-#define N_MAX_ELECTRON_ITERATIONS  10
+#define N_MAX_ELECTRON_ITERATIONS  100
 #define N_MAX_ELEMENT              26
 
 

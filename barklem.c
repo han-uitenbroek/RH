@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Nov 5, 2014, 15:24 --
+       Last modified: Fri May 14 19:18:30 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -150,9 +150,9 @@ bool_t getBarklemcross(Barklemstruct *bs, RLK_Line *rlk)
   if (rlk->stage > 0)
     return FALSE;
 
-  if ((deltaEi = element->ionpot[rlk->stage] - rlk->Ei) <= 0.0)
+  if ((deltaEi = element->ionpot[rlk->stage] - rlk->level_i.E) <= 0.0)
     return FALSE;
-  if ((deltaEj = element->ionpot[rlk->stage] - rlk->Ej) <= 0.0)
+  if ((deltaEj = element->ionpot[rlk->stage] - rlk->level_j.E) <= 0.0)
     return FALSE;
 
   Z = (double) (rlk->stage + 1);
@@ -160,7 +160,7 @@ bool_t getBarklemcross(Barklemstruct *bs, RLK_Line *rlk)
   neff1 = Z * sqrt(E_Rydberg / deltaEi);
   neff2 = Z * sqrt(E_Rydberg / deltaEj);
 
-  if (rlk->Li > rlk->Lj) SWAPDOUBLE(neff1, neff2);
+  if (rlk->level_i.L > rlk->level_j.L) SWAPDOUBLE(neff1, neff2);
   
   if (neff1 < bs->neff1[0] || neff1 > bs->neff1[bs->N1-1])
     return FALSE;

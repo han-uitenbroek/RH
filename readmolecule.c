@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Oct 11 12:54:34 2018 --
+       Last modified: Fri May  7 16:57:07 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -420,22 +420,29 @@ void freeMolecule(Molecule *molecule)
 {
   register int kr;
 
-  if (molecule->pt_index != NULL) free(molecule->pt_index);
-  if (molecule->pt_count != NULL) free(molecule->pt_count);
-  if (molecule->vbroad != NULL)   free(molecule->vbroad);
-  if (molecule->pf_coef != NULL)  free(molecule->pf_coef);
-  if (molecule->eqc_coef != NULL) free(molecule->eqc_coef);
-  if (molecule->pf != NULL)       free(molecule->pf);
-  if (molecule->pfv != NULL)      freeMatrix((void **) molecule->pfv);
-  if (molecule->n != NULL)        free(molecule->n);
-  if (molecule->nv != NULL)       freeMatrix((void **) molecule->nv);
-  if (molecule->nvstar != NULL)   freeMatrix((void **) molecule->nvstar);
-  if (molecule->C_ul != NULL)     free(molecule->C_ul);
-  if (molecule->Gamma != NULL)    freeMatrix((void **) molecule->Gamma);
+  free(molecule->pt_index);
+  free(molecule->pt_count);
 
-  if (molecule->mrt != NULL) {
+  if (molecule->Npf > 0) free(molecule->pf_coef);
+  free(molecule->pf);
+  if (molecule->Neqc > 0) free(molecule->eqc_coef);
+
+  free(molecule->n);
+  free(molecule->vbroad);
+
+  if (molecule->active) {
+    free(molecule->configs);
+    freeMatrix((void **) molecule->nv);
+    freeMatrix((void **) molecule->nvstar);
+    freeMatrix((void **) molecule->pfv);
+
+    free(molecule->popsFile);
+    free(molecule->rhth);
+  }
+
+  if (molecule->Nrt > 0) {
     for (kr = 0;  kr < molecule->Nrt;  kr++)
-      freeMolLine(molecule->mrt + kr);
+      freeMolLine(&molecule->mrt[kr]);
     free(molecule->mrt);
   }
 }
@@ -474,19 +481,18 @@ void freeMolLine(MolecularLine *mrt)
 {
   /* --- Free allocated memory for active transition structure line - */
 
-  if (mrt->lambda != NULL)  free(mrt->lambda);
-  if (mrt->phi != NULL)     freeMatrix((void **) mrt->phi);
-  if (mrt->wphi != NULL)    free(mrt->wphi);
-
-  mrt->molecule = NULL;
-
-  if (mrt->zm != NULL) {
-    free(mrt->zm->q);
-    free(mrt->zm->strength);
-    free(mrt->zm->shift);
+  Molecule *molecule = mrt->molecule;
+  
+  if (molecule->active) {
+    freeMatrix((void **) mrt->phi);
+    free(mrt->phi);
   }
-  free(mrt->zm);
-  mrt->zm = NULL;
+  
+  if (atmos.Stokes &&
+      input.StokesMode == FULL_STOKES &&
+      mrt->polarizable) {
+    freeZeeman(mrt->zm);
+  }
 }
 /* ------- end ---------------------------- freeMolLine.c ----------- */
 

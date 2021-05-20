@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb  8 10:57:39 2000 --
+       Last modified: Fri May  7 16:10:15 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -120,3 +120,50 @@ void writeAtmos(Atmosphere *atmos)
   fclose(fp_out);
 }
 /* ------- end ---------------------------- writeAtmos.c ------------ */
+
+
+/* ------- begin -------------------------- freeAtmos.c ------------- */
+
+void freeAtmos(Atmosphere *atmos)
+{
+  register int n;
+  
+  /* --- Free memory associated with atmospheric structure -- ------- */
+
+  free(atmos->elements);
+
+  free(atmos->T);
+  free(atmos->ne);
+  free(atmos->nHtot);
+  free(atmos->nHmin);
+
+  if (atmos->Stokes) {
+    free(atmos->B);
+    free(atmos->gamma_B);
+    free(atmos->chi_B);
+
+    freeMatrix((void **) atmos->cos_gamma);
+    freeMatrix((void **) atmos->cos_2chi);
+    freeMatrix((void **) atmos->sin_2chi);
+  }
+
+  for (n = 0;  n < atmos->Natom;  n++) {
+    if (atmos->atoms[n].active  ||  
+	atmos->hydrostatic  ||
+	input.solve_ne == ITERATION) 
+      freeAtom(&atmos->atoms[n]);
+  }
+  free(atmos->activeatoms);
+  
+  for (n = 0;  n < atmos->Nmolecule;  n++) {
+    if (atmos->molecules[n].active  ||  
+	atmos->hydrostatic  ||
+	input.solve_ne == ITERATION) 
+      freeMolecule(&atmos->molecules[n]);
+  }
+  free(atmos->activemols);
+
+  free(atmos->backgrrecno);
+  free(atmos->backgrflags);
+}
+/* ------- end ---------------------------- freeAtmos.c ------------- */

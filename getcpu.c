@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Nov  1 12:51:38 2007 --
+       Last modified: Wed May 19 15:56:36 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -10,12 +10,7 @@
        Clock is started if called with:   action == TIME_START.
        Borrowed heavily from MULTI's ctime().
 
-       Works on:    SUN sparc  (SunOs 4.x & 5.x)
-                    SGI mips   (IRIX 5.2)
-                    DEC alpha  (OSF1 3.2 & 4.0)
-                    i386       (Linux 1.x)
-                    i586       (Linux 2.0)
-                    --                                 -------------- */
+       --                                              -------------- */
 
 #include <stdio.h>
 #include <string.h>
@@ -23,15 +18,6 @@
 #include <sys/times.h>
 #include <unistd.h>
 
-#if defined(SunOS5)
-#include <sys/time.h>
-
-#if defined(_POSIX_C_SOURCE)
-hrtime_t gethrtime(void);
-#endif
-
-#define  NANOSECOND  1.0E-9
-#endif
 
 #include "rh.h"
 #include "statistics.h"
@@ -60,15 +46,9 @@ void getCPU(int level, enum CPUaction action, char *label)
 
   int Nblanck, Nspace, Ndot;
 
-#if defined(SunOS5)
-  static hrtime_t CPU[N_TIME_LEVELS];
-  static double   scale = NANOSECOND;
-  hrtime_t CPUtime;
-#else
   static clock_t CPU[N_TIME_LEVELS];
   static double  scale = 1.0 / CLOCKS_PER_SEC;
   clock_t CPUtime;
-#endif
 
   if (level == 0 && action == TIME_START && !commandline.showkeywords) {
     stats.fp_CPU = fopen(TIME_DOT_OUT, "w");
@@ -78,17 +58,10 @@ void getCPU(int level, enum CPUaction action, char *label)
   if (!stats.printCPU || !stats.fp_CPU)
     return;
   else {
-
-#if defined(SunOS5)
-    /* --- Use high-resolution time on SUN Solaris machines -- ------ */
-
-    CPUtime = gethrtime();
-#else
     if ((CPUtime = clock()) == ((clock_t) -1)) {
       sprintf(messageStr, "Cannot poll resources");
       Error(ERROR_LEVEL_1, "getCPU", messageStr);
     }
-#endif
 
     switch (action) {
     case TIME_START:

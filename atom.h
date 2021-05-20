@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue May  5 14:19:47 2020 --
+       Last modified: Tue May 18 10:33:15 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -34,6 +34,7 @@ enum fit_type    {KURUCZ_70, KURUCZ_85, SAUVAL_TATUM_84, IRWIN_81, TSUJI_73};
 enum Hund        {CASE_A, CASE_B};
 enum Barklemtype {SP, PD, DF};
 enum orbit_am    {S_ORBIT=0, P_ORBIT, D_ORBIT, F_ORBIT};
+enum zeeman_cpl  {LS_COUPLING=0, JK_COUPLING, JJ_COUPLING};
 
 /* --- Structure prototypes --                         -------------- */
 
@@ -61,6 +62,7 @@ struct AtomicLine {
   Atom *atom;
   AtomicLine **xrd;
   pthread_mutex_t rate_lock;
+  ZeemanMultiplet *zm;
 };
 
 typedef struct {
@@ -155,19 +157,25 @@ struct Molecule {
 };
 
 typedef struct {
+  int    L, L1, l1, l2, l;
+  double g, E, S, J, S1, J1, j1, j2, K, gL, hfs;
+  enum zeeman_cpl cpl;
+} RLK_level;
+  
+typedef struct {
   bool_t polarizable;
   enum vdWaals vdwaals;
-  int    pt_index, stage, isotope, Li, Lj;
-  double lambda0, gi, gj, Ei, Ej, Bji, Aji, Bij, Si, Sj,
+  int    pt_index, stage, isotope;
+  double lambda0, Bji, Aji, Bij,
          Grad, GStark, GvdWaals, hyperfine_frac,
-         isotope_frac, gL_i, gL_j, hfs_i, hfs_j, iso_dl,
-         cross, alpha;
+         isotope_frac, iso_dl, cross, alpha;
+  RLK_level level_i, level_j;
   ZeemanMultiplet *zm;
 } RLK_Line;
 
 struct ZeemanMultiplet{
   int     Ncomponent, *q;
-  double *shift, *strength;
+  double *shift, *strength, g_eff;
 };
 
 typedef struct {
@@ -207,7 +215,11 @@ void initAtom(Atom *atom);
 void initAtomicLine(AtomicLine *line);
 void initAtomicContinuum(AtomicContinuum *continuum);
 
-void initGammaAtom(Atom *atom);
+void initZeeman(ZeemanMultiplet *zm);
+void freeZeeman(ZeemanMultiplet *zm);
+double zm_gamma(double J, double S, double L);
+
+void initGammaAtom(Atom *atom, int iter);
 void initGammaMolecule(Molecule *molecule);
 
 void LTEpops(Atom *atom, bool_t Debeye);
@@ -281,9 +293,9 @@ bool_t determinate(char *label, double g, int *n, double *S, int *L,
 double effectiveLande(AtomicLine *line);
 double Lande(double S, int L, double J);
 void   StokesProfile(AtomicLine *line);
-ZeemanMultiplet* Zeeman(AtomicLine *line);
-ZeemanMultiplet* MolZeeman(MolecularLine *mrt);
-double           MolLande_eff(MolecularLine *mrt);
+void   Zeeman(AtomicLine *line);
+void   MolZeeman(MolecularLine *mrt);
+double MolLande_eff(MolecularLine *mrt);
 int    getOrbital(char orbit);
 double ZeemanStrength(double Ju, double Mu, double Jl, double Ml);
 

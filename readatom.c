@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue May  5 14:41:48 2020 --
+       Last modified: Fri May  7 16:40:01 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -666,40 +666,42 @@ void initAtomicContinuum(AtomicContinuum *continuum)
 
 void freeAtom(Atom *atom)
 {
-  register int kr;
+  register int kr, i;
 
   /* --- Free allocated memory for atomic data structure -- --------- */
 
-  if (atom->label != NULL)       freeMatrix((void **) atom->label);
-  if (atom->popsinFile != NULL)  free(atom->popsinFile);
-  if (atom->popsoutFile != NULL) free(atom->popsoutFile);
-  if (atom->stage != NULL)       free(atom->stage);
-  if (atom->g != NULL)           free(atom->g);
-  if (atom->E != NULL)           free(atom->E);
-  if (atom->C != NULL)           freeMatrix((void **) atom->C);
-  if (atom->vbroad != NULL)      free(atom->vbroad);
+  free(atom->g);
+  free(atom->E);
 
+  for (i = 0;  i < atom->Nlevel;  i++) free(atom->label[i]);
+  free(atom->label);
+  
+  if (atom->active) {
+    freeMatrix((void **) atom->C);
+    free(atom->rhth);
+  }
   /* --- Be careful here because atom->n points to atom->nstar in
          the case of LTE populations (see readAtom.c) -- ------------ */ 
 
-  if (atom->n != atom->nstar)
-    if (atom->n != NULL) freeMatrix((void **) atom->n);
-  if (atom->nstar != NULL)  freeMatrix((void **) atom->nstar);
-  if (atom->ntotal != NULL) free(atom->ntotal);
+  free(atom->ntotal);
+  if (atom->n != atom->nstar) freeMatrix((void **) atom->n);
+  freeMatrix((void **) atom->nstar);
 
-  if (atom->Gamma != NULL)  freeMatrix((void **) atom->Gamma);
+  free(atom->vbroad);
 
-  if (atom->line != NULL) {
+  if (atom->Nline > 0) {
     for (kr = 0;  kr < atom->Nline;  kr++)
-      freeAtomicLine(atom->line + kr);
+      freeAtomicLine(&atom->line[kr]);
     free(atom->line);
   }
-  if (atom->continuum != NULL) {
+
+  if (atom->Ncont > 0) {
     for (kr = 0;  kr < atom->Ncont;  kr++)
-      freeAtomicContinuum(atom->continuum + kr);
+      freeAtomicContinuum(&atom->continuum[kr]);
     free(atom->continuum);
   }
-  if (atom->ft != NULL) free(atom->ft);
+
+  if (atom->Nfixed > 0) free(atom->ft);  
 }
 /* ------- end ---------------------------- freeAtom.c -------------- */
 
@@ -709,26 +711,40 @@ void freeAtomicLine(AtomicLine *line)
 {
   /* --- Free allocated memory for active transition structure line - */
 
-  if (line->lambda != NULL)  free(line->lambda);
-  if (line->Rij != NULL)     free(line->Rij);
-  if (line->Rji != NULL)     free(line->Rji);
+  Atom *atom = line->atom;
+  
+  if (atom->active) {
+    free(line->Rij);
+    free(line->Rji);
 
-  if (line->phi != NULL)     freeMatrix((void **) line->phi);
-  if (line->polarizable) {
-    if (line->phi_Q != NULL) freeMatrix((void **) line->phi_Q);
-    if (line->phi_U != NULL) freeMatrix((void **) line->phi_U);
-    if (line->phi_V != NULL) freeMatrix((void **) line->phi_V);
-    if (line->psi_Q != NULL) freeMatrix((void **) line->psi_Q);
-    if (line->psi_U != NULL) freeMatrix((void **) line->psi_U);
-    if (line->psi_V != NULL) freeMatrix((void **) line->psi_V);
+    freeMatrix((void **) line->phi);
+    free(line->wphi);
+    if (line->polarizable) {
+      freeMatrix((void **) line->phi_Q);
+      freeMatrix((void **) line->phi_U);
+      freeMatrix((void **) line->phi_V);
+      if (input.magneto_optical) {
+	freeMatrix((void **) line->psi_Q);
+	freeMatrix((void **) line->psi_U);
+	freeMatrix((void **) line->psi_V);
+      }
+    }
+    if (line->Ncomponent > 0) {
+      free(line->c_shift);
+      free(line->c_fraction);
+    }
+    if (line->PRD) {
+      free(line->Qelast);
+      freeMatrix((void **) line->rho_prd);
+      fclose(line->fp_GII);
+      if (input.XRD) free(line->xrd);
+    }
+    if (atmos.Stokes &&
+	input.StokesMode == FULL_STOKES &&
+	line->polarizable) {
+      freeZeeman(line->zm);
+    }
   }
-  if (line->c_shift != NULL)    free(line->c_shift);
-  if (line->c_fraction != NULL) free(line->c_fraction);
-
-  if (line->wphi != NULL)    free(line->wphi);
-  if (line->Qelast != NULL)  free(line->Qelast);
-  if (line->rho_prd != NULL) freeMatrix((void **) line->rho_prd);
-  if (line->fp_GII != NULL)  free(line->fp_GII);
 }
 /* ------- end ---------------------------- freeAtomicLine.c -------- */
 
@@ -738,11 +754,13 @@ void freeAtomicContinuum(AtomicContinuum *continuum)
 {
   /* --- Free allocated memory for AtomicContinuum structure -- ----- */
 
-  if (continuum->lambda != NULL)  free(continuum->lambda);
-  if (continuum->Rij != NULL)     free(continuum->Rij);
-  if (continuum->Rji != NULL)     free(continuum->Rji);
+  Atom *atom = continuum->atom;
 
-  if (continuum->alpha != NULL)   free(continuum->alpha);
+  if (atom->active) {  
+    free(continuum->Rij);
+    free(continuum->Rji);
+  }
+  if (!continuum->hydrogenic) free(continuum->alpha);
 }
 /* ------- end ---------------------------- freeAtomicContinuum.c --- */
 

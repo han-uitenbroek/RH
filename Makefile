@@ -2,14 +2,43 @@
 #
 #      Version:       rh2.0
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Thu May 24 16:09:35 2018 --
+#      Last modified: Thu May 20 14:08:03 2021 --
 #
 ##     --------------------------                      ----------RH-- ##
 
-include makefile.$(CPU).$(OS)
+OS := $(shell uname -s)
+
+## --- If no f90 compiler is available comment out -DHAVE_F90
+
+CC       = gcc
+CFLAGS   = -O2 -march=native -DHAVE_F90
+
+F90C     = gfortran
+F90FLAGS = -O2 -march=native
+
+ifneq ("$(wildcard /usr/include/tirpc)","")
+    CFLAGS += -I/usr/include/tirpc
+endif
 
 
-all: librh.a(getcpu.o) librh.a(fpehandler.o) librh.a
+## -- Library settings --                               ------------- ##
+
+ifeq ($(OS), Darwin)
+    ARFLAGS = rsv
+else
+    ARFLAGS = rvsU
+endif
+
+
+.SUFFIXES: .f90
+
+.f90.o:
+	$(F90C) -c $(F90FLAGS) $<
+
+
+## --- If no f90 compiler is available comment out librh_f90.a
+
+all: librh.a librh_f90.a
 
 
 ## --- Rules for the library --                        -------------- ##
@@ -99,24 +128,19 @@ librh.a: \
  librh.a(zeeman.o)
 
 
+## --- Specific compilation rules for machine-dependent files -- ---- ##
+
+librh.a(fpehandler.o):  fpehandler.c
+	$(CC) -c $(CFLAGS) -D$(OS)  $*.c
+	ar $(ARFLAGS) librh.a $%
+	rm -f $%
+
+
 ## FORTRAN 90 alternatives --                          -------------- ##
 
 librh_f90.a: \
  librh_f90.a(hui_.o) \
  librh_f90.a(humlicek_.o)
-
-
-## --- Specific compilation rules for machine-dependent files -- ---- ##
-
-librh.a(fpehandler.o):  fpehandler.c
-	$(CC) -c $(CFLAGS) -D$(CPU) -D$(OS)  $*.c
-	ar $(ARFLAGS) librh.a $%
-	rm -f $%
-
-librh.a(getcpu.o):  getcpu.c
-	$(CC) -c $(CFLAGS) -D$(CPU) -D$(OS)  $*.c
-	ar $(ARFLAGS) librh.a $%
-	rm -f $%
 
 
 ## --- Clean up --                                     -------------- ##

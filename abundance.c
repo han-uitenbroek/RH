@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Apr 22 09:20:45 2009 --
+       Last modified: Thu May 20 13:52:41 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -120,6 +120,7 @@ void readAbundance(Atmosphere *atmos)
     UpperCase(ID);
     if (strlen(ID) == 1) strcat(ID, " ");
 
+    match = NULL;
     for (n = 0;  n < atmos->Nelem;  n++) {
       if ((match = strstr(atmos->elements[n].ID, ID))) {
 	atmos->elements[n].abund = abund;

@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Apr 30 22:05:39 2020 --
+       Last modified: Mon May 17 17:29:45 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -137,10 +137,7 @@ double effectiveLande(AtomicLine *line)
 
 double Lande(double S, int L, double J)
 {
-  if (J == 0.0)
-    return 0.0;
-  else
-    return 1.5 + (S*(S + 1.0) - L*(L + 1)) / (2.0*J*(J + 1.0));
+  return 1.0 + zm_gamma(J, S, L);
 }
 /* ------- end ---------------------------- Lande.c ----------------- */
 
@@ -202,8 +199,10 @@ double ZeemanStrength(double Ju, double Mu, double Jl, double Ml)
 
 /* ------- begin -------------------------- Zeeman.c ---------------- */
 
-ZeemanMultiplet* Zeeman(AtomicLine *line)
+void Zeeman(AtomicLine *line)
 {
+  const char routineName[] = "Zeeman";
+
   register int n;
 
   bool_t result = TRUE;
@@ -211,7 +210,7 @@ ZeemanMultiplet* Zeeman(AtomicLine *line)
   double Sl, Su, Jl, Ju, Mu, Ml, norm[3], gLu, gLl;
   Atom  *atom = line->atom;
   ZeemanMultiplet *zm;
-
+  
   /* --- Return a pointer to a ZeemanMultiplet structure with all the
          components of a Zeeman split line. The strengths in the line
          are normalized to unity for each of the three possible values
@@ -229,7 +228,9 @@ ZeemanMultiplet* Zeeman(AtomicLine *line)
 
 	 --                                            -------------- */
 
-  zm = (ZeemanMultiplet *) malloc(sizeof(ZeemanMultiplet));
+  line->zm = (ZeemanMultiplet *) malloc(sizeof(ZeemanMultiplet));
+  initZeeman(line->zm);
+  zm = line->zm;
 
   if (line->g_Lande_eff != 0.0) {
 
@@ -283,20 +284,32 @@ ZeemanMultiplet* Zeeman(AtomicLine *line)
 	if (fabs(Mu - Ml) <= 1.0) {
 	  zm->q[n]        = (int) (Ml - Mu);
 	  zm->shift[n]    = gLl*Ml - gLu*Mu;
-          zm->strength[n] = ZeemanStrength(Ju, Mu, Jl, Ml);
+	  zm->strength[n] = ZeemanStrength(Ju, Mu, Jl, Ml);
 	  
 	  norm[zm->q[n]+1] += zm->strength[n];
-          n++;
+	  n++;
 	}
       }
     }
     for (n = 0;  n < zm->Ncomponent;  n++)
       zm->strength[n] /= norm[zm->q[n]+1];
   }
-
-  return zm;
+  zm->g_eff = effectiveLande(line);
 }
 /* ------- end ---------------------------- Zeeman.c ---------------- */
+
+/* ------- begin -------------------------- zm_gamma.c -------------- */
+
+double zm_gamma(double J, double S, double L)
+{
+  if (J == 0.0)
+    return 0.0;
+  else 
+    return (J * (J + 1.0) + S * (S + 1.0) - L * (L + 1.0)) /
+      (2.0*J * (J + 1.0));
+}
+
+/* ------- end ---------------------------- zm_gamma.c -------------- */
 
 /* ------- begin -------------------------- adjustStokesMode.c ------ */
 
@@ -344,6 +357,19 @@ void adjustStokesMode()
   }
 }
 /* ------- end ---------------------------- adjustStokesMode.c ------ */
+
+/* ------- begin -------------------------- initZeeman.c ------------ */
+
+void initZeeman(ZeemanMultiplet *zm)
+{
+  zm->Ncomponent = 0;
+  zm->q = NULL;
+  
+  zm->shift = NULL;
+  zm->strength = NULL;
+  zm->g_eff = 0.0;
+}
+/* ------- end ---------------------------- initZeeman.c ------------ */
 
 /* ------- begin -------------------------- freeZeeman.c ------------ */
 

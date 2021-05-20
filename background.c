@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Jul 24 12:52:46 2013 --
+       Last modified: Thu May 20 13:55:29 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -190,6 +190,9 @@ void Background(bool_t write_analyze_output, bool_t equilibria_only)
   }
     
   getCPU(3, TIME_START, NULL);
+
+  do_fudge = FALSE;
+  
   if (strcmp(input.fudgeData, "none")) {
     do_fudge = TRUE;
 
@@ -216,8 +219,7 @@ void Background(bool_t write_analyze_output, bool_t equilibria_only)
     }
     for (n = 0;  n < 3*Nfudge;  n++) fudge[0][n] += 1.0;
     fclose(fp_fudge);
-  } else
-    do_fudge = FALSE;
+  }
 
   /* --- Allocate temporary storage space. The quantities are used
          for the following purposes:
@@ -687,6 +689,12 @@ void Background(bool_t write_analyze_output, bool_t equilibria_only)
     free(lambda_fudge);
     freeMatrix((void **) fudge);
   }
+
+  for (n = 0;  n < atmos.Nrlk;  n++) {
+    if (atmos.rlk_lines[n].zm != NULL) freeZeeman(atmos.rlk_lines[n].zm);
+  }
+  free(atmos.rlk_lines);
+  
   getCPU(2, TIME_POLL, "Total Background");
 }
 /* ------- end ---------------------------- Background.c ------------ */

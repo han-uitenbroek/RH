@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 18:25:26 2020 --
+       Last modified: Fri May 14 17:54:31 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -52,8 +52,6 @@
 
 /* --- Function prototypes --                          -------------- */
 
-void freeZeeman(ZeemanMultiplet *zm);
-
 
 /* --- Global variables --                             -------------- */
 
@@ -77,7 +75,6 @@ void Profile(AtomicLine *line)
          *phi, *phi_Q, *phi_U, *phi_V, *psi_Q, *psi_U, *psi_V;
 
   Atom *atom = line->atom;
-  ZeemanMultiplet *zm;
 
   getCPU(3, TIME_START, NULL);
 
@@ -112,10 +109,10 @@ void Profile(AtomicLine *line)
   if (line->polarizable && (input.StokesMode > FIELD_FREE)) {
     Larmor = (Q_ELECTRON / (4.0*PI*M_ELECTRON)) * (line->lambda0*NM_TO_M);
 
-    zm = Zeeman(line);
+    Zeeman(line);
     sprintf(messageStr,
 	    " -- Atom %2s, line %3d -> %3d has %2d Zeeman components\n",
-	    atom->ID, line->j, line->i, zm->Ncomponent);
+	    atom->ID, line->j, line->i, line->zm->Ncomponent);
     Error(MESSAGE, routineName, messageStr);
   }
 
@@ -260,22 +257,22 @@ void Profile(AtomicLine *line)
 
                 /* --- Sum over Zeeman sub-levels --   -------------- */
 
-		for (nz = 0;  nz < zm->Ncomponent;  nz++) {
-		  H = Voigt(adamp[k], vk - zm->shift[nz]*vB[k],
+		for (nz = 0;  nz < line->zm->Ncomponent;  nz++) {
+		  H = Voigt(adamp[k], vk - line->zm->shift[nz]*vB[k],
 			    &F, HUMLICEK);
 
-		  switch (zm->q[nz]) {
+		  switch (line->zm->q[nz]) {
 		  case -1:
-		    phi_sm += zm->strength[nz] * H;
-		    psi_sm += zm->strength[nz] * F;
+		    phi_sm += line->zm->strength[nz] * H;
+		    psi_sm += line->zm->strength[nz] * F;
 		    break;
 		  case  0:
-		    phi_pi += zm->strength[nz] * H;
-		    psi_pi += zm->strength[nz] * F;
+		    phi_pi += line->zm->strength[nz] * H;
+		    psi_pi += line->zm->strength[nz] * F;
 		    break;
 		  case  1:
-		    phi_sp += zm->strength[nz] * H;
-		    psi_sp += zm->strength[nz] * F;
+		    phi_sp += line->zm->strength[nz] * H;
+		    psi_sp += line->zm->strength[nz] * F;
 		  }
 		}
 		phi_sigma = (phi_sp + phi_sm) * line->c_fraction[n];
@@ -363,8 +360,6 @@ void Profile(AtomicLine *line)
     freeMatrix((void **) v);
   }
   if (line->polarizable && (input.StokesMode == FULL_STOKES)) {
-    freeZeeman(zm);
-    free(zm);
     free(vB);
     free(sv);
 

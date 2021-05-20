@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Aug  5 09:57:21 2009 --
+       Last modified: Thu May 20 13:48:21 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -52,10 +52,10 @@ void Paschen_Back()
 
 void Paschen(double L, double S, double *E0, double B, Paschenstruct *ps)
 {
-  register int M, j, jp;
+  register int j, jp;
 
   int Mindex;
-  double Larmor, *ud, J, Jp, Jmin, Jmax, Ja, Jb;
+  double M, Larmor, *ud, J, Jp, Jmin, Jmax, Ja, Jb;
 
   /* --- See: E. Landi Degl'Innocenti & M. Landolfi, 2004
               "Polarization in Spectral Lines", Kluwer
