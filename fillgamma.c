@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 18:04:13 2020 --
+       Last modified: Thu May 21 17:09:54 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -41,15 +41,28 @@ extern char messageStr[];
 
 /* ------- begin -------------------------- initGammaAtom.c --------- */
 
-void initGammaAtom(Atom *atom)
+void initGammaAtom(Atom *atom, int niter)
 {
   register int ij, k;
+
+  double CR_factor;
 
   /* --- Add the fixed rates into Gamma --             -------------- */
 
   for (ij = 0;  ij < SQ(atom->Nlevel);  ij++) {
     for (k = 0;  k < atmos.Nspace;  k++)
       atom->Gamma[ij][k] = atom->C[ij][k];
+  }
+  /* --- Apply Collisional Relaxation (CR) factor --   -------------- */
+  
+  if (input.CR_Nstep > 0 && niter <= input.CR_Nstep) {
+    CR_factor = pow(input.CR_factor,
+		    (1.0 - (double) input.CR_Nstep / niter));
+    
+    for (ij = 0;  ij < SQ(atom->Nlevel);  ij++) {
+    for (k = 0;  k < atmos.Nspace;  k++)
+      atom->Gamma[ij][k] *= CR_factor;
+    }
   }
 }
 /* ------- end ---------------------------- initGammaAtom.c --------- */

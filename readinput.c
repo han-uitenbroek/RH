@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 22:03:49 2020 --
+       Last modified: Thu May 21 14:45:08 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -84,6 +84,11 @@ void readInput()
      setintValue},
     {"NG_MOLECULES", "FALSE", FALSE, KEYWORD_DEFAULT, &input.accelerate_mols,
      setboolValue},
+    {"COLL_RELAX_NSTEP", "0", FALSE, KEYWORD_OPTIONAL, &input.CR_Nstep,
+     setintValue},
+    {"COLL_RELAX_FACTOR", "1.0", FALSE, KEYWORD_OPTIONAL, &input.CR_factor,
+     setdoubleValue},
+   
     {"PRD_N_MAX_ITER", "3", FALSE, KEYWORD_OPTIONAL, &input.PRD_NmaxIter,
      setintValue},
     {"PRD_ITER_LIMIT", "1.0E-2", FALSE, KEYWORD_OPTIONAL, &input.PRDiterLimit,

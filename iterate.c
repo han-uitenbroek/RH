@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek  (huitenbroek@nso.edu)
-       Last modified: Tue Nov 16 15:31:48 2010 --
+       Last modified: Thu May 21 17:29:02 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -78,11 +78,15 @@ void Iterate(int NmaxIter, double iterLimit)
   /* --- Start of the main iteration loop --             ------------ */
 
   niter = 1;
-  while (niter <= NmaxIter && !StopRequested()) {
+  while (niter <= NmaxIter ||
+	 (input.CR_Nstep > 0 && niter <= input.CR_Nstep)) {
+
+    if (StopRequested()) return;
+    
     getCPU(2, TIME_START, NULL);
 
     for (nact = 0;  nact < atmos.Nactiveatom;  nact++)
-      initGammaAtom(atmos.activeatoms[nact]);
+      initGammaAtom(atmos.activeatoms[nact], niter);
     for (nact = 0;  nact < atmos.Nactivemol;  nact++)
       initGammaMolecule(atmos.activemols[nact]);
 

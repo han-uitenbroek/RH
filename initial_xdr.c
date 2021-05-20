@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Jan 16 17:29:31 2012 --
+       Last modified: Thu May 21 17:11:41 2020 --
 
        --------------------------                      ----------RH-- */
 
@@ -281,7 +281,7 @@ void initSolution(Atom *atom, Molecule *molecule)
       twoc   = 2.0*CLIGHT / CUBE(NM_TO_M);
       fourPI = 4.0 * PI;
 
-      initGammaAtom(atom);
+      initGammaAtom(atom, 1);
 
       /* --- Then add radiative contributions of active transitions --  */
 
