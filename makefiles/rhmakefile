@@ -1,0 +1,37 @@
+## --- Common Makefile definitions for rhf1d, rhsc2d, rhsc3d, rhsphere #
+#
+#      Version:       rh2.0
+#      Author:        Han Uitenbroek (huitenbroek@nso.edu)
+#      Last modified: Thu May 20 13:02:55 2021 --
+#
+##     --------------------------                      ----------RH-- ##
+
+CC       = gcc
+CFLAGS   = -O2 -march=native -I../
+
+ifneq ("$(wildcard /usr/include/tirpc)","")
+    CFLAGS += -I/usr/include/tirpc
+    TIRPC = 1
+endif
+
+LD       = gcc
+LDFLAGS  = -O2 -march=native -L../
+
+
+#      --                                              -------------- ##
+
+ARCHLIBS = -lm -lpthread
+
+ifeq ($(TIRPC), 1)
+ ARCHLIBS += -ltirpc
+endif
+
+ARCHINC  = 
+
+
+## --- If no FORTRAN compiler is available remove -lrh_f90 in following
+
+      LIBS = -lrh -lrh_f90 $(ARCHLIBS)
+
+## ---                                                 -------------- ##
+
