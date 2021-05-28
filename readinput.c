@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu May 21 14:45:08 2020 --
+       Last modified: Thu May 27 13:54:48 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -168,6 +168,9 @@ void readInput()
      &input.magneto_optical, setboolValue},
     {"BACKGROUND_POLARIZATION", "FALSE", FALSE, KEYWORD_DEFAULT,
      &input.backgr_pol, setboolValue},
+    {"RLK_EXPLICIT", "FALSE", FALSE, KEYWORD_DEFAULT,
+     &input.RLK_explicit, setboolValue},
+
     {"XDR_ENDIAN", "TRUE", FALSE, KEYWORD_OPTIONAL,
      &input.xdr_endian, setboolValue},
 

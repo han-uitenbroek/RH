@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu May 21 14:47:12 2020 --
+       Last modified: Thu May 27 13:47:34 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -78,7 +78,8 @@ typedef struct {
          Itop[MAX_VALUE_LENGTH];
   bool_t magneto_optical, PRD_angle_dep, XRD, Eddington,
          backgr_pol, limit_memory, allow_passive_bb, NonICE,
-         rlkscatter, xdr_endian, old_background, accelerate_mols;
+         rlkscatter, xdr_endian, old_background, accelerate_mols,
+         RLK_explicit;
   enum   solution startJ;
   
   enum   StokesMode StokesMode;

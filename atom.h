@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue May 18 10:33:15 2021 --
+       Last modified: Tue May 25 18:13:07 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -21,8 +21,6 @@
 #define PRD_QWING   4.0
 #define PRD_QSPREAD 5.0
 #define PRD_DQ      0.25
-
-#define RLK_LABEL_LENGTH  10
 
 
 enum type        {ATOMIC_LINE, ATOMIC_CONTINUUM,
@@ -160,6 +158,7 @@ typedef struct {
   int    L, L1, l1, l2, l;
   double g, E, S, J, S1, J1, j1, j2, K, gL, hfs;
   enum zeeman_cpl cpl;
+  bool_t zm_explicit;
 } RLK_level;
   
 typedef struct {

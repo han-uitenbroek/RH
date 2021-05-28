@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue May 18 16:13:36 2021 --
+       Last modified: Fri May 28 16:02:49 2021 --
 
        --------------------------                      ----------RH-- */
 
@@ -82,6 +82,8 @@ FORMAT(F11.4,F7.3,F6.2,F12.3,F5.2,1X,A10,F12.3,F5.2,1X,A10,
 #define MAX_GAUSS_DOPPLER        7.0
 #define USE_TABULATED_WAVELENGTH 1
 
+#define RLK_LABEL_LENGTH  10
+
 
 /* --- Function prototypes --                          -------------- */
 
@@ -93,6 +95,7 @@ void   RLKZeeman(RLK_Line *rlk);
 double RLKLande(RLK_level* level);
 void   initRLK(RLK_Line *rlk);
 bool_t RLKdet_level(char* label, RLK_level *level);
+double getJK_K(char c);
 void   getUnsoldcross(RLK_Line *rlk);
 void   free_BS(Barklemstruct *bs);
 
@@ -799,31 +802,158 @@ void RLKZeeman(RLK_Line *rlk)
 
 /* ------- begin -------------------------- RLKdet_level.c ---------- */
 
+#define LS_COUNT  2
+#define JK_COUNT  6
+#define JJ_COUNT  5
+
 bool_t RLKdet_level(char* label, RLK_level *level)
 {
   const char routineName[] = "RLKdet_level";
 
-  char **words, orbit[2];
-  int    count, multiplicity, length, Nread;
+  char **words, orbit[2], Lchar, L1char, lchar, Kchar, l1char, l2char;
+  char delims_i[] = "({[";
+  char delims_f[] = ")}]";
+  char *ptr_i, *ptr_f, *quanta_str;
+  bool_t counterror;
+  int  count, multiplicity, length, Nread, M1;
+  double J1, j1, j2;
 
-  /* --- Get spin and orbital quantum numbers from level labels -- -- */
+  /* --- Get spin and orbital quantum numbers from level labels --
 
-  words = getWords(label, " ", &count);
-  if (words[0]) {
-    length = strlen(words[count-1]);
-    Nread  = sscanf(words[count-1] + length-2, "%d%1s",
-		    &multiplicity, orbit);
-    free(words);
-    if (Nread != 2 || !isupper(orbit[0])) return FALSE;
+    For explicit LS_COUPLING, or JK_ and JJ_COUPLING provide labels with
+    explicit quantum numbers as follows (note the delimiters, no spaces).
+    In the Kurucz line list file (note J is always explicitly listed).
+
+    In keyword.input set RLK_EXPLICIT = TRUE
+    You CAN NOT mix explicit and non-explicit label modes!
+
+    See:  Landi degl'Innocenti & Landolfi 2004, pp 76-77
+    Note: the label HAS to be 10 characters long, and no other
+          elements of the line in the .kur should be moved!!
+
+      LS_COUPLING: [m,L]             Exmpl: '[2P]      ' --> S = 0.5, L = 1
+      JK_COUPLING: (M1L1J1)lmK       Exmpl: '(6D4.5)f2K' --> S1 = 2.5, L1 = 2,
+                                               J1 = 4.5, l = 3, K = 3.5
+      JJ_COUPLING: {j1l1j2l2}        Exmpl: '{1.5p2.5s}' --> j1 = 1.5,
+                                               l1 = 1, j2 = 2.5, l2 = 0
+
+    Example for the FeI 1565.2874 line (JK_COUPLING in upper level):
+
+1565.2874 -0.476 26.00   50377.905  5.0 s6D)4d f7D   56764.763  4.0 s6D9/4f[3]   8.44 -5.00 -7.70K94  0 0  0 0.000  0 0.000    0    0           1510 1542
+
+    becomes:
+
+1565.2874 -0.476 26.00   50377.905  5.0 [3.0,2]   56764.763  4.0 (6D4.5)f2k      8.44 -5.00 -7.70K94  0 0  0 0.000  0 0.000    0    0           1510 1542
+
+     --                                                -------------- */
+
+  if (!input.RLK_explicit) {
+
+    words = getWords(label, " ", &count);
+    if (words[0]) {
+      length = strlen(words[count-1]);
+      Nread  = sscanf(words[count-1] + length-2, "%d%1s",
+		      &multiplicity, orbit);
+      free(words);
+      if (Nread != 2 || !isupper(orbit[0])) return FALSE;
     
-    level->L = getOrbital(orbit[0]);
-    level->S = (multiplicity - 1) / 2.0;
+      level->L = getOrbital(orbit[0]);
+      level->S = (multiplicity - 1) / 2.0;
+      
+      level->cpl = LS_COUPLING;
+      return TRUE;
+    } else
+      return FALSE;
+  } else {
+  
+    /* --- Check for presence of any of three allowed delimiters -- - */
+  
+    ptr_i = strpbrk(label, delims_i);
+    ptr_f = strpbrk(label, delims_f);
 
-    level->cpl = LS_COUPLING;
-  } else
-    return FALSE;
+    if (ptr_i == NULL || ptr_f == NULL) {
+      if (ptr_i != NULL && ptr_f == NULL) {
+	sprintf(messageStr, " Malformed label: missing ending "
+		"delimiter: %c, label: %s\n",
+		delims_f[strchr(delims_i, ptr_i[0]) - delims_i], label);
+	Error(ERROR_LEVEL_2, routineName, messageStr);
+      }
+      if (ptr_i == NULL && ptr_f != NULL) {
+	sprintf(messageStr, " Malformed label: missing beginning "
+		"delimiter: %c, label: %s\n",
+		delims_i[strchr(delims_f, ptr_f[0]) - delims_f], label);
+	Error(ERROR_LEVEL_2, routineName, messageStr);
+      }
+      return FALSE;
+    }
+    if (ptr_i[0] != delims_i[strchr(delims_f, ptr_f[0]) - delims_f]) {
 
-  return TRUE;
+      /* --- When delimiters are not matching --       -------------- */
+      
+      sprintf(messageStr,
+	      " Malformed label: mismatched delimiters: '%c %c', %s\n",
+	      ptr_i[0], ptr_f[0], label);
+      Error(ERROR_LEVEL_2, routineName, messageStr);
+      return FALSE;
+    }     
+
+    length = ptr_f - ptr_i + 2;
+    quanta_str = (char *) malloc(length);
+    strncpy(quanta_str, ptr_i, length-1);
+    quanta_str[length-1] = '\0';
+
+    counterror = FALSE;
+
+    switch (ptr_i[0]) {
+    case '[':
+      if (Nread = sscanf(quanta_str, "[%1d%1c]",
+			 &multiplicity, &Lchar) != LS_COUNT)
+	counterror = TRUE;
+      else {
+	level->S = (multiplicity - 1) / 2.0;
+	level->L = getOrbital(Lchar);
+	
+	level->cpl = LS_COUPLING;
+      }
+      break;
+
+    case '(':
+      if (Nread = sscanf(label, "(%1d%1c%3lf)%1c%1d%1c",
+			 &M1, &L1char, &level->J1, &lchar,
+			 &multiplicity, &Kchar) != JK_COUNT)
+	counterror = TRUE;
+      else {
+	level->S1 = (M1 - 1) / 2.0;
+	level->L1 = getOrbital(L1char);
+	level->l  = getOrbital(toupper(lchar));
+	level->K  = getJK_K(Kchar);
+	
+	level->cpl = JK_COUPLING;
+      }
+      break;
+
+    case '{':
+      if (Nread = sscanf(quanta_str, "{%3lf%1c%3lf%1c}",
+			 &level->j1, &l1char,
+			 &level->j2, &l2char) != JJ_COUNT)
+	counterror = TRUE;
+      else {
+	level->l1 = getOrbital(toupper(l1char));
+	level->l2 = getOrbital(toupper(l2char));
+	
+	level->cpl = JJ_COUPLING;
+      }
+      break;
+    }
+    if (counterror) {
+      sprintf(messageStr, "Wrong quantum number count: %s: %d\n",
+	      quanta_str, Nread);
+      Error(ERROR_LEVEL_2, routineName, messageStr);
+      return FALSE;
+    }
+    free(quanta_str);
+    return TRUE;
+  }
 }
 /* ------- end ---------------------------- RLKdet_level.c ---------- */
 
@@ -894,7 +1024,7 @@ double RLKLande(RLK_level *level)
 {
   const char routineName[] = "RLKLande";
 
-  /* --- Lande gfactors for different angular momentum coupling 
+  /* --- Lande g factors for different angular momentum coupling 
          schemes.
 
          See: Landi degl'Innocenti & Landolfi 2004, pp 76-77 -- ----- */
@@ -902,6 +1032,7 @@ double RLKLande(RLK_level *level)
   switch (level->cpl) {
   case LS_COUPLING:
     level->gL = 1.0 + zm_gamma(level->J, level->S, level->L);
+
     break;
     
   case JK_COUPLING:
@@ -909,6 +1040,7 @@ double RLKLande(RLK_level *level)
       zm_gamma(level->J, level->K, 0.5) *
       zm_gamma(level->K, level->J1, level->l) *
       zm_gamma(level->J1, level->S1, level->L1);
+
     break;
     
   case JJ_COUPLING:
@@ -916,6 +1048,7 @@ double RLKLande(RLK_level *level)
       zm_gamma(level->j1, 0.5, level->l1) +
       zm_gamma(level->J, level->j2, level->j1) *
       zm_gamma(level->j2, 0.5, level->l2);
+
     break;
     
   default:
@@ -925,3 +1058,31 @@ double RLKLande(RLK_level *level)
   return level->gL;
 }
 /* ------- end ---------------------------- RLKLande.c -------------- */
+
+/* ------- begin -------------------------- getJK_K.c -- ------------ */
+
+double getJK_K(char Kchar)
+{
+  const char routineName[] = "getJK_K";
+
+  double K;
+
+  switch (Kchar) {
+  case 'p': K = 0.5;  break;
+  case 'f': K = 1.5;  break;
+  case 'h': K = 2.5;  break;
+  case 'k': K = 3.5;  break;
+  case 'm': K = 4.5;  break;
+  case 'o': K = 5.5;  break;
+  case 'r': K = 6.5;  break;
+  case 't': K = 7.5;  break;
+  case 'u': K = 8.5;  break;
+  case 'v': K = 9.5;  break;
+  case 'w': K = 10.5; break;
+  default: 
+    sprintf(messageStr, "Invalid Kchar: %c", Kchar);
+    Error(ERROR_LEVEL_2, routineName, messageStr);
+  }
+  return K;
+}
+/* ------- end ---------------------------- getJK_K.c --------------- */
