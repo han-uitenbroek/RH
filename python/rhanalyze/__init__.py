@@ -28,7 +28,7 @@ class rhout:
 
         self.rays = {}
         Nray = 0
-        for file in os.listdir(rhdir):
+        for file in sorted(os.listdir(rhdir)):
             if fnmatch.fnmatch(file, 'spectrum_?.??*'):
                 self.rays[Nray] =\
                     rhspectrum.rays(self.inputs,\
@@ -40,7 +40,7 @@ class rhout:
 
         self.atoms = {}
         Natom = 0
-        for file in os.listdir(rhdir):
+        for file in sorted(os.listdir(rhdir)):
             if fnmatch.fnmatch(file, 'atom.*.out'):
                 self.atoms[Natom] =\
                     rhatom.atoms(self.geometry,\
