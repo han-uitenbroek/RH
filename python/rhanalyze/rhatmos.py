@@ -220,8 +220,8 @@ class input_atmos:
             CM_TO_M = 1.0E-2
             G_TO_KG = 1.0E-3
 
-            self.nH     *= CM_TO_M**3
-            self.n_elec *= CM_TO_M**3
+            nH     = self.nH.copy() * CM_TO_M**3
+            n_elec = self.n_elec.copy() * CM_TO_M**3
 
             data = []
 
@@ -267,7 +267,7 @@ class input_atmos:
 
             fmt = '  {: 12.8E}' + 4 * '  {: 10.6E}' + "\n"
             for k in range(Nd):
-                data.append(fmt.format(hscale[k], self.T[k], self.n_elec[k],\
+                data.append(fmt.format(hscale[k], self.T[k], n_elec[k],\
                                        self.v[k], self.vturb[k]))
 
             data.append("*\n")
@@ -279,7 +279,7 @@ class input_atmos:
 
                 fmt = self.NHydr * '   {:8.4E}' + "\n"
                 for k in range(Nd):
-                    data.append(fmt.format(*self.nH[k, :]))
+                    data.append(fmt.format(*nH[k, :]))
                     
             f = open(outfile, 'w')
             for line in data:
