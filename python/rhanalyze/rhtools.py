@@ -41,7 +41,7 @@ def read_string(up, size=0):
     up.unpack_int()
 
     if size == 0:
-        return str(up.unpack_string().strip(), 'utf-8')
+        return str(up.unpack_string().strip(), encoding='utf-8')
     else:
         up.unpack_int()
-        return str(up.unpack_fstring(size), 'utf-8')
+        return str(up.unpack_fstring(size), encoding='utf-8')
