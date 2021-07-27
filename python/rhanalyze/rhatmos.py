@@ -128,8 +128,9 @@ class input_atmos:
             elif scale == 'T':
                 self.scale  = 'TAU500_SCALE'
                 self.tau500 = np.power(10.0, hscale)
+                
             elif scale == 'H':
-                self.scale  = 'TAU500_SCALE'
+                self.scale  = 'GEOMETRIC_SCALE'
                 self.height = hscale
 
             if len(data) > (4 + Nd):
