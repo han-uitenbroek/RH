@@ -804,7 +804,7 @@ void RLKZeeman(RLK_Line *rlk)
 
 #define LS_COUNT  2
 #define JK_COUNT  6
-#define JJ_COUNT  5
+#define JJ_COUNT  4
 
 bool_t RLKdet_level(char* label, RLK_level *level)
 {
