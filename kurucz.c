@@ -116,12 +116,12 @@ void readKuruczLines(char *inputFile)
                              (Q_ELECTRON/M_ELECTRON) / CLIGHT;
 
   char   inputLine[RLK_RECORD_LENGTH+1], listName[MAX_LINE_SIZE],
-         filename[MAX_LINE_SIZE], Gvalues[18+1], elem_code[7],
+         filename[MAX_LINE_SIZE], Gvalues[20+1], elem_code[7],
          labeli[RLK_LABEL_LENGTH+1], labelj[RLK_LABEL_LENGTH+1],
         *commentChar = COMMENT_CHAR;
   bool_t swap_levels, determined, useBarklem;
   int    Nline, Nread, Nrequired, checkPoint, hfs_i, hfs_j, gL_i, gL_j,
-         iso_dl, Li, Lj;
+    iso_dl, Li, Lj, tmp;
   double lambda0, Ji, Jj, Grad, GStark, GvdWaals, pti,
          Ei, Ej, gf, lambda_air;
   RLK_Line *rlk;
@@ -240,7 +240,7 @@ void readKuruczLines(char *inputFile)
 
         /* --- Line broadening --                      -------------- */
 
-	strncpy(Gvalues, inputLine+79, 18);
+	strncpy(Gvalues, inputLine+79, 20); // JdlCR: read 3 more characters from the vdW label 
 	Nread += sscanf(Gvalues, "%lf %lf %lf", &Grad, &GStark, &GvdWaals);
 
 	if (GStark != 0.0) 
@@ -248,20 +248,29 @@ void readKuruczLines(char *inputFile)
 	else
 	  rlk->GStark = 0.0;
 
-	if (GvdWaals != 0.0)
-	  rlk->GvdWaals = POW10(GvdWaals) * CUBE(CM_TO_M);
-	else
+	if (GvdWaals != 0.0){
+	  if(GvdWaals < 20.0) // JdlCR: If larger than 20, we are providing sigma.alpha
+	    rlk->GvdWaals = POW10(GvdWaals) * CUBE(CM_TO_M);
+	  else{ // User provided Barklem cross sections, integer part is sigma and decimal part is alpha
+	    tmp = (int)GvdWaals;
+	    rlk->cross = (double)tmp;    // integer part
+	    rlk->alpha = GvdWaals - tmp; // decimal part
+	  }
+	}else
 	  rlk->GvdWaals = 0.0;
 
         /* --- If possible use Barklem formalism --    -------------- */
-
+	
 	useBarklem = FALSE;
 	if (determined &&
 	    rlk->level_i.cpl == LS_COUPLING &&
 	    rlk->level_j.cpl == LS_COUPLING) {
-	
-	  Li = rlk->level_i.L;
-	  Lj = rlk->level_j.L;
+
+	  /* --- JdlCR: changed to lower "l" value, the search will
+	     fail if "l" is not provided as both will be zero --- */
+	  
+	  Li = rlk->level_i.l;
+	  Lj = rlk->level_j.l;
 	  
 	  if ((Li == S_ORBIT && Lj == P_ORBIT) ||
               (Li == P_ORBIT && Lj == S_ORBIT)) {
@@ -854,11 +863,17 @@ bool_t RLKdet_level(char* label, RLK_level *level)
       length = strlen(words[count-1]);
       Nread  = sscanf(words[count-1] + length-2, "%d%1s",
 		      &multiplicity, orbit);
-      free(words);
       if (Nread != 2 || !isupper(orbit[0])) return FALSE;
-    
+
       level->L = getOrbital(orbit[0]);
       level->S = (multiplicity - 1) / 2.0;
+      
+      length = strlen(words[0]);
+      Nread  = sscanf(words[0] + length-1, "%1s", orbit);
+      free(words);
+
+      // --- JdlCR: also extract l --- //
+      level->l =  getOrbital(toupper(orbit[0]));
       
       level->cpl = LS_COUPLING;
       return TRUE;
@@ -962,7 +977,11 @@ bool_t RLKdet_level(char* label, RLK_level *level)
 void initRLK(RLK_Line *rlk)
 {
   rlk->polarizable = FALSE;
-  rlk->zm = NULL; 
+  rlk->zm = NULL;
+  rlk->level_i.l = 0; // JdlCR: init to zero
+  rlk->level_j.l = 0; // JdlCR: init to zero
+  rlk->cross = 0; // JdlCR: init to zero
+  rlk->alpha = 0; // JdlCR: init to zero
 }
 /* ------- end ---------------------------- initRLK.c --------------- */
 
