@@ -31,7 +31,6 @@ extern Atmosphere atmos;
 extern InputData input;
 extern char messageStr[];
 
-
 /* ------- begin -------------------------- determinate.c ----------- */
 
 bool_t determinate(char *label, double g, int *n, double *S, int *L,
