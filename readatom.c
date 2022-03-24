@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri May  7 16:40:01 2021 --
+       Last modified: Thu Mar 24 17:01:12 2022 --
 
        --------------------------                      ----------RH-- */
 
@@ -292,6 +292,14 @@ void readAtom(Atom *atom, char *atom_file)
 	Error(WARNING, routineName, messageStr);
 	line->vdWaals = UNSOLD;
 	line->cvdWaals[3] = line->cvdWaals[1] = 0.0;
+      }
+    } else if (strstr(vdWstr, "ABO_EXPL")) {
+      line->vdWaals = BARKLEM;
+      if (getBarklemExplicit(line)) {
+	sprintf(messageStr,
+		"Line %3d -> %3d: Using explicit ABO coefficients",
+		j, i);
+	Error(WARNING, routineName, messageStr);
       }
     } else {
       sprintf(messageStr, "Invalid value for vd Waals string: %s", vdWstr);

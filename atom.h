@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue May 25 18:13:07 2021 --
+       Last modified: Thu Mar 24 16:58:23 2022 --
 
        --------------------------                      ----------RH-- */
 
@@ -248,6 +248,8 @@ bool_t writeDamping(Atom *atom);
 bool_t readBarklemTable(enum Barklemtype type, Barklemstruct *bs);
 bool_t getBarklemcross(Barklemstruct *bs, RLK_Line *rlk);
 bool_t getBarklemactivecross(AtomicLine *line);
+bool_t getBarklemExplicit(AtomicLine *line);
+bool_t determinate_abo(char *label,  int *l);
 
 
 /* --- Associated function prototypes --               -------------- */

@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri May 14 19:18:30 2021 --
+       Last modified: Thu Mar 24 16:58:54 2022 --
 
        --------------------------                      ----------RH-- */
 
@@ -54,7 +54,7 @@
 extern Atmosphere atmos;
 extern char messageStr[];
 
-/* ------- begin -------------------------- determinate_abo.c ----------- */
+/* ------- begin -------------------------- determinate_abo.c ------- */
 
 bool_t determinate_abo(char *label,  int *l)
 {
@@ -94,7 +94,7 @@ bool_t determinate_abo(char *label,  int *l)
   return TRUE;
 }
 
-/* ------- end ---------------------------- determinate_abo.c ----------- */
+/* ------- end ---------------------------- determinate_abo.c ------- */
 
 /* ------- begin -------------------------- readBarklemTable.c ------ */
 
@@ -330,3 +330,28 @@ bool_t getBarklemactivecross(AtomicLine *line)
   return TRUE;
 }
 /* ------- end ---------------------------- getBarklemactivecross.c -- */
+
+/* ------- begin -------------------------- getBarklemExplicit.c -- -- */
+
+bool_t getBarklemExplicit(AtomicLine *line)
+{
+  double reducedmass, meanvelocity, crossmean;
+  Atom *atom;
+ 
+  atom = line->atom;
+  
+  reducedmass  = AMU / (1.0/atmos.atoms[0].weight + 1.0/atom->weight);
+  meanvelocity = sqrt(8.0 * KBOLTZMANN / (PI * reducedmass));
+  crossmean    = SQ(RBOHR) * pow(meanvelocity / 1.0E4, -line->cvdWaals[1]);
+
+  line->cvdWaals[0] *= 2.0 * pow(4.0/PI, line->cvdWaals[1]/2.0) * 
+    exp(gammln((4.0 - line->cvdWaals[1])/2.0)) * meanvelocity * crossmean;  
+
+  /* --- Use UNSOLD for the contribution of Helium atoms -- ---------- */
+
+  line->cvdWaals[2] = 1.0;
+  line->cvdWaals[3] = 0.0;
+
+  return TRUE;
+}
+/* ------- end - -------------------------- getBarklemExplicit.c -- -- */
