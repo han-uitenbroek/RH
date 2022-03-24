@@ -170,7 +170,7 @@ void readAtmos(Atmosphere *atmos, Geometry *geometry)
   }
   atmos->moving = FALSE;
   for (k = 0;  k < Nradius;  k++) {
-    if (fabs(geometry->vel[k]) >= atmos->vmacro_tresh) {
+    if (fabs(geometry->vel[k]) > atmos->vmacro_tresh) {
       atmos->moving = TRUE;
       break;
     }
