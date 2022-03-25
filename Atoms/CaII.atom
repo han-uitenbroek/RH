@@ -14,25 +14,25 @@
  95785.470   1.00    'CA III 3P6 1SE      '    2         5
 
 # j   i       f     type  Nlambda symmetr  qcore  qwing  vdWapprx          vdWaals            radiative   Stark
-#                                                                       H            He
+#                                                                         H             He
 # H & K
 #       lambda = 396.8469 [nm] (H)
-  3   0  3.412E-01     PRD  50     ASYMM   30.0  1500.0  BARKLEM   1.50   0.00   1.00   0.00   1.48E08  1.0E-00
+  3   0  3.412E-01     PRD  50     ASYMM   30.0  1500.0  ABO_EXPL   234.0  0.223   1.00   0.00   1.48E08  1.0E-00
 #       lambda = 393.3663 [nm] (K)
-  4   0  6.807E-01     PRD  50     ASYMM   30.0  1500.0  BARKLEM   1.50   0.00   1.00   0.00   1.50E08  1.0E-00
+  4   0  6.807E-01     PRD  50     ASYMM   30.0  1500.0  ABO_EXPL   234.0  0.223   1.00   0.00   1.50E08  1.0E-00
 
 # Infrared triplet
 #       lambda = 866.2141 [nm]
-  3   1  5.956E-02   VOIGT  40     ASYMM    4.0   200.0  BARKLEM   1.50   0.00   1.00   0.00   1.48E08  1.0E-00
+  3   1  5.956E-02   VOIGT  40     ASYMM    4.0   200.0  ABO_EXPL   291.0  0.275   1.00   0.00   1.48E08  1.0E-00
 #       lambda = 849.8023 [nm]
-  4   1  1.219E-02   VOIGT  40     ASYMM    4.0   150.0  BARKLEM   1.50   0.00   1.00   0.00   1.50E08  1.0E-00
+  4   1  1.219E-02   VOIGT  40     ASYMM    4.0   150.0  ABO_EXPL   291.0  0.275   1.00   0.00   1.50E08  1.0E-00
 #       lambda = 854.2091 [nm]
-  4   2  7.242E-02   VOIGT  80     ASYMM    4.0   200.0  BARKLEM   1.50   0.00   1.00   0.00   1.50E08  1.0E-00
+  4   2  7.242E-02   VOIGT  80     ASYMM    4.0   200.0  ABO_EXPL   291.0  0.275   1.00   0.00   1.50E08  1.0E-00
 
 # Forbidden transitions between 4s and 3d
 
-#  1   0  2.1E-08     GAUSS  10      SYMM    0.3     3.0   UNSOLD   0.00   0.0   0.0  0.0     1.3E00   0.0E00
-#  2   0  3.1E-08     GAUSS  10      SYMM    0.3     3.0   UNSOLD   0.00   0.0   0.0  0.0     1.3E00   0.0E00
+#  1   0  2.1E-08     GAUSS  10      SYMM    0.3     3.0   UNSOLD   1.00   0.0   1.0  0.0     1.3E00   0.0E00
+#  2   0  3.1E-08     GAUSS  10      SYMM    0.3     3.0   UNSOLD   1.00   0.0   1.0  0.0     1.3E00   0.0E00
 
 # Photoionization rates
 

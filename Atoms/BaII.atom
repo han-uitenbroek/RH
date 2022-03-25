@@ -15,17 +15,17 @@
 
 # j   i       f     type  Nlambda symmetr  qcore  qwing  vdWapprx          vdWaals            radiative  Stark
 #                                                                        H            He
-  3   0  3.490e-01  VOIGT     40    ASYMM   3.0    20.0  BARKLEM   1.000  0.000  1.000  0.000  1.29e+08  1.0e+00
+  3   0  3.490e-01  VOIGT     40    ASYMM   3.0    20.0  ABO_EXPL  303.0  0.222  1.000  0.000  1.29e+08  1.0e+00
 #
-  4   0  7.280e-01  COMPOSIT  80    ASYMM   3.0    20.0  BARKLEM   1.000  0.000  1.000  0.000  1.59e+08  1.0e+00
+  4   0  7.280e-01  COMPOSIT  80    ASYMM   3.0    20.0  ABO_EXPL  303.0  0.222  1.000  0.000  1.59e+08  1.0e+00
    3
    -0.017E-3    0.821
     1.757E-3    0.112
    -3.408E-3    0.067
 #
-  3   1  1.050e-01  VOIGT     40    ASYMM   1.0     7.0  BARKLEM   1.000  0.000  1.000  0.000  1.29e+08  1.0e+00
-  4   1  2.500e-02  VOIGT     40    ASYMM   1.0     5.0  BARKLEM   1.000  0.000  1.000  0.000  1.59e+08  1.0e+00
-  4   2  1.390e-01  VOIGT     40    ASYMM   1.0     7.0  BARKLEM   1.000  0.000  1.000  0.000  1.59e+08  1.0e+00
+  3   1  1.050e-01  VOIGT     40    ASYMM   1.0     7.0  UNSOLD   1.000  0.000  1.000  0.000  1.29e+08  1.0e+00
+  4   1  2.500e-02  VOIGT     40    ASYMM   1.0     5.0  UNSOLD   1.000  0.000  1.000  0.000  1.59e+08  1.0e+00
+  4   2  1.390e-01  VOIGT     40    ASYMM   1.0     7.0  UNSOLD   1.000  0.000  1.000  0.000  1.59e+08  1.0e+00
 
 # Photoionization Cross Sectionss
 
