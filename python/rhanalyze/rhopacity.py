@@ -118,25 +118,31 @@ class opacity:
         else:
             index_as = waveno
 
+            
+        if self.as_recno[index_as] != -1:
+
+            file_as = open('{0}/opacity.out'.format(self.rhdir), 'rb')
+
+            offset_as = self.as_recno[index_as] * reclen_as
+            chunk_as  = 2 * dim1 * SIZE_OF_DOUBLE
+            file_as.seek(offset_as, 0)
+            up_as = xdrlib.Unpacker(file_as.read(chunk_as))
+
+            self.chi_as = read_farray(dim1, up_as, "double")
+            self.eta_as = read_farray(dim1, up_as, "double")
+            file_as.close()
+            up_as.done()
+        else:
+            self.chi_as = np.zeros(dim1, dtype='float')
+            self.eta_as = np.zeros(dim1, dtype='float')
+
+
         if self.atmos.moving or self.atmos.stokes:
             index_bg = 2 * (waveno * self.geometry.Nrays + rayno) + 1
         else:
             index_bg = waveno
 
-            
-        file_as = open('{0}/opacity.out'.format(self.rhdir), 'rb')
 
-        offset_as = self.as_recno[index_as] * reclen_as
-        chunk_as  = 2 * dim1 * SIZE_OF_DOUBLE
-        file_as.seek(offset_as, 0)
-        up_as = xdrlib.Unpacker(file_as.read(chunk_as))
-
-        self.chi_as = read_farray(dim1, up_as, "double")
-        self.eta_as = read_farray(dim1, up_as, "double")
-        file_as.close()
-        up_as.done()
-
-        
         file_bg = open('{0}/background.dat'.format(self.rhdir), 'rb')
         offset_bg = self.bg_recno[index_bg] * reclen_bg
         file_bg.seek(offset_bg, 0)
@@ -264,11 +270,11 @@ class opacity:
             tau  = np.zeros(N, dtype='float')
             path = self.geometry.height / xmu
 
-        chi = self.chi_c + self.chi_as
+            chi = self.chi_c + self.chi_as
             
-        tau[0] = 0.0
-        for k in range(1, N, 1):
-            dtau = 0.5*(chi[k-1] + chi[k]) * (path[k-1] - path[k])
-            tau[k] = tau[k-1] + dtau
+            tau[0] = 0.0
+            for k in range(1, N, 1):
+                dtau = 0.5*(chi[k-1] + chi[k]) * (path[k-1] - path[k])
+                tau[k] = tau[k-1] + dtau
             
-        self.tau = tau
+                self.tau = tau
