@@ -387,8 +387,8 @@ void freeZeeman(ZeemanMultiplet *zm)
 int getOrbital(char orbit)
 {
   const char routineName[] = "getOrbital";
-
-  int L;
+	
+  int L = 0;
 
   switch (orbit) {
   case 'S': L = 0;  break;
@@ -413,7 +413,7 @@ int getOrbital(char orbit)
   case 'X': L = 19;  break;
   default: 
     sprintf(messageStr, "Invalid orbital: %c", orbit);
-    Error(ERROR_LEVEL_2, routineName, messageStr);
+    Error(WARNING, routineName, messageStr);
   }
   return L;
 }
