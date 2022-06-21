@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Apr 28 21:17:27 2020 --
+       Last modified: Fri Jun 17 15:43:39 2022 --
 
        --------------------------                      ----------RH-- */
 
@@ -209,6 +209,10 @@ void setAngleSet(char *value, void *pointer)
   else if  (!strcmp(value, "SET_B4")) angleSet.set = SET_B4;
   else if  (!strcmp(value, "SET_B6")) angleSet.set = SET_B6;
   else if  (!strcmp(value, "SET_B8")) angleSet.set = SET_B8;
+  else if  (!strcmp(value, "SET_GAUSS_LOBATTO"))
+    angleSet.set = SET_GAUSS_LOBATTO;
+  else if  (!strcmp(value, "SET_EDDINGTON"))
+    angleSet.set = SET_EDDINGTON;
   else if  (!strcmp(value, "NO_SET")) angleSet.set = NO_SET;
 
   else if (strstr(value, "SET_GL_")) {

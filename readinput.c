@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu May 27 13:54:48 2021 --
+       Last modified: Fri Jun 17 16:13:57 2022 --
 
        --------------------------                      ----------RH-- */
 
@@ -43,7 +43,8 @@ void readInput()
 {
   const char routineName[] = "readInput";
   static char atom_input[MAX_VALUE_LENGTH], molecule_input[MAX_VALUE_LENGTH];
-
+  char errorStr[MAX_MESSAGE_LENGTH];
+  
   int   Nkeyword;
   FILE *fp_keyword;
 
@@ -57,8 +58,6 @@ void readInput()
     {"ANGLE_SET", "NO_SET", FALSE, KEYWORD_OPTIONAL, &atmos.angleSet,
      setAngleSet},
 
-    {"EDDINGTON", "FALSE", FALSE, KEYWORD_OPTIONAL, &input.Eddington,
-     setboolValue},
     {"ATMOS_ITOP", "none", FALSE, KEYWORD_OPTIONAL, input.Itop, setcharValue},
 
     {"WAVETABLE", "none", FALSE, KEYWORD_OPTIONAL, input.wavetable_input,
@@ -209,11 +208,43 @@ void readInput()
 
   switch (topology) {
   case ONE_D_PLANE:
-    if (atmos.Nrays == 0) {
+    if (atmos.Nrays == 0)
       Error(ERROR_LEVEL_2, routineName,
 	    "Must set keyword NRAYS in 1-D plane parallel geometry");
-    }
-    if (atmos.angleSet.set != NO_SET) {
+
+    if (atmos.angleSet.set == SET_VERTICAL ||
+	atmos.angleSet.set == SET_GAUSS_LOBATTO ||
+	atmos.angleSet.set == SET_EDDINGTON) {
+      switch (atmos.angleSet.set) {
+      case SET_VERTICAL:
+      
+	if (atmos.Nrays != 1) {
+	  Error(WARNING, routineName,
+		"Ignoring value of NRAYS in 1-D plane geometry when"
+		" SET_VERTICAL is specified\n. Setting NRAYS = 1");
+	}
+	atmos.Nrays = 1;
+	break;
+      case SET_GAUSS_LOBATTO:
+	
+	if (atmos.Nrays != NRO_GLOB_4  &&  atmos.Nrays != NRO_GLOB_6) {
+	  sprintf(errorStr, "NRAYS must be %d or %d for SET_GAUSS_LOBATTO",
+		  NRO_GLOB_4, NRO_GLOB_6);
+	  Error(ERROR_LEVEL_2, routineName, errorStr);
+	}
+	break;
+      case SET_EDDINGTON:
+	
+	if (atmos.Nrays != 1) {
+	  Error(WARNING, routineName,
+		"Ignoring value of NRAYS in 1-D plane geometry when"
+		" SET_EDDINGTON is specified\n. Setting NRAYS = 1,"
+		" and muz = 1/sqrt(3)");
+	}
+	atmos.Nrays = 1;
+	break;
+      }
+    } else {
       Error(WARNING, routineName,
 	    "Ignoring value of keyword ANGLE_SET in 1-D plane geometry");
     }
@@ -233,7 +264,7 @@ void readInput()
 	    "Ignoring value of keywords ANGLE_SET > NO_VERTICAL when\n "
 	    " EDDINGTON is set to TRUE\n"
 	    " Using SET_VERTICAL with muz = 1/sqrt(3)");
-      atmos.angleSet.set = SET_VERTICAL;
+      atmos.angleSet.set = SET_EDDINGTON;
     }
     break;
 

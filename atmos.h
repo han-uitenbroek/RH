@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Feb 14 16:18:45 2020 --
+       Last modified: Fri Jun 17 16:00:40 2022 --
 
        --------------------------                      ----------RH-- */
 
@@ -22,13 +22,22 @@
 #define  NMAXINCLINATION  9
 #define  NMAXAZIMUTH      5
 
+
+/* --- Number of rays for the Gauss--Lobatto quadrature -- ---------- */
+
+#define NRO_GLOB_4  2
+#define NRO_GLOB_6  3
+
+
 #define  MOLECULAR_CONCENTRATION_FILE  "molecules.out"
 
 
 /* --- Angle set identifications. Most are Carlsson type -- --------- */
 
-enum angleset  {SET_VERTICAL, SET_GL, SET_A2, SET_A4, SET_A6, SET_A8,
-		SET_B4,	SET_B6, SET_B8, NO_SET};
+enum angleset  {SET_VERTICAL, SET_GL,
+                SET_A2, SET_A4, SET_A6, SET_A8,
+		SET_B4,	SET_B6, SET_B8,
+		SET_GAUSS_LOBATTO, SET_EDDINGTON, NO_SET};
 
 typedef struct {
   bool_t hasline;
