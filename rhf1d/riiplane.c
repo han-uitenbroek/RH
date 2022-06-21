@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Jan 22 11:02:49 2004 --
+       Last modified: Fri Jun 17 20:08:49 2022 --
 
        --------------------------                      ----------RH-- */
 
@@ -68,7 +68,7 @@ double RII(double v_emit, double v_abs, double adamp, int mu1, int mu2)
 
   double theta_min, theta_plus, vmin, vplus, theta1, theta2,
     xg[N_GAUSS_QUADR], wg[N_GAUSS_QUADR], rii, mu12, muz1, muz2,
-         sin_theta, cos_theta, sec_theta, csc_theta2;
+    sin_theta, cos_theta, sec_theta, csc_theta2, theta, thetap;
 
   muz1 = geometry.muz[mu1];
   muz2 = geometry.muz[mu2];
@@ -76,8 +76,10 @@ double RII(double v_emit, double v_abs, double adamp, int mu1, int mu2)
 
   theta1     = acos(muz1);
   theta2     = acos(muz2);
-  theta_min  = fabs(theta1 - theta2);
-  theta_plus = theta1 + theta2; 
+  theta      = MIN(theta1, theta2);
+  thetap     = MAX(theta1, theta2);
+  theta_min  = thetap - theta;
+  theta_plus = thetap + theta;
 
   vmin  = (v_emit - v_abs) / 2.0;
   vplus = (v_emit + v_abs) / 2.0;
@@ -90,19 +92,33 @@ double RII(double v_emit, double v_abs, double adamp, int mu1, int mu2)
   }
   /* --- Integration over azimuthal angle parametrized as theta - -- */
 
-  rii = 0.0;
-  for (n = 0;  n < N_GAUSS_QUADR;  n++) {
-    xg[n] = theta_min + (theta_plus - theta_min) * xg0[n];
-    wg[n] = (theta_plus - theta_min) * wg0[n];
 
-    sin_theta  = sin(xg[n]);
-    cos_theta  = cos(xg[n]);
-    sec_theta  = sqrt(2.0 / (1.0 + cos_theta));
-    csc_theta2 = 2.0 / (1.0 - cos_theta);
+  if (theta == 0.0) {
+    if (thetap == 0.0) return 0.0;
+    
+    cos_theta = cos(thetap);
+    sin_theta = sin(thetap);
+    
+    rii = ((1.0 + SQ(cos_theta)) / sin_theta) *
+	  exp(-SQ(vmin) * (2.0 /(1.0 - cos_theta))) *
+	  Voigt(adamp * sqrt(2.0 / (1.0 + cos_theta)),
+		vplus * sqrt(2.0 / (1.0 + cos_theta)), NULL, HUI_ETAL);
+  } else {
+    
+    rii = 0.0;
+    for (n = 0;  n < N_GAUSS_QUADR;  n++) {
+      xg[n] = theta_min + (theta_plus - theta_min) * xg0[n];
+      wg[n] = (theta_plus - theta_min) * wg0[n];
 
-    rii += (1.0 + SQ(cos_theta)) * exp(-SQ(vmin) * csc_theta2) *
-      Voigt(adamp*sec_theta, vplus*sec_theta, NULL, HUI_ETAL) /
-      sqrt(mu12 - SQ(cos_theta) + 2.0*muz1*muz2*cos_theta) * wg[n];
+      sin_theta  = sin(xg[n]);
+      cos_theta  = cos(xg[n]);
+      sec_theta  = sqrt(2.0 / (1.0 + cos_theta));
+      csc_theta2 = 2.0 / (1.0 - cos_theta);
+
+      rii += (1.0 + SQ(cos_theta)) * exp(-SQ(vmin) * csc_theta2) *
+	Voigt(adamp*sec_theta, vplus*sec_theta, NULL, HUI_ETAL) /
+	sqrt(mu12 - SQ(cos_theta) + 2.0*muz1*muz2*cos_theta) * wg[n];
+    }
   }
 
   return 3.0 / (16.0 * SQ(PI)) * rii;
