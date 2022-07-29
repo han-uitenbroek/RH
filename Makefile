@@ -2,7 +2,7 @@
 #
 #      Version:       rh2.0
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Thu May 20 14:08:03 2021 --
+#      Last modified: Fri Jul 29 15:02:37 2022 --
 #
 ##     --------------------------                      ----------RH-- ##
 
@@ -11,10 +11,10 @@ OS := $(shell uname -s)
 ## --- If no f90 compiler is available comment out -DHAVE_F90
 
 CC       = gcc
-CFLAGS   = -O2 -march=native -DHAVE_F90
+CFLAGS   = -O2  -DHAVE_F90
 
 F90C     = gfortran
-F90FLAGS = -O2 -march=native
+F90FLAGS = -O2
 
 ifneq ("$(wildcard /usr/include/tirpc)","")
     CFLAGS += -I/usr/include/tirpc
