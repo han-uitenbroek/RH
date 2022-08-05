@@ -263,8 +263,16 @@ class input_atmos:
                 Nd = self.Nradius
 
             data.append("*\n")
-            data.append("*  lg column Mass   Temperature    "\
-                        "Ne             V              Vturb\n")
+            
+            if self.scale == "MASS_SCALE":
+                data.append("*  lg column Mass   Temperature    "\
+                            "Ne             V              Vturb\n")
+            elif self.scale == "TAU500_SCALE":
+                data.append("*lg tau500          Temperature    "\
+                            "Ne             V              Vturb\n")
+            elif self.scale == "GEOMETRIC_SCALE":
+                data.append("*height [km]        Temperature    "\
+                            "Ne             V              Vturb\n")
 
             fmt = '  {: 12.8E}' + 4 * '  {: 10.6E}' + "\n"
             for k in range(Nd):
