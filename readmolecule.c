@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri May  7 16:57:07 2021 --
+       Last modified: Mon Jun 26 14:12:33 2023 --
 
        --------------------------                      ----------RH-- */
 
@@ -576,6 +576,17 @@ int stringcompare(const void *s1, const void *s2)
    Parity translation p --> E, and m --> F, for the orbital angular
    momentum pointing parallel or anti-parallel to the internuclear axis.
 
+
+         -- KURUCZ_CO:
+
+          Molecular line data from Bob Kurucz's CO XX transitions
+
+  203.6264 -7.917  2.5    83.924  2.5 -49177.701 108X00     A07     16
+|    |    |    |    |    |    |    |    |    |    |    |    |    |    |    |
+0    5   10        20        30        40        50        60        70
+
+  NOTE: the trailing 200 in the file coxx.asc neeeds to be removed, as
+        it confuses the Zeeman determination.
        --                                              -------------- */
 
 void readMolecularLines(struct Molecule *molecule, char *line_data)
@@ -688,7 +699,8 @@ void readMolecularLines(struct Molecule *molecule, char *line_data)
     }
   } else if (strstr(format_string, "KURUCZ_CD18") ||
 	     strstr(format_string, "KURUCZ_NEW")  ||
-	     strstr(format_string, "KURUCZ_TIO")) {
+	     strstr(format_string, "KURUCZ_TIO")  ||
+	     strstr(format_string, "KURUCZ_CO")) {
 
     C = 2 * PI * (Q_ELECTRON/EPSILON_0) * (Q_ELECTRON/M_ELECTRON) / CLIGHT;
 
@@ -743,7 +755,6 @@ void readMolecularLines(struct Molecule *molecule, char *line_data)
 	mrt->parityi[1] = '\0';
 	mrt->parityj[1] = '\0';
   
-
 	/* --- Vibrational quantum numbers --            ------------ */
 
 	Nread = sscanf(inputLine+53, "%2d", &mrt->vi);
@@ -753,6 +764,19 @@ void readMolecularLines(struct Molecule *molecule, char *line_data)
 
 	Nread = sscanf(inputLine+56, "%1d", &mrt->subi);
 	Nread = sscanf(inputLine+64, "%1d", &mrt->subj);
+
+      } else if (strstr(format_string, "KURUCZ_CO")) {
+		/* --- Electronic configuration --             -------------- */
+
+	mrt->configi[0] = inputLine[52];
+	mrt->configj[0] = inputLine[60];
+	mrt->configi[1] = '\0';
+	mrt->configj[1] = '\0';
+
+	/* --- Vibrational quantum numbers --            ------------ */
+
+	Nread = sscanf(inputLine+53, "%2d", &mrt->vi);
+	Nread = sscanf(inputLine+61, "%2d", &mrt->vj);
 
       } else if (strstr(format_string, "KURUCZ_NEW")) {
 
