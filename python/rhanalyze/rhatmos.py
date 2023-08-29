@@ -75,11 +75,16 @@ class atmos:
         up.done()
 
 class input_atmos:
-    def __init__(self, geometrytype, atmosfile, Bfile=None):
-        self.read(geometrytype, atmosfile, Bfile)
+    def __init__(self, geometrytype, atmosfile, Bfile=None, New=False):
+        
+        self.type      = geometrytype
+        self.atmosfile = atmosfile
+        self.Bfile     = Bfile
+        
+        if New == False:
+            self.read()
     
-    def read(self, geometrytype, atmosfile, Bfile):
-        self.type = geometrytype
+    def read(self):
        
         if self.type == "ONE_D_PLANE" or self.type == "SPHERICAL_SYMMETRIC":
 
@@ -87,7 +92,7 @@ class input_atmos:
             G_TO_KG = 1.0E-3
 
             data = []
-            with open(atmosfile, 'r') as file:
+            with open(self.atmosfile, 'r') as file:
                 for line in file:
                     if line.startswith('*'):
                         continue
@@ -152,7 +157,7 @@ class input_atmos:
 
         elif self.type == "TWO_D_PLANE" or self.type == "THREE_D_PLANE":
             
-            f = open(atmosfile, 'rb')
+            f = open(self.atmosfile, 'rb')
             up = xdrlib.Unpacker(f.read())
             f.close()
              
@@ -202,9 +207,9 @@ class input_atmos:
             print("Not a valid input atmosphere type: {0}".format(self.type))
             return
             
-        if Bfile != None:
+        if self.Bfile != None:
             
-            f = open(Bfile, 'rb')
+            f = open(self.Bfile, 'rb')
             up = xdrlib.Unpacker(f.read())
             f.close()
 
@@ -214,7 +219,7 @@ class input_atmos:
             
             up.done()
 
-    def write(self, outfile, Bfile=None):
+    def write(self, outfile=None, Bfile=None):
 
         if self.type == "ONE_D_PLANE" or self.type == "SPHERICAL_SYMMETRIC":
 
@@ -290,7 +295,11 @@ class input_atmos:
                 for k in range(Nd):
                     data.append(fmt.format(*nH[k, :]))
                     
-            f = open(outfile, 'w')
+            if outfile == None:
+                f = open(self.atmosfile, 'w')
+            else:
+                f = open(outfile, 'w')
+                
             for line in data:
                 f.write(line)
             f.close()
@@ -326,7 +335,11 @@ class input_atmos:
             write_farray(self.vz, pck, "double")
             write_farray(self.nH, pck, "double")
  
-            f = open(outfile, 'wb')
+            if outfile == None:
+                f = open(self.atmosfile, 'wb')
+            else:
+                f = open(outfile, 'wb')
+                
             f.write(pck.get_buffer())
             f.close()
             pck.reset()
@@ -335,7 +348,7 @@ class input_atmos:
             print("Not a valid input atmosphere type: {0}".format(self.type))
             return
 
-        if Bfile != None:
+        if self.Bfile != None:
 
             pck = xdrlib.Packer()
 
@@ -343,7 +356,7 @@ class input_atmos:
             write_farray(self.gamma, pck, "double")
             write_farray(self.chi, pck, "double")
 
-            f = open(Bfile, 'wb')
+            f = open(self.Bfile, 'wb')
             f.write(pck.get_buffer())
             f.close()
             pck.reset()
