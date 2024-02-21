@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Jan 16 19:56:13 2012 --
+       Last modified: Tue Feb 20 17:12:25 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -89,6 +89,45 @@ void writeJlambda(int nspect, double *J)
   }
 }
 /* ------- end ---------------------------- writeJlambda.c ---------- */
+
+
+/* ------- begin -------------------------- readJgas.c -------------- */
+
+void readJgas(double **Jgas)
+{
+  const char routineName[] = "readJgas";
+
+  size_t recordsize;
+  FILE  *fp;
+  int    result;
+  
+  recordsize = atmos.Nspace * spectrum.Nspect;
+  fp         = fopen("Jgas.dat", "r");
+  result     = fread(&(Jgas[0][0]), sizeof(double), recordsize, fp);
+
+  fclose(fp);
+}
+/* ------- end ---------------------------- readJgas.c ------------- */
+
+
+/* ------- begin -------------------------- writeJgas.c ------------ */
+
+void writeJgas(double **Jgas)
+{
+  const char routineName[] = "writeJgas";
+
+  size_t recordsize;
+  FILE  *fp;
+  int    result;
+  
+  recordsize = atmos.Nspace * spectrum.Nspect;
+  fp         = fopen("Jgas.dat", "w");
+  result     = fwrite(&(Jgas[0][0]), sizeof(double), recordsize, fp);
+  
+  fclose(fp);
+  } 
+/* ------- end ------------------------------- writeJgas.c ---------- */
+
 
 /* ------- begin -------------------------- readJ20lambda.c --------- */
 

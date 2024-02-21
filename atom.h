@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Mar 24 16:58:23 2022 --
+       Last modified: Tue Feb 20 09:36:56 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -50,11 +50,12 @@ typedef struct Paschenstruct Paschenstruct;
 struct AtomicLine {
   bool_t   symmetric, polarizable, Voigt, PRD;
   enum vdWaals vdWaals;
-  int      i, j, Nlambda, Nblue, Ncomponent, Nxrd, fd_profile;
+  int      i, j, Nlambda, Nblue, Ncomponent, Nxrd, fd_profile,
+           **id0, **id1;
   double   lambda0, *lambda, isotope_frac, g_Lande_eff,
            Aji, Bji, Bij, *Rij, *Rji, **phi, **phi_Q, **phi_U, **phi_V,
          **psi_Q, **psi_U, **psi_V, *wphi, *Qelast, Grad, cvdWaals[4],
-           cStark, qcore, qwing, **rho_prd, *c_shift, *c_fraction;
+    cStark, qcore, qwing, **rho_prd, *c_shift, *c_fraction, **frac;
   FILE    *fp_GII;
   struct Ng *Ng_prd;
   Atom *atom;
@@ -284,6 +285,8 @@ void   Redistribute(int NmaxIter, double iterLimit);
 void   PRDScatter(AtomicLine *line, enum Interpolation representation);
 void   PRDAngleScatter(AtomicLine *PRDline,
 		       enum Interpolation representation);
+void   PRDAngleApproxScatter(AtomicLine *PRDline,
+			     enum Interpolation representation);
 
 
 /* --- Polarization related --                         -------------- */

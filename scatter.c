@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Oct 13 17:12:22 2020 --
+       Last modified: Tue Feb 20 10:41:43 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -50,7 +50,7 @@ extern char messageStr[];
 
 void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 {
-  const char routineName[] = "scatterIntegral";
+  const char routineName[] = "PRDScatter";
   register int  la, k, lap, kr, ip, kxrd;
 
   char    filename[MAX_LINE_SIZE];
@@ -63,7 +63,8 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
   AtomicLine *line, **XRD, *XRDline;
   AtomicContinuum *continuum;
 
-  /* --- This the static case --                       -------------- */ 
+  /* --- Routine for angle-averaged and hybrid angle-dependent
+         approximation. In the latter Jgas is used instead of J -- -- */ 
 
   atom = PRDline->atom;
 
@@ -155,11 +156,20 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 
       /* --- Get local mean intensity and wavelength in Doppler units */
 
-      for (la = 0;  la < XRDline->Nlambda;  la++) {
-	J_k[la]   = spectrum.J[XRDline->Nblue + la][k];
-	q_abs[la] = (XRDline->lambda[la] - XRDline->lambda0) * CLIGHT /
-	  (XRDline->lambda0 * atom->vbroad[k]);
+      if (input.PRD_angle_dep == PRD_ANGLE_APPROX) {
+	for (la = 0;  la < XRDline->Nlambda;  la++) {
+	  J_k[la] = spectrum.Jgas[XRDline->Nblue + la][k];
+	  q_abs[la] = (XRDline->lambda[la] - XRDline->lambda0) * CLIGHT /
+	    (XRDline->lambda0 * atom->vbroad[k]);
+	}
+      } else if (input.PRD_angle_dep == PRD_ANGLE_INDEP) {
+	for (la = 0;  la < XRDline->Nlambda;  la++) {
+	  J_k[la] = spectrum.J[XRDline->Nblue + la][k];
+	  q_abs[la] = (XRDline->lambda[la] - XRDline->lambda0) * CLIGHT /
+	    (XRDline->lambda0 * atom->vbroad[k]);
+	}
       }
+
       switch (representation) {
       case LINEAR:
 	break;
@@ -296,7 +306,7 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 void PRDAngleScatter(AtomicLine *PRDline,
 		     enum Interpolation representation)
 {
-  const char routineName[] = "scatterIntegral";
+  const char routineName[] = "PRDAngleScatter";
   register int  la, k, lap, kr, ip, mu, mup;
 
   char    filename[MAX_LINE_SIZE];

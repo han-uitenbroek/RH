@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu May  6 15:39:34 2021 --
+       Last modified: Tue Feb 20 17:16:53 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -139,6 +139,13 @@ void writeSpectrum(Spectrum *spectrum)
 	writeJ20lambda(nspect, spectrum->J20[nspect]);
       
       close(spectrum->fd_J20);
+    }
+    /* --- Write the mean intensity transformed to the gas frame -- - */
+    
+    if (atmos.NPRDactive > 0  &&
+	input.PRD_angle_dep == PRD_ANGLE_APPROX) {
+
+      writeJgas(spectrum->Jgas);
     }
   }
 }

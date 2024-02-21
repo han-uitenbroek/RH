@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Jun 17 16:13:57 2022 --
+       Last modified: Tue Feb 20 09:33:52 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -98,7 +98,9 @@ void readInput()
      setintValue},
     {"PRD_NG_PERIOD", "0", FALSE, KEYWORD_OPTIONAL, &input.PRD_Ngperiod,
      setintValue},
-    {"PRD_ANGLE_DEP", "FALSE", FALSE, KEYWORD_DEFAULT, &input.PRD_angle_dep,
+    {"PRD_ANGLE_DEP", "FALSE", FALSE, KEYWORD_DEFAULT,
+     &input.PRD_angle_dep, setPRDangle},
+    {"PRDH_LIMIT_MEM", "FALSE", FALSE, KEYWORD_OPTIONAL, &input.prdh_limit_mem,
      setboolValue},
     {"XRD", "FALSE", FALSE, KEYWORD_DEFAULT, &input.XRD, setboolValue}, 
 

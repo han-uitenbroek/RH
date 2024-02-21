@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu May 27 13:47:34 2021 --
+       Last modified: Tue Feb 20 09:34:35 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -76,18 +76,19 @@ typedef struct {
          dampingFile[MAX_VALUE_LENGTH],
          coolingFile[MAX_VALUE_LENGTH],
          Itop[MAX_VALUE_LENGTH];
-  bool_t magneto_optical, PRD_angle_dep, XRD, Eddington,
+  bool_t magneto_optical, XRD, Eddington,
          backgr_pol, limit_memory, allow_passive_bb, NonICE,
          rlkscatter, xdr_endian, old_background, accelerate_mols,
-         RLK_explicit;
+         RLK_explicit, prdh_limit_mem;
   enum   solution startJ;
   
   enum   StokesMode StokesMode;
   enum   S_interpol S_interpolation;
   enum   S_interpol_stokes S_interpolation_stokes;
-  
+  enum   PRDangle PRD_angle_dep;
   enum   order_3D interpolate_3D;
   enum   ne_solution solve_ne;
+  
   int    isum, Ngdelay, Ngorder, Ngperiod, NmaxIter,
          PRD_NmaxIter, PRD_Ngdelay, PRD_Ngorder, PRD_Ngperiod,
          NmaxScatter, Nthreads, CR_Nstep;
@@ -113,6 +114,7 @@ void  setdoubleValue(char *value, void *pointer);
 void  setstartValue(char *value, void *pointer);
 void  setnesolution(char *value, void *pointer);
 void  setStokesMode(char *value, void *pointer);
+void  setPRDangle(char *value, void *pointer);
 void  setThreadValue(char *value, void *pointer);
 
 void  setInterpolate_3D(char *value, void *pointer);

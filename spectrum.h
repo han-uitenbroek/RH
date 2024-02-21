@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu May  6 15:57:13 2021 --
+       Last modified: Tue Feb 20 09:47:52 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -40,8 +40,11 @@ typedef struct{
 typedef struct {
   bool_t   vacuum_to_air, updateJ;
   int      Nspect, *PRDindex, fd_J, fd_J20, fd_Imu;
-  double  *lambda, **J, **I, **Stokes_Q, **Stokes_U, **Stokes_V, **J20;
+  double  *lambda, **J, **I, **Stokes_Q, **Stokes_U, **Stokes_V, **J20,
+         **Jgas, **Ilast, **v_los;
   ActiveSet *as;
+  int    *nc, *iprdh;
+  double *cprdh;
 } Spectrum;
 
 
@@ -77,6 +80,8 @@ void readJlambda(int nspect, double *J);
 void writeJlambda(int nspect, double *J);
 void readJ20lambda(int nspect, double *J20);
 void writeJ20lambda(int nspect, double *J20);
+void writeJgas(double **Jgas);
+void readJgas(double **Jgas);
 
 void readImu(int nspect, int mu, bool_t to_obs, double *I);
 void writeImu(int nspect, int mu, bool_t to_obs, double *I);

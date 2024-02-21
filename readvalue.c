@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Jun 17 15:43:39 2022 --
+       Last modified: Mon Feb 19 12:30:00 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -408,6 +408,30 @@ void set_S_interpolation_stokes(char *value, void *pointer)
   memcpy(pointer, &interpolation, sizeof(enum S_interpol_stokes));
 }
 /* ------- end --------------------- set_S_interpolation_stokes.c --- */
+
+
+/* ------- begin ------------------- setPRDangle.c ------------------ */
+
+void setPRDangle(char *value, void *pointer)
+{
+  const char routineName[] = "setPRDangle";
+
+  enum PRDangle PRD_angle_dep;
+
+  if (!strcmp(value, "PRD_ANGLE_INDEP") || !strcmp(value, "FALSE"))
+    PRD_angle_dep = PRD_ANGLE_INDEP;
+  else if (!strcmp(value, "PRD_ANGLE_APPROX"))
+    PRD_angle_dep = PRD_ANGLE_APPROX;
+  else if (!strcmp(value, "PRD_ANGLE_DEP"))
+    PRD_angle_dep = PRD_ANGLE_DEP;
+  else {
+    sprintf(messageStr,
+	     "Invalid value for keyword PRD_ANGLE_DEP: %s", value);
+    Error(ERROR_LEVEL_2, routineName, messageStr);
+  }
+  memcpy(pointer, &PRD_angle_dep, sizeof(enum_t));
+}
+/* ------- end ---------------------------- setPRDangle.c ----------- */
 
 
 /* ------- begin -------------------------- setstartValue.c --------- */

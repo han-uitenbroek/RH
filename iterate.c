@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek  (huitenbroek@nso.edu)
-       Last modified: Thu May 21 17:29:02 2020 --
+       Last modified: Tue Feb 20 13:13:59 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -150,7 +150,7 @@ void Iterate(int NmaxIter, double iterLimit)
 
 double solveSpectrum(bool_t eval_operator, bool_t redistribute)
 {
-  register int nspect, n, nt;
+  register int nspect, n, nt, k;
 
   int         Nthreads, lambda_max;
   double      dJ, dJmax;
@@ -181,6 +181,18 @@ double solveSpectrum(bool_t eval_operator, bool_t redistribute)
   zeroRates(redistribute);
   lambda_max = 0;
   dJmax = 0.0;
+
+  /* --- Zero out J in gas parcel's frame --           -------------- */
+  
+  if (spectrum.updateJ  &&
+      input.PRD_angle_dep == PRD_ANGLE_APPROX &&
+      atmos.Nrays > 1 && atmos.NPRDactive > 0){
+    for (k = 0;  k < atmos.Nspace;  k++) {
+      for (nspect = 0;  nspect < spectrum.Nspect;  nspect++) {
+	spectrum.Jgas[nspect][k] = 0.0;
+      }
+    }
+  }
 
   if (input.Nthreads > 1) {
 
