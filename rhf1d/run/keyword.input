@@ -69,11 +69,17 @@
 #  PRD_NG_ORDER   = 2
 #  PRD_NG_PERIOD  = 3
 
-# If PRD_ANGLE_DEP is set to TRUE angle-dependent PRD is used
+# If PRD_ANGLE_DEP is set to FALSE angle-averaged PRD is used. Other
+# options are:
+#- PRD_ANGLE_AVER  (same, angle-averaged PRD)
+#- PRD_ANGLE_DEP (angle-dependent PRD; costly)
+#- PRD_ANGLE_APPROX (angle-dependent approximation; fast)
 # (KEYWORD_DEFAULT). The default is FALSE.
 
-##  PRD_ANGLE_DEP = TRUE
-##  XRD = FALSE
+  PRD_ANGLE_DEP = PRD_ANGLE_AVER
+# Enables cross redistribution for lines sharing the same upper level.
+# Default is FALSE
+##  XRD = TRUE
 
 # Temporary files for mean intensities and background opacities
 # (KEYWORD_REQUIRED).
