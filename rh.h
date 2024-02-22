@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Feb 19 12:23:24 2024 --
+       Last modified: Thu Feb 22 17:06:40 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -27,7 +27,7 @@ enum solution       {UNKNOWN=-1, LTE_POPULATIONS, ZERO_RADIATION,
                      OLD_POPULATIONS, NEW_J, OLD_J};
 enum StokesMode     {NO_STOKES, FIELD_FREE, FULL_STOKES};
 enum VoigtAlgorithm {ARMSTRONG, RYBICKI, HUI_ETAL, HUMLICEK, LOOKUP};
-enum PRDangle       {PRD_ANGLE_INDEP, PRD_ANGLE_APPROX, PRD_ANGLE_DEP};
+enum PRDangle       {PRD_ANGLE_AVER=0, PRD_ANGLE_APPROX, PRD_ANGLE_DEP};
 
 #define  MAX_LINE_SIZE      512
 #define  MAX_MESSAGE_LENGTH 512

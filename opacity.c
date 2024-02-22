@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 20 14:37:40 2024 --
+       Last modified: Thu Feb 22 16:59:47 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -213,7 +213,7 @@ void Opacity(int nspect, int mu, bool_t to_obs, bool_t initialize)
 
 	if (line->PRD) {
 	  switch (input.PRD_angle_dep) {
-	  case PRD_ANGLE_INDEP:
+	  case PRD_ANGLE_AVER:
 	    for (k = 0;  k < atmos.Nspace;  k++)
 	      atom->rhth[nt].gij[n][k] *= line->rho_prd[la][k];
 

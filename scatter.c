@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 20 10:41:43 2024 --
+       Last modified: Thu Feb 22 17:02:07 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -162,7 +162,7 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 	  q_abs[la] = (XRDline->lambda[la] - XRDline->lambda0) * CLIGHT /
 	    (XRDline->lambda0 * atom->vbroad[k]);
 	}
-      } else if (input.PRD_angle_dep == PRD_ANGLE_INDEP) {
+      } else if (input.PRD_angle_dep == PRD_ANGLE_AVER) {
 	for (la = 0;  la < XRDline->Nlambda;  la++) {
 	  J_k[la] = spectrum.J[XRDline->Nblue + la][k];
 	  q_abs[la] = (XRDline->lambda[la] - XRDline->lambda0) * CLIGHT /

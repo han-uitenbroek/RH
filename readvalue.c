@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Feb 19 12:30:00 2024 --
+       Last modified: Thu Feb 22 17:01:06 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -418,8 +418,8 @@ void setPRDangle(char *value, void *pointer)
 
   enum PRDangle PRD_angle_dep;
 
-  if (!strcmp(value, "PRD_ANGLE_INDEP") || !strcmp(value, "FALSE"))
-    PRD_angle_dep = PRD_ANGLE_INDEP;
+  if (!strcmp(value, "PRD_ANGLE_AVER") || !strcmp(value, "FALSE"))
+    PRD_angle_dep = PRD_ANGLE_AVER;
   else if (!strcmp(value, "PRD_ANGLE_APPROX"))
     PRD_angle_dep = PRD_ANGLE_APPROX;
   else if (!strcmp(value, "PRD_ANGLE_DEP"))

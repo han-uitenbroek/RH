@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 20 10:02:37 2024 --
+       Last modified: Thu Feb 22 16:46:05 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -522,7 +522,9 @@ void initSolution(Atom *atom, Molecule *molecule)
   /* --- Need storage for angle-dependent specific intensities for
          angle-dependent PRD --                        -------------- */
 
-  if (atmos.NPRDactive > 0 && input.PRD_angle_dep) {
+  if (atmos.NPRDactive > 0  &&
+      input.PRD_angle_dep == PRD_ANGLE_DEP) {
+    
     oflag = 0;
     if (input.startJ == OLD_J) {
       if (spectrum.updateJ) {
