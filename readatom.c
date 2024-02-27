@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 27 15:28:40 2024 --
+       Last modified: Tue Feb 27 15:35:44 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -492,9 +492,9 @@ void readAtom(Atom *atom, char *atom_file)
                 "atom %2s\n", atom->ID);
 	Error(WARNING, routineName, messageStr);
       }
-      if !atmos.moving  &&
+      if (!atmos.moving  &&
 	  (input.PRD_angle_dep == PRD_ANGLE_DEP ||
-	   input.PRD_angle_dep == PRD_ANGLE_APPROX) {
+	   input.PRD_angle_dep == PRD_ANGLE_APPROX)) {
 	sprintf(messageStr,
 		"Using angle-dependent PRD in static atmosphere for "
                 "atom %2s\n", atom->ID);
