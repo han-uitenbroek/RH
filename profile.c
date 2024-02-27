@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri May 14 17:54:31 2021 --
+       Last modified: Tue Feb 27 15:44:31 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -87,7 +87,7 @@ void Profile(AtomicLine *line)
          reinitialized. --                             -------------- */
 
   if (line->PRD && line->rho_prd == NULL) {
-    if (input.PRD_angle_dep)
+    if (input.PRD_angle_dep == PRD_ANGLE_DEP)
       Nlamu = 2*atmos.Nrays * line->Nlambda;
     else
       Nlamu = line->Nlambda;
