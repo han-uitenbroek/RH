@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 20 17:16:53 2024 --
+       Last modified: Tue Feb 27 15:54:34 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -165,7 +165,7 @@ void freeSpectrum(Spectrum *spectrum)
 
   free(spectrum->lambda);
 
-  if (atmos.NPRDactive > 0 && input.PRD_angle_dep)
+  if (atmos.NPRDactive > 0  &&  input.PRD_angle_dep == PRD_ANGLE_DEP)
     free(spectrum->PRDindex);
   
   freeMatrix((void **) spectrum->I);
