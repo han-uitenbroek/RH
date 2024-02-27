@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 20 10:35:00 2024 --
+       Last modified: Mon Feb 26 16:40:54 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -55,7 +55,7 @@ void Redistribute(int NmaxIter, double iterLimit)
     for (kr = 0;  kr < atom->Nline;  kr++) {
       line = &atom->line[kr];
       if (line->PRD && line->Ng_prd == NULL) {
-	if (input.PRD_angle_dep)
+	if (input.PRD_angle_dep == PRD_ANGLE_DEP)
 	  Nlamu = 2*atmos.Nrays * line->Nlambda * atmos.Nspace;
 	else
 	  Nlamu = line->Nlambda*atmos.Nspace;
