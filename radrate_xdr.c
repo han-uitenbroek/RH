@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Sep 17 14:19:48 2002 --
+       Last modified: Wed Feb 28 22:21:24 2024 --
 
        --------------------------                      ----------RH-- */
 
@@ -43,7 +43,8 @@ bool_t writeRadRate(Atom *atom)
 
   /* --- Write radiatve rates for transitions treated in detail.-- -- */
 
-  if (!strcmp(input.radrateFile, "none")) return FALSE;
+  if (!strcmp(input.radrateFile, "none")  &&
+      atom->Nprd == 0) return FALSE;
 
   sprintf(ratesfile, (atom->ID[1] == ' ') ?
 	  "radrate.%.1s.out" : "radrate.%.2s.out", atom->ID);
@@ -76,7 +77,8 @@ bool_t readRadRate(Atom *atom)
   FILE *fp;
   XDR   xdrs;
 
-  if (!strcmp(input.radrateFile, "none")) return FALSE;
+  if (!strcmp(input.radrateFile, "none")  &&
+      atom->Nprd == 0) return FALSE;
 
   sprintf(ratesfile, (atom->ID[1] == ' ') ?
 	  "radrate.%.1s.out" : "radrate.%.2s.out", atom->ID);
