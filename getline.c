@@ -16,6 +16,8 @@
 
 #include "rh.h"
 #include "error.h"
+#include "inputs.h"
+
 
 /* --- Function prototypes --                          -------------- */
 
