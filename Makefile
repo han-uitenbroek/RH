@@ -176,7 +176,7 @@ librh.a(gammafunc.o):     rh.h
 librh.a(gaussleg.o):      rh.h  constant.h
 librh.a(getcpu.o):        rh.h  statistics.h  error.h  inputs.h
 librh.a(getlambda.o):     rh.h  atom.h  atmos.h  constant.h  error.h  inputs.h
-librh.a(getline.o):       rh.h  error.h
+librh.a(getline.o):       rh.h  error.h  inputs.h
 librh.a(giigen.o):        rh.h  atom.h  constant.h
 librh.a(cocollisions.o):  rh.h  atom.h  atmos.h  error.h  constant.h
 librh.a(humlicek.o):      rh.h  complex.h
