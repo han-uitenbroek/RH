@@ -331,23 +331,31 @@ double ar85cea(int i, int j, int k, struct Atom *atom)
   
   if(!strcmp(atom->ID, "CA")  &&  ichrge == 0) {
     iea = 25.;
-    a   = 9.8e-17;
+    a   = 6.0e-17;
     b   = 1.12;
+    y = iea / bkt;
+    f1y = fone(y);
     cup = 6.69E+7 * a * iea / sqrt(bkt) * exp(-y)*(1.0 + b*f1y);
   } else if (!strcmp(atom->ID, "CA")  &&  ichrge == 1) {
-    a   = 6.0e-17;
+    a   = 9.8e-17;
     iea = 25.0;
     b   = 1.12;
+    y = iea / bkt;
+    f1y = fone(y);
     cup = 6.69E+7 * a * iea / sqrt(bkt) * exp(-y)*(1.0 + b*f1y);
   } else if (!strcmp(atom->ID, "FE")  &&  ichrge == 3) {
     a   = 1.8E-17;
     iea = 60.0;
     b   = 1.0;
+    y = iea / bkt;
+    f1y = fone(y);
     cup = 6.69e+7 * a * iea / sqrt(bkt) * exp(-y)*(1.0 + b*f1y);
   } else if (!strcmp(atom->ID, "FE")  &&  ichrge == 4) {
-    a   = 5.0E-17;
+    a   = 5.0E-18;
     iea = 73.0;
     b   = 1.0;
+    y = iea / bkt;
+    f1y = fone(y);
     cup = 6.69E+7 * a * iea / sqrt(bkt) * exp(-y)*(1.0 + b*f1y);
   }
 
