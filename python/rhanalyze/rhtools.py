@@ -1,4 +1,10 @@
-import xdrlib
+import sys
+
+if sys.version_info[1] < 13:
+    import xdrlib
+else:
+    import mda_xdrlib
+
 import numpy as np
 
 

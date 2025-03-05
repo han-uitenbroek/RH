@@ -1,5 +1,11 @@
-import xdrlib
+import sys
 
+if sys.version_info[1] < 13:
+    import xdrlib
+else:
+    import mda_xdrlib
+
+    
 class inputs:
     
     def __init__(self, filename='input.out'):

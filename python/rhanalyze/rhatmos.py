@@ -1,8 +1,15 @@
-import xdrlib
+import sys
+
+if sys.version_info[1] < 13:
+    import xdrlib
+else:
+    import mda_xdrlib
+
 import numpy as np
 
 import rhanalyze.rhgeometry
 from rhanalyze.rhtools import read_farray, read_string, write_farray
+
 
 class element:
 
