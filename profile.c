@@ -283,7 +283,7 @@ void Profile(AtomicLine *line)
 		  phi_delta * sin2_gamma * atmos.cos_2chi[mu][k] * sv[k];
 		phi_U[k] +=
 		  phi_delta * sin2_gamma * atmos.sin_2chi[mu][k] * sv[k];
-		phi_V[k] += sign *
+		phi_V[k] += sign * line->c_fraction[n] * 
 		  0.5*(phi_sp - phi_sm) * atmos.cos_gamma[mu][k] * sv[k];
 
 		if (input.magneto_optical) {
@@ -295,7 +295,7 @@ void Profile(AtomicLine *line)
 		    psi_delta * sin2_gamma * atmos.cos_2chi[mu][k] * sv[k];
 		  psi_U[k] +=
 		    psi_delta * sin2_gamma * atmos.sin_2chi[mu][k] * sv[k];
-		  psi_V[k] += sign *
+		  psi_V[k] += sign * line->c_fraction[n] * 
 		    0.5 * (psi_sp - psi_sm) * atmos.cos_gamma[mu][k] * sv[k];
 		}
 	      }
