@@ -3,7 +3,7 @@ import sys
 if sys.version_info[1] < 13:
     import xdrlib
 else:
-    import mda_xdrlib
+    import mda_xdrlib.xdrlib as xdrlib
 
 import numpy as np
 import os
