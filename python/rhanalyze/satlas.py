@@ -3,6 +3,9 @@ import os
 import scipy.io.idl as idl
 
 ### Adopted from STiC, courtesy Jaime de la Cruz. Gratefully acknowledged!
+### Reference for the atlas: https://link.springer.com/article/10.1023/A:1017165208013
+### Based on the spectral atlas made available by Brault and Neckel 1987
+
 
 class satlas:
     def __init__(self):
