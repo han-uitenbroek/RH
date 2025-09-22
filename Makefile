@@ -2,7 +2,7 @@
 #
 #      Version:       rh2.0
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Fri Jul 29 15:02:37 2022 --
+#      Last modified: Mon Sep 22 15:42:35 2025 --
 #
 ##     --------------------------                      ----------RH-- ##
 
@@ -12,9 +12,11 @@ OS := $(shell uname -s)
 
 CC       = gcc
 CFLAGS   = -O2  -DHAVE_F90
+##CFLAGS   = -g  -DHAVE_F90
 
 F90C     = gfortran
 F90FLAGS = -O2
+##F90FLAGS = -g
 
 ifneq ("$(wildcard /usr/include/tirpc)","")
     CFLAGS += -I/usr/include/tirpc
