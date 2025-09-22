@@ -2,12 +2,13 @@
 #
 #      Version:       rh2.0
 #      Author:        Han Uitenbroek (huitenbroek@nso.edu)
-#      Last modified: Fri Jul 29 15:02:15 2022 --
+#      Last modified: Mon Sep 22 16:18:22 2025 --
 #
 ##     --------------------------                      ----------RH-- ##
 
 CC       = gcc
 CFLAGS   = -O2  -I../
+##CFLAGS   = -g  -I../
 
 ifneq ("$(wildcard /usr/include/tirpc)","")
     CFLAGS += -I/usr/include/tirpc
@@ -16,6 +17,7 @@ endif
 
 LD       = gcc
 LDFLAGS  = -O2  -L../
+##LDFLAGS  = -g  -L../
 
 
 #      --                                              -------------- ##
