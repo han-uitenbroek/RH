@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D spherically symmetric
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Nov 16 02:35:19 2009 --
+       Last modified: Mon Sep 22 16:39:01 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -24,9 +24,9 @@
 #include "spectrum.h"
 #include "background.h"
 #include "constant.h"
-#include "statistics.h"
 #include "error.h"
 #include "inputs.h"
+#include "statistics.h"
 #include "xdr.h"
 
 
@@ -51,8 +51,8 @@ void readAtmos(Atmosphere *atmos, Geometry *geometry)
   const char routineName[] = "readAtmos";
   register int k, n;
 
-  char    scaleStr[20], inputLine[MAX_LINE_SIZE], *filename;
-  bool_t  exit_on_EOF, enhanced_atmos_ID;
+  char    scaleStr[21], inputLine[MAX_LINE_SIZE], *filename;
+  bool_t  exit_on_EOF, enhanced_atmos_ID = FALSE;
   int     Nread, Nradius, Nrequired, checkPoint;
   double  *dscale, *r, *cmass, *tau_ref, turbpress, nbaryon;
   struct  stat statBuffer;
@@ -75,10 +75,15 @@ void readAtmos(Atmosphere *atmos, Geometry *geometry)
   }
 
   atmos->NHydr = N_HYDROGEN_MULTI;
+
+  /* --- Boundary condition at TOP of atmosphere --      ------------ */
+
   if (strcmp(input.Itop, "none"))
     geometry->rboundary[TOP] = IRRADIATED;
   else 
     geometry->rboundary[TOP] = ZERO;
+
+  /* --- Boundary condition at BOTTOM of atmosphere --   ------------ */
 
   geometry->rboundary[CORE] = THERMALIZED;
 
