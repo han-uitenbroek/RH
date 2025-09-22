@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri Dec  6 10:09:22 2019 --
+       Last modified: Mon Sep 22 16:45:38 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -51,7 +51,7 @@ void MULTIatmos(Atmosphere *atmos, Geometry *geometry)
   const char routineName[] = "MULTIatmos";
   register int k, n, mu;
 
-  char    scaleStr[20], inputLine[MAX_LINE_SIZE], *filename;
+  char    scaleStr[21], inputLine[MAX_LINE_SIZE], *filename;
   bool_t  exit_on_EOF, enhanced_atmos_ID = FALSE;
   int     Nread, Ndep, Nrequired, checkPoint;
   double *dscale, turbpress, turbelecpress, nbaryon, meanweight;
@@ -229,16 +229,11 @@ void MULTIatmos(Atmosphere *atmos, Geometry *geometry)
 
       /* --- Edits to prevent negative pressures --    -------------- */
       
-      gas_pressure = atmos->gravity * geometry->cmass[k]     ;/* BRC */
-      elec_pressure = atmos->ne[k] *KBOLTZMANN * atmos->T[k] ;/* BRC */
+      gas_pressure = atmos->gravity * geometry->cmass[k]     ; /* BRC */
+      elec_pressure = atmos->ne[k] * KBOLTZMANN * atmos->T[k] ;/* BRC */
       if (gas_pressure < threshold_ion*elec_pressure){
-	gas_pressure = threshold_ion*elec_pressure           ;/* BRC */
+	gas_pressure = threshold_ion*elec_pressure           ; /* BRC */
       }
-      
-     /* nbaryon =
-	(atmos->gravity * geometry->cmass[k] -
-	 atmos->ne[k] *(KBOLTZMANN * atmos->T[k] + turbelecpress));*/
-	
       nbaryon = (gas_pressure -
 	 atmos->ne[k] *(KBOLTZMANN * atmos->T[k] + turbelecpress)); /* BRC */
 	
