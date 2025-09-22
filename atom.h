@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 20 09:36:56 2024 --
+       Last modified: Mon Sep 22 15:53:02 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -192,7 +192,7 @@ struct Paschenstruct{
 
 /* --- Associated function prototypes --               -------------- */
 
-void   initSolution();
+void   initSolution(void);
 void   Iterate(int NmaxIter, double iterLimit);
 
 void   readAtomicModels(void);

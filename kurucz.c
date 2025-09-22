@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri May 28 16:02:49 2021 --
+       Last modified: Mon Sep 22 16:01:36 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -921,8 +921,8 @@ bool_t RLKdet_level(char* label, RLK_level *level)
 
     switch (ptr_i[0]) {
     case '[':
-      if (Nread = sscanf(quanta_str, "[%1d%1c]",
-			 &multiplicity, &Lchar) != LS_COUNT)
+      if ((Nread = sscanf(quanta_str, "[%1d%1c]",
+			  &multiplicity, &Lchar)) != LS_COUNT)
 	counterror = TRUE;
       else {
 	level->S = (multiplicity - 1) / 2.0;
@@ -933,9 +933,9 @@ bool_t RLKdet_level(char* label, RLK_level *level)
       break;
 
     case '(':
-      if (Nread = sscanf(label, "(%1d%1c%3lf)%1c%1d%1c",
-			 &M1, &L1char, &level->J1, &lchar,
-			 &multiplicity, &Kchar) != JK_COUNT)
+      if ((Nread = sscanf(label, "(%1d%1c%3lf)%1c%1d%1c",
+			  &M1, &L1char, &level->J1, &lchar,
+			  &multiplicity, &Kchar)) != JK_COUNT)
 	counterror = TRUE;
       else {
 	level->S1 = (M1 - 1) / 2.0;
@@ -948,9 +948,9 @@ bool_t RLKdet_level(char* label, RLK_level *level)
       break;
 
     case '{':
-      if (Nread = sscanf(quanta_str, "{%3lf%1c%3lf%1c}",
-			 &level->j1, &l1char,
-			 &level->j2, &l2char) != JJ_COUNT)
+      if ((Nread = sscanf(quanta_str, "{%3lf%1c%3lf%1c}",
+			  &level->j1, &l1char,
+			  &level->j2, &l2char)) != JJ_COUNT)
 	counterror = TRUE;
       else {
 	level->l1 = getOrbital(toupper(l1char));

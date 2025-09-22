@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Thu Feb 22 16:46:05 2024 --
+       Last modified: Mon Sep 22 15:54:37 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -59,7 +59,7 @@ extern enum Topology topology;
 
 /* ------- begin -------------------------- initSolution.c ---------- */
 
-void initSolution(Atom *atom, Molecule *molecule)
+void initSolution(void)
 {
   const char routineName[] = "initSolution";
   register int k, i, ij, nspect, n, kr, nact, mu;
@@ -72,6 +72,8 @@ void initSolution(Atom *atom, Molecule *molecule)
            *lambda, fac, lambda_prv, lambda_gas, lambda_nxt, dl,
            frac, lag;
   long int idx, lc;
+  Atom     *atom;
+  Molecule *molecule;
   ActiveSet *as;
   AtomicLine *line;
   AtomicContinuum *continuum;

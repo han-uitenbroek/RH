@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 1-D plane-parallel
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Tue Feb 20 09:33:52 2024 --
+       Last modified: Mon Sep 22 16:09:49 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -227,6 +227,7 @@ void readInput()
 	}
 	atmos.Nrays = 1;
 	break;
+	
       case SET_GAUSS_LOBATTO:
 	
 	if (atmos.Nrays != NRO_GLOB_4  &&  atmos.Nrays != NRO_GLOB_6) {
@@ -235,6 +236,7 @@ void readInput()
 	  Error(ERROR_LEVEL_2, routineName, errorStr);
 	}
 	break;
+	
       case SET_EDDINGTON:
 	
 	if (atmos.Nrays != 1) {
@@ -244,6 +246,9 @@ void readInput()
 		" and muz = 1/sqrt(3)");
 	}
 	atmos.Nrays = 1;
+	break;
+	
+      default:
 	break;
       }
     } else {
