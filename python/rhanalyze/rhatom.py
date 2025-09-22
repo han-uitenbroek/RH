@@ -51,9 +51,9 @@ class atoms:
         self.abund  = up.unpack_double()
         self.weight = up.unpack_double()
 
-        self.labels = {}
+        self.labels = []
         for i in range(self.Nlevel):
-            self.labels[i] = read_string(up)
+            self.labels.append(read_string(up))
             
         self.atomID = self.labels[0][0:2].strip()
 
@@ -63,9 +63,9 @@ class atoms:
 
         Nrad = self.Nline + self.Ncont
 
-        self.transition = {}
+        self.transition = []
         for kr in range(Nrad):
-            self.transition[kr] = atoms.transition(up)
+            self.transition.append(atoms.transition(up))
 
         for kr in range(self.Nline, Nrad):
             if self.transition[kr].shape == "HYDROGENIC":
@@ -76,9 +76,9 @@ class atoms:
                 self.transition[kr].alpha =\
                 read_farray([self.transition[kr].Nwave], up, "double")
             
-        self.fixed = {}
+        self.fixed = []
         for kr in range(self.Nfixed):
-            self.transition[kr] = atoms.fixed(up)
+            self.transition.append(atoms.fixed(up))
 
         up.done()
 

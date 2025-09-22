@@ -62,9 +62,9 @@ class atmos:
         self.ID = read_string(up)
 
         
-        self.elements = {}
+        self.elements = []
         for n in range(self.Nelem):
-            self.elements[n] = element(up)
+            self.elements.append(element(up))
 
         if geometry.type != 'SPHERICAL_SYMMETRIC':
             try:

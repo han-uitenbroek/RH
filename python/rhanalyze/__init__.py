@@ -27,27 +27,21 @@ class rhout:
                                             self.atmos,\
                                             '{0}/spectrum.out'.format(rhdir))
 
-        self.rays = {}
-        Nray = 0
+        self.rays = []
         for file in sorted(os.listdir(rhdir)):
             if fnmatch.fnmatch(file, 'spectrum_?.??*'):
-                self.rays[Nray] =\
-                    rhspectrum.rays(self.inputs,\
-                                    self.geometry,\
-                                    self.spectrum,\
-                                    filename=('{0}/'+file).format(rhdir))
-                Nray += 1
-        self.Nray = Nray
+                self.rays.append(rhspectrum.rays(self.inputs,\
+                                                 self.geometry,\
+                                                 self.spectrum,\
+                                                 filename=('{0}/'+file).format(rhdir)))
+        self.Nray = len(self.rays)
 
-        self.atoms = {}
-        Natom = 0
+        self.atoms = []
         for file in sorted(os.listdir(rhdir)):
             if fnmatch.fnmatch(file, 'atom.*.out'):
-                self.atoms[Natom] =\
-                    rhatom.atoms(self.geometry,\
-                                path=('{0}/'+file).format(rhdir))
-                Natom += 1
-        self.Natom = Natom
+                self.atoms.append(rhatom.atoms(self.geometry, \
+                                               path=('{0}/'+file).format(rhdir)))
+        self.Natom = len(self.atoms)
 
         self.opacity = rhopacity.opacity(self.inputs, self.geometry,\
                                          self.atmos, self.spectrum, \
