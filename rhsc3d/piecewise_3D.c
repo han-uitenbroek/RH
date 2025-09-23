@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 3-D Cartesian, short characteristics
        Author:        Han Uitenbroek(huitenbroek@nso.edu)
-       Last modified: Wed Jun  6 17:01:40 2018 --
+       Last modified: Tue Sep 23 12:28:26 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -81,6 +81,10 @@ void ShortChar(Geometry *geometry, int nspect, int mu,
 	      "Boundary condition THERMALIZED not implemented for TOP");
       }
       break;
+    case REFLECTIVE:
+      Error(ERROR_LEVEL_2, routineName, 
+	    "Boundary condition REFLECTIVE not implemented");
+      break;
     }
     if (Psi)
       for (l = (Nz-1)*Nplane;  l < Nz*Nplane;  l++) Psi[l] = 0.0;
@@ -105,6 +109,12 @@ void ShortChar(Geometry *geometry, int nspect, int mu,
 
     case THERMALIZED:
       Planck(Nplane, atmos.T, spectrum.lambda[nspect], I);
+      break;
+      
+    case REFLECTIVE:
+      Error(ERROR_LEVEL_2, routineName, 
+	    "Boundary condition REFLECTIVE not implemented");
+      break;
     }
     if (Psi) for (l = 0;  l < Nplane;  l++) Psi[l] = 0.0;
 

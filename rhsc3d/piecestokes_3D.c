@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 3-D Cartesian, short characteristics
        Author:        Han Uitenbroek(huitenbroek@nso.edu)
-       Last modified: Fri Jun 15 15:38:55 2018 --
+       Last modified: Tue Sep 23 12:29:54 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -81,6 +81,11 @@ void ShortChar_Stokes(Geometry *geometry, int nspect, int mu,
 	      "Boundary condition THERMALIZED not implemented for TOP");
       }
       break;
+
+    case REFLECTIVE:
+      Error(ERROR_LEVEL_2, routineName, 
+	    "Boundary condition REFLECTIVE not implemented");
+      break;
     }
     /* --- Assume irradiation is unpolarized --        -------------- */
 
@@ -110,6 +115,12 @@ void ShortChar_Stokes(Geometry *geometry, int nspect, int mu,
 
     case THERMALIZED:
       Planck(Nplane, atmos.T, spectrum.lambda[nspect], I[0]);
+      break;
+
+    case REFLECTIVE:
+      Error(ERROR_LEVEL_2, routineName, 
+	    "Boundary condition REFLECTIVE not implemented");
+      break;
     }
     /* --- Assume irradiation is unpolarized --        -------------- */
 
