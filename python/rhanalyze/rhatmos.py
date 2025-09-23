@@ -66,7 +66,9 @@ class atmos:
         for n in range(self.Nelem):
             self.elements.append(element(up))
 
-        if geometry.type != 'SPHERICAL_SYMMETRIC':
+        if geometry.type == 'SPHERICAL_SYMMETRIC':
+            self.stokes = False
+        else:
             try:
                 stokes = up.unpack_int()
             except EOFError or IOError:
