@@ -2,7 +2,7 @@
 
        Version:       rh2.0
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Mon Sep 22 15:53:02 2025 --
+       Last modified: Tue Sep 23 10:58:12 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -291,7 +291,7 @@ void   PRDAngleApproxScatter(AtomicLine *PRDline,
 
 /* --- Polarization related --                         -------------- */
 
-void   adjustStokesMode();
+void   adjustStokesMode(void);
 bool_t determinate(char *label, double g, int *n, double *S, int *L,
 		   double *J);
 double effectiveLande(AtomicLine *line);
