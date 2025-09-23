@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 2-D Cartesian
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri May 25 13:46:36 2018 --
+       Last modified: Tue Sep 23 12:23:18 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -215,7 +215,10 @@ void Piece_Stokes_2D(Geometry *geometry, int nspect, int mu,
 	    "Boundary condition THERMALIZED not implemented for TOP");
     }
     break;
-
+  case REFLECTIVE:
+    Error(ERROR_LEVEL_2, routineName, 
+	  "Boundary condition REFLECTIVE not implemented");
+    break;
   }
   if (Psi)
     for (l = row_left;  l < row_right;  l++) Psi[l] = 0.0;

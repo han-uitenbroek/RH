@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 2-D Cartesian
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Fri May  1 08:25:39 2020 --
+       Last modified: Tue Sep 23 10:57:11 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 
   /* --- If appropriate final solution(s) should be polarized -- ---- */
   
-  adjustStokesMode(atom);
+  adjustStokesMode();
 
   niter = 0;
   while (niter < input.NmaxScatter) {

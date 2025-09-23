@@ -8,7 +8,7 @@
    1D version Coded by J. de la Cruz Rodriguez (ISP-SU 2017),
    adapted to 2D by Han Uitenbroek
 
-       Last modified: Mon Jan  6 14:50:08 2020 --
+       Last modified: Tue Sep 23 10:46:46 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -99,9 +99,11 @@ void Piece_Stokes_Bezier3_2D(Geometry *geometry, int nspect, int mu,
 	I[0][row_left + l] = geometry->Itop[nspect][l];
     }
     break;
+    
   case ZERO:
     for (l = row_left;  l < row_right;  l++) I[0][l] = 0.0;
     break;
+    
   case THERMALIZED:
     if (to_observer) {
       local = (geometry->Nz-1) * geometry->Nx;
@@ -123,7 +125,11 @@ void Piece_Stokes_Bezier3_2D(Geometry *geometry, int nspect, int mu,
 	    "Boundary condition THERMALIZED not implemented for TOP");
     }
     break;
-
+    
+  case REFLECTIVE:
+    Error(ERROR_LEVEL_2, routineName, 
+	  "Boundary condition REFLECTIVE not implemented");
+    break;
   }
   if (Psi)
     for (l = row_left;  l < row_right;  l++) Psi[l] = 0.0;
@@ -358,9 +364,11 @@ void Piecewise_Bezier3_2D(Geometry *geometry, int nspect, int mu,
       Iboundary = geometry->Itop[nspect];
     for (l = 0;  l < Nx;  l++)  I[row_left + l] = Iboundary[l];
     break;
+    
   case ZERO:
     for (l = row_left;  l < row_right;  l++) I[l] = 0.0;
     break;
+    
   case THERMALIZED:
     if (to_observer) {
       local = (Nz-1) * Nx;
@@ -381,6 +389,11 @@ void Piecewise_Bezier3_2D(Geometry *geometry, int nspect, int mu,
       Error(ERROR_LEVEL_2, routineName, 
 	    "Boundary condition THERMALIZED not implemented for TOP");
     }
+    break;
+
+  case REFLECTIVE:
+    Error(ERROR_LEVEL_2, routineName, 
+	  "Boundary condition REFLECTIVE not implemented");
     break;
   }
 

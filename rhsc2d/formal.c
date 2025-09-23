@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 2-D Cartesian
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Feb 21 17:04:03 2024 --
+       Last modified: Tue Sep 23 10:50:09 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -536,6 +536,10 @@ void Feautrier_2D(int nspect, double *chi, double *S,
       Planck(2, T, spectrum.lambda[nspect], Bnu);
       h0 = Bnu[0] - (Bnu[1] - Bnu[0]) / dtau[0];
       break;
+    case REFLECTIVE:
+      Error(ERROR_LEVEL_2, routineName, 
+	    "Boundary condition REFLECTIVE not implemented");
+      break;
     }
 
     f0      = (1.0 - r0) / (1.0 + r0);
@@ -563,6 +567,10 @@ void Feautrier_2D(int nspect, double *chi, double *S,
 
       Planck(2, T, spectrum.lambda[nspect], Bnu);
       hN = Bnu[1] - (Bnu[0] - Bnu[1]) / dtau[Ndep-2];
+      break;
+    case REFLECTIVE:
+      Error(ERROR_LEVEL_2, routineName, 
+	    "Boundary condition REFLECTIVE not implemented");
       break;
     }
 

@@ -2,7 +2,7 @@
 
        Version:       rh2.0, 2-D Cartesian
        Author:        Han Uitenbroek (huitenbroek@nso.edu)
-       Last modified: Wed Jun  6 14:10:11 2018 --
+       Last modified: Tue Sep 23 12:22:05 2025 --
 
        --------------------------                      ----------RH-- */
 
@@ -204,6 +204,10 @@ void Piecewise_2D(Geometry *geometry, int nspect, int mu,
 	    "Boundary condition THERMALIZED not implemented for TOP");
     }
     break;
+  case REFLECTIVE:
+    Error(ERROR_LEVEL_2, routineName, 
+	  "Boundary condition REFLECTIVE not implemented");
+    break;
   }
 
   if (Psi) for (l = row_left;  l < row_right;  l++) Psi[l] = 0.0;
@@ -398,6 +402,10 @@ void Piecewise_Linear_2D(Geometry *geometry, int nspect, int mu,
       Error(ERROR_LEVEL_2, routineName, 
 	    "Boundary condition THERMALIZED not implemented for TOP");
     }
+    break;
+  case REFLECTIVE:
+    Error(ERROR_LEVEL_2, routineName, 
+	  "Boundary condition REFLECTIVE not implemented");
     break;
   }
 
