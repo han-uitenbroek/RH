@@ -25,7 +25,8 @@ class rhout:
         self.spectrum = rhspectrum.spectrum(self.inputs,\
                                             self.geometry,\
                                             self.atmos,\
-                                            '{0}/spectrum.out'.format(rhdir))
+                                            filename='{0}/spectrum.out'.format(rhdir), \
+                                            fluxfile='{0}/flux.out'.format(rhdir))
 
         self.rays = []
         for file in sorted(os.listdir(rhdir)):

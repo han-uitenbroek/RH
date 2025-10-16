@@ -58,22 +58,14 @@ class spectrum:
         f  = open(self.fluxfile, 'rb')
         up = xdrlib.Unpacker(f.read())
         f.close()
-
+        
         match geometry.type:
             case "ONE_D_PLANE" | "SPHERICAL_SYMMETRIC":
-
                 dim = [self.Nspect]
-            
             case "TWO_D_PLANE":
-
                 dim = [geometry.Nx, self.Nspect]
-
             case "THREE_D_PLANE":
-
                 dim = [geometry.Nx, geometry.Ny, self.Nspect]
-
-            case _:
-                pass
 
         self.flux = read_farray(dim, up, "double")
         up.done()
