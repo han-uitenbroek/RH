@@ -9,14 +9,19 @@ import numpy as np
 
 import rhanalyze.rhgeometry
 from rhanalyze.rhtools import read_farray, read_string
-
+from rhanalyze.rhtools import vacuum_to_air, air_to_vacuum
 
 class spectrum:
     
-    def __init__(self, inputs, geometry, atmos, filename='spectrum.out'):
+    def __init__(self, inputs, geometry, atmos, filename='spectrum.out', \
+                 fluxfile='flux.out'):
+
         self.filename = filename
+        self.fluxfile = fluxfile
         self.read(inputs, geometry, atmos)
-         
+        self.read_flux(geometry)
+
+
     def read(self, inputs, geometry, atmos):
 
         f  = open(self.filename, 'rb')
@@ -45,6 +50,32 @@ class spectrum:
             self.U = read_farray(dim, up, "double")
             self.V = read_farray(dim, up, "double")
 
+        up.done()
+
+
+    def read_flux(self, geometry):
+
+        f  = open(self.fluxfile, 'rb')
+        up = xdrlib.Unpacker(f.read())
+        f.close()
+
+        match geometry.type:
+            case "ONE_D_PLANE" | "SPHERICAL_SYMMETRIC":
+
+                dim = [self.Nspect]
+            
+            case "TWO_D_PLANE":
+
+                dim = [geometry.Nx, self.Nspect]
+
+            case "THREE_D_PLANE":
+
+                dim = [geometry.Nx, geometry.Ny, self.Nspect]
+
+            case _:
+                pass
+
+        self.flux = read_farray(dim, up, "double")
         up.done()
 
 
@@ -106,7 +137,7 @@ class rays:
 
             up.done()
 
-            
+
 class opac:
 
     def __init__(self, dim, up):
@@ -116,5 +147,4 @@ class opac:
         self.nspect = up.unpack_int()
         self.chi    = read_farray(dim, up, "double")
         self.S      = read_farray(dim, up, "double")
-    
     

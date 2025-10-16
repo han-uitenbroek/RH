@@ -585,3 +585,55 @@ class RHatom:
             self.option   = parts[4]
 
             return (i, j)
+
+
+def vacuum_to_air(lambda_vac):
+
+    #-# Source:
+    #-#    [1] http://www.astro.uu.se/valdwiki/Air-to-vacuum%20conversion
+    #-# Original reference:
+    #-#    Donald Morton (2000, ApJ. Suppl., 130, 403)
+    
+    
+    NM_TO_ANGSTROM = 10.0
+    
+    s2 = (1.0E4 / (NM_TO_ANGSTROM * lambda_vac))**2
+    n  = 1.0 + 8.34254E-5 + 2.406147E-2 / (130.0 - s2) + 1.5998E-4 / (38.9 - s2)
+
+    lambda_air = lambda_vac / n
+    return lambda_air
+
+def air_to_vacuum(lambda_air):
+
+    #-# Source:
+    #-#    [1] http://www.astro.uu.se/valdwiki/Air-to-vacuum%20conversion
+    #-# Original reference:
+    #-#    Donald Morton (2000, ApJ. Suppl., 130, 403)
+    
+    NM_TO_ANGSTROM = 10.0
+    
+    s2 = (1.0E4 / (NM_TO_ANGSTROM * lambda_air))**2
+    n  = 1.0 + 8.336624212083E-5 + 2.408926869968E-2 / (130.1065924522 - s2) + \
+        1.599740894897E-4 / (38.92568793293 - s2)
+    
+    lambda_vac = lambda_air * n
+    return lambda_vac
+
+    
+class wavetable:
+
+    def __init__(self, wavelengths):
+
+        self.Nspect      = len(wavelengths)
+        self.wavelengths = wavelengths
+
+    def write(self, wavefile='wavetable.wave'):
+
+        packer = xdrlib.Packer()
+
+        packer.pack_int(self.Nspect)
+        write_farray(air_to_vacuum(self.wavelengths), packer, dtype="double")
+
+        f = open(wavefile, 'wb')
+        f.write(packer.get_buffer())
+        f.close()

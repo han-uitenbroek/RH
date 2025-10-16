@@ -20,12 +20,70 @@ class element:
         self.ID     = read_string(up)
         self.weight = float(up.unpack_double())
         self.abund  = float(up.unpack_double())
-    
+
+
+class molecule:
+
+    def __init__(self, geometry, up):
+        self.read(geometry, up)
+
+    def read(self, geometry, up):
+
+        match geometry.type:
+            case "ONE_D_PLANE":
+                dim = [geometry.Ndep]
+            case "SPHERICAL_SYMMETRIC":
+                dim = [geometry.Nradius]
+            case "TWO_D_PLANE":
+                dim = [geometry.Nx, geometry.Nz]
+            case "THREEE_D_PLANE":
+                dim = [geometry.Nx, geometry.Ny, geometry.Nz]
+
+        self.ID    = read_string(up)
+        self.Nv    = up.unpack_int()
+        self.NJ    = up.unpack_int()
+        self.Ediss = float(up.unpack_double())
+        self.Tmin  = float(up.unpack_double())
+        self.Tmax  = float(up.unpack_double())
+
+        self.n = read_farray(dim, up, "double")
+
+        if self.Nv > 0 and self.NJ > 0:
+            popsfile = "pops_mol.{0:s}.out".format(self.ID)
+            self.read_populations(geometry, filename=popsfile)
+        
+        
+    def read_populations(self, geometry, filename="pops_mol.CO.out"):
+        
+        match geometry.type:
+            case "ONE_D_PLANE":
+                dim = [geometry.Ndep, self.Nv]
+            case "SPHERICAL_SYMMETRIC":
+                dim = [geometry.Nradius, self.NV]
+            case "TWO_D_PLANE":
+                dim = [geometry.Nx, geometry.Nz, self.Nv]
+            case "THREEE_D_PLANE":
+                dim = [geometry.Nx, geometry.Ny, geometry.Nz, self.Nv]
+
+        
+        f  = open(filename, 'rb')
+        up = xdrlib.Unpacker(f.read())
+        f.close()
+        
+        self.EvJ    = read_farray([self.Nv, self.NJ], up, "double")
+        self.Nv     = read_farray(dim, up, "double")
+        self.Nvstar = read_farray(dim, up, "double")
+
+        up.done()
+
 class atmos:
     
-    def __init__(self, geometry, filename='atmos.out'):
+    def __init__(self, geometry, filename='atmos.out', molfile='molecules.out'):
+
         self.filename = filename
+        self.molfile  = molfile
         self.read(geometry)
+        self.read_molecules(geometry)
          
     def read(self, geometry):
 
@@ -82,6 +140,39 @@ class atmos:
                 self.chi_B   = read_farray(dim1, up, "double")
                 
         up.done()
+
+
+    def read_molecules(self, geometry):
+
+        f  = open(self.molfile, 'rb')
+        up = xdrlib.Unpacker(f.read())
+        f.close()
+
+        self.Nmolecule = up.unpack_int()
+         
+        self.molecules = []
+        for m in range(self.Nmolecule):
+            mol = molecule(geometry, up)
+            self.molecules.append(mol)
+
+        self.read_Hminus(geometry, up)
+        up.done()
+
+
+    def read_Hminus(self, geometry, up):
+
+        match geometry.type:
+            case "ONE_D_PLANE":
+                dim = [geometry.Ndep]
+            case "SPHERICAL_SYMMETRIC":
+                dim = [geometry.Nradius]
+            case "TWO_D_PLANE":
+                dim = [geometry.Nx, geometry.Nz]
+            case "THREEE_D_PLANE":
+                dim = [geometry.Nx, geometry.Ny, geometry.Nz]
+
+        self.Hminus = read_farray(dim, up, "double")   
+
 
 class input_atmos:
     def __init__(self, geometrytype, atmosfile, Bfile=None, New=False):
@@ -369,3 +460,4 @@ class input_atmos:
             f.write(pck.get_buffer())
             f.close()
             pck.reset()
+
