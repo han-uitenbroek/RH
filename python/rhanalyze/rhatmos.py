@@ -1,4 +1,5 @@
 import sys
+import os
 
 if sys.version_info[1] < 13:
     import xdrlib
@@ -24,7 +25,7 @@ class element:
 
 class molecule:
 
-    def __init__(self, geometry, up):
+    def __init__(self, geometry, up, rhdir):
         self.read(geometry, up)
 
     def read(self, geometry, up):
@@ -49,11 +50,11 @@ class molecule:
         self.n = read_farray(dim, up, "double")
 
         if self.Nv > 0 and self.NJ > 0:
-            popsfile = "pops_mol.{0:s}.out".format(self.ID)
+            popsfile = os.path.join(rhdir, "pops_mol.{0:s}.out".format(self.ID))
             self.read_populations(geometry, filename=popsfile)
         
         
-    def read_populations(self, geometry, filename="pops_mol.CO.out"):
+    def read_populations(self, geometry, filename="./pops_mol.CO.out"):
         
         match geometry.type:
             case "ONE_D_PLANE":
@@ -78,10 +79,14 @@ class molecule:
 
 class atmos:
     
-    def __init__(self, geometry, filename='atmos.out', molfile='molecules.out'):
+    def __init__(self, geometry, filename='./atmos.out', \
+                 molfile='./molecules.out'):
 
         self.filename = filename
         self.molfile  = molfile
+
+        (self.rhdir, atmosfile) = os.path.split(filename)
+        
         self.read(geometry)
         self.read_molecules(geometry)
          
@@ -152,7 +157,7 @@ class atmos:
          
         self.molecules = []
         for m in range(self.Nmolecule):
-            mol = molecule(geometry, up)
+            mol = molecule(geometry, up, self.rhdir)
             self.molecules.append(mol)
 
         self.read_Hminus(geometry, up)
