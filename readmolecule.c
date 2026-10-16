@@ -377,7 +377,7 @@ void readMolecule(Molecule *molecule, char *fileName, bool_t active)
     /* --- Allocate space for thread dependent quantities -- -------- */
 
     molecule->rhth =
-      (rhthread *) malloc(input.Nthreads * sizeof(rhthread));
+      (rhthread *) calloc(input.Nthreads, sizeof(rhthread));
   }
 
   fclose(fp_molecule);
@@ -418,7 +418,7 @@ void initMolecule(Molecule *molecule)
 
 void freeMolecule(Molecule *molecule)
 {
-  register int kr;
+  register int kr, nt;
 
   free(molecule->pt_index);
   free(molecule->pt_count);
@@ -437,6 +437,20 @@ void freeMolecule(Molecule *molecule)
     freeMatrix((void **) molecule->pfv);
 
     free(molecule->popsFile);
+
+    /* --- Per-thread work arrays, allocated lazily in alloc_as() -- - */
+
+    for (nt = 0;  nt < input.Nthreads;  nt++) {
+      struct rhthread *th = &molecule->rhth[nt];
+
+      free(th->eta);
+      if (th->Nrt_alloc > 0) {
+	freeMatrix((void **) th->Vij);
+	freeMatrix((void **) th->gij);
+	freeMatrix((void **) th->wla);
+      }
+      if (th->Gamma != NULL) freeMatrix((void **) th->Gamma);
+    }
     free(molecule->rhth);
   }
 

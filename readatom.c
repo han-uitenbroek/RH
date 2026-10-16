@@ -316,6 +316,14 @@ void readAtom(Atom *atom, char *atom_file)
       line->Rij = (double *) malloc(Nspace * sizeof(double));
       line->Rji = (double *) malloc(Nspace * sizeof(double));
 
+      /* --- Per-thread accumulators used by the shared addtoRates()
+             in place of rate_lock --                   -------------- */
+
+      if (input.Nthreads > 1) {
+	line->Rij_thread = matrix_double(input.Nthreads, Nspace);
+	line->Rji_thread = matrix_double(input.Nthreads, Nspace);
+      }
+
       /* --- Initialize the mutex lock for the radiative rates if there
              is more than one thread --                -------------- */
 
@@ -407,6 +415,14 @@ void readAtom(Atom *atom, char *atom_file)
 
       continuum->Rij = (double *) malloc(Nspace * sizeof(double));
       continuum->Rji = (double *) malloc(Nspace * sizeof(double));
+
+      /* --- Per-thread accumulators used by the shared addtoRates()
+             in place of rate_lock --                   -------------- */
+
+      if (input.Nthreads > 1) {
+	continuum->Rij_thread = matrix_double(input.Nthreads, Nspace);
+	continuum->Rji_thread = matrix_double(input.Nthreads, Nspace);
+      }
 
       /* --- Initialize the mutex lock for the radiative rates if there
              is more than one thread --                -------------- */
@@ -543,7 +559,7 @@ void readAtom(Atom *atom, char *atom_file)
 
     /* --- Allocate space for thread dependent quantities -- -------- */
 
-    atom->rhth = (rhthread *) malloc(input.Nthreads * sizeof(rhthread));
+    atom->rhth = (rhthread *) calloc(input.Nthreads, sizeof(rhthread));
 
     /* --- Store the offset to allow pointing back to the start of the
            collisional data in the atomic input file, and allocate
@@ -640,6 +656,7 @@ void initAtomicLine(AtomicLine *line)
   line->lambda = NULL;
   line->Aji = line->Bji = line->Bij = 0.0;
   line->Rij = line->Rji = NULL;
+  line->Rij_thread = line->Rji_thread = NULL;
   line->phi = line->phi_Q = line->phi_U = line->phi_V = NULL;
   line->psi_Q = line->psi_U = line->psi_V = NULL;
   line->wphi = line->Qelast = NULL;
@@ -668,6 +685,7 @@ void initAtomicContinuum(AtomicContinuum *continuum)
   continuum->lambda = NULL;
   continuum->alpha0 = 0.0;
   continuum->alpha = continuum->Rij = continuum->Rji = NULL;
+  continuum->Rij_thread = continuum->Rji_thread = NULL;
   continuum->atom = NULL;
 }
 /* ------- end ---------------------------- initAtomicContinuum.c --- */
@@ -676,7 +694,7 @@ void initAtomicContinuum(AtomicContinuum *continuum)
 
 void freeAtom(Atom *atom)
 {
-  register int kr, i;
+  register int kr, i, nt;
 
   /* --- Free allocated memory for atomic data structure -- --------- */
 
@@ -688,6 +706,29 @@ void freeAtom(Atom *atom)
   
   if (atom->active) {
     freeMatrix((void **) atom->C);
+
+    /* --- The per-thread work arrays are allocated lazily, in
+           alloc_as(), and are kept for the whole run --  ---------- */
+
+    for (nt = 0;  nt < input.Nthreads;  nt++) {
+      struct rhthread *th = &atom->rhth[nt];
+
+      free(th->eta);
+      if (th->Nrt_alloc > 0) {
+	freeMatrix((void **) th->Vij);
+	freeMatrix((void **) th->gij);
+	freeMatrix((void **) th->wla);
+      }
+      if (th->Gamma != NULL) freeMatrix((void **) th->Gamma);
+      if (th->chi_up != NULL) {
+	for (i = 0;  i < atom->Nlevel;  i++) {
+	  free(th->chi_up[i]);
+	  free(th->chi_down[i]);
+	  free(th->Uji_down[i]);
+	}
+	free(th->chi_up);  free(th->chi_down);  free(th->Uji_down);
+      }
+    }
     free(atom->rhth);
   }
   /* --- Be careful here because atom->n points to atom->nstar in
@@ -726,6 +767,10 @@ void freeAtomicLine(AtomicLine *line)
   if (atom->active) {
     free(line->Rij);
     free(line->Rji);
+    if (line->Rij_thread != NULL) {
+      freeMatrix((void **) line->Rij_thread);
+      freeMatrix((void **) line->Rji_thread);
+    }
 
     freeMatrix((void **) line->phi);
     free(line->wphi);
@@ -766,9 +811,13 @@ void freeAtomicContinuum(AtomicContinuum *continuum)
 
   Atom *atom = continuum->atom;
 
-  if (atom->active) {  
+  if (atom->active) {
     free(continuum->Rij);
     free(continuum->Rji);
+    if (continuum->Rij_thread != NULL) {
+      freeMatrix((void **) continuum->Rij_thread);
+      freeMatrix((void **) continuum->Rji_thread);
+    }
   }
   if (!continuum->hydrogenic) free(continuum->alpha);
 }

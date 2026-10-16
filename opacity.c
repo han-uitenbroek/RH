@@ -33,6 +33,7 @@
  
 #include <stdlib.h>
 #include <math.h>
+#include <pthread.h>
 
 #include "rh.h"
 #include "error.h"
@@ -448,45 +449,95 @@ void Opacity(int nspect, int mu, bool_t to_obs, bool_t initialize)
 
 /* ------- begin -------------------------- alloc_as.c -------------- */
 
+/* --- Background/active opacity buffers are pooled per thread slot
+       (nt = nspect % Nthreads), not per wavelength: a slot's buffers
+       are only live between one alloc_as()/free_as() pair, and a
+       thread handles one wavelength at a time, so Nthreads sets are
+       enough. Pooling per wavelength would grow memory as
+       Nspect * Nspace.  --                            -------------- */
+
+typedef struct {
+  double *chi_c, *eta_c, *sca_c, *chip_c, *chi, *eta, *chip;
+  int     Nrec_c, Nrec_as;
+} AsPool;
+
+static AsPool        *as_pool = NULL;
+static pthread_once_t as_pool_once = PTHREAD_ONCE_INIT;
+
+static void init_as_pool(void)
+{
+  as_pool = (AsPool *) calloc(input.Nthreads, sizeof(AsPool));
+}
+
 void alloc_as(int nspect, bool_t crosscoupling)
 {
   register int n, m, nact;
 
-  int i, j, NrecStokes, NrecStokes_as, Nactive, nt;
+  int i, j, NrecStokes, NrecStokes_as, Nactive, nt, Nrt;
   Atom *atom;
   Molecule *molecule;
   ActiveSet *as;
+  AsPool *pool;
 
   as = &spectrum.as[nspect];
   nt = nspect % input.Nthreads;
 
-  /* --- Allocate space for background opacities and emissivity -- -- */
+  pthread_once(&as_pool_once, init_as_pool);
+  pool = &as_pool[nt];
+
+  /* --- Space for background opacities and emissivity. The pooled
+         buffers only grow, when a wavelength needs more Stokes
+         records than any earlier one in this slot.
+         --                                             -------------- */
 
   if (atmos.backgrflags[nspect].ispolarized &&
       input.StokesMode == FULL_STOKES) {
     NrecStokes = 4;
 
-    if (input.magneto_optical)
-      as->chip_c = (double *) malloc(3*atmos.Nspace * sizeof(double));
+    if (input.magneto_optical) {
+      if (pool->chip_c == NULL)
+	pool->chip_c = (double *) malloc(3*atmos.Nspace * sizeof(double));
+      as->chip_c = pool->chip_c;
+    }
   } else
     NrecStokes = 1;
 
-  as->chi_c = (double *) malloc(NrecStokes*atmos.Nspace * sizeof(double));
-  as->eta_c = (double *) malloc(NrecStokes*atmos.Nspace * sizeof(double));
-  as->sca_c = (double *) malloc(atmos.Nspace * sizeof(double));
+  if (NrecStokes > pool->Nrec_c) {
+    free(pool->chi_c);
+    free(pool->eta_c);
+    pool->chi_c = (double *) malloc(NrecStokes*atmos.Nspace * sizeof(double));
+    pool->eta_c = (double *) malloc(NrecStokes*atmos.Nspace * sizeof(double));
+    pool->Nrec_c = NrecStokes;
+  }
+  if (pool->sca_c == NULL)
+    pool->sca_c = (double *) malloc(atmos.Nspace * sizeof(double));
+
+  as->chi_c = pool->chi_c;
+  as->eta_c = pool->eta_c;
+  as->sca_c = pool->sca_c;
 
   /* --- Now for the active part --                    -------------- */
 
   if (input.StokesMode == FULL_STOKES  && containsPolarized(as)) {
     NrecStokes_as = 4;
 
-    if (input.magneto_optical)
-      as->chip = (double *) malloc(3*atmos.Nspace * sizeof(double));
+    if (input.magneto_optical) {
+      if (pool->chip == NULL)
+	pool->chip = (double *) malloc(3*atmos.Nspace * sizeof(double));
+      as->chip = pool->chip;
+    }
   } else
     NrecStokes_as = 1;
 
-  as->chi = (double *) malloc(NrecStokes_as*atmos.Nspace * sizeof(double));
-  as->eta = (double *) malloc(NrecStokes_as*atmos.Nspace * sizeof(double));
+  if (NrecStokes_as > pool->Nrec_as) {
+    free(pool->chi);
+    free(pool->eta);
+    pool->chi = (double *) malloc(NrecStokes_as*atmos.Nspace * sizeof(double));
+    pool->eta = (double *) malloc(NrecStokes_as*atmos.Nspace * sizeof(double));
+    pool->Nrec_as = NrecStokes_as;
+  }
+  as->chi = pool->chi;
+  as->eta = pool->eta;
 
   /* --- Allocate memory for the emissivity in each active
          atom seperately. The contributions are needed individually
@@ -496,36 +547,70 @@ void alloc_as(int nspect, bool_t crosscoupling)
     atom = atmos.activeatoms[nact];
 
     if (as->Nactiveatomrt[nact] > 0) {
-      atom->rhth[nt].eta =
-	(double *) malloc(NrecStokes_as * atmos.Nspace * sizeof(double));
+      /* --- The record count can change between calls: FIELD_FREE
+             iterations use 1 record, the final FULL_STOKES solution
+             needs 4 at wavelengths with polarized lines. Size for the
+             maximum whenever a magnetic field is present.
+             --                                         -------------- */
 
-      atom->rhth[nt].Vij =
-	matrix_double(as->Nactiveatomrt[nact], atmos.Nspace);
-      atom->rhth[nt].gij =
-	matrix_double(as->Nactiveatomrt[nact], atmos.Nspace);
-      atom->rhth[nt].wla =
-	matrix_double(as->Nactiveatomrt[nact], atmos.Nspace);
+      if (atom->rhth[nt].eta == NULL)
+	atom->rhth[nt].eta =
+	  (double *) malloc((atmos.Stokes ? 4 : 1) * atmos.Nspace *
+			    sizeof(double));
 
-      /* --- Allocate pointer space for cross-coupling coefficients - */
+      /* --- Per-thread rate-matrix accumulator. addtoGamma() writes
+             only here (no locking needed, each thread owns its own
+             slot); the per-thread contributions get merged into
+             atom->Gamma once per iteration, after the wavelength
+             sweep completes (see iterate.c). Replaces a shared
+             atom->Gamma protected by a mutex that was the dominant
+             cost of threaded runs: profiling showed threads spending
+             far more time waiting for that lock than doing the work
+             it protected. With a single thread there is no copy: the
+             shared Gamma is accumulated into directly. --  -------- */
 
-      if (crosscoupling) {
-	atom->rhth[nt].chi_down = 
+      if (input.Nthreads > 1  &&  atom->rhth[nt].Gamma == NULL)
+	atom->rhth[nt].Gamma = matrix_double(SQ(atom->Nlevel), atmos.Nspace);
+
+      /* --- Vij/gij/wla are sized by the number of this atom's
+             transitions active AT THIS WAVELENGTH, which varies from
+             wavelength to wavelength, unlike everything else here.
+             Keep a per-thread high-water mark (Nrt_alloc) and only
+             grow the buffers when a wavelength needs more room than
+             any seen before by this thread; never shrink/free them
+             in between --                               -------------- */
+
+      Nrt = as->Nactiveatomrt[nact];
+      if (Nrt > atom->rhth[nt].Nrt_alloc) {
+	if (atom->rhth[nt].Nrt_alloc > 0) {
+	  freeMatrix((void **) atom->rhth[nt].Vij);
+	  freeMatrix((void **) atom->rhth[nt].gij);
+	  freeMatrix((void **) atom->rhth[nt].wla);
+	}
+	atom->rhth[nt].Vij = matrix_double(Nrt, atmos.Nspace);
+	atom->rhth[nt].gij = matrix_double(Nrt, atmos.Nspace);
+	atom->rhth[nt].wla = matrix_double(Nrt, atmos.Nspace);
+	atom->rhth[nt].Nrt_alloc = Nrt;
+      }
+
+      /* --- Allocate pointer space for cross-coupling coefficients,
+             once per thread, sized for every level of the atom so it
+             never needs to grow or be freed again --     -------------- */
+
+      if (crosscoupling && atom->rhth[nt].chi_up == NULL) {
+	atom->rhth[nt].chi_down =
 	  (double **) calloc(atom->Nlevel, sizeof(double *));
 	atom->rhth[nt].chi_up   =
 	  (double **) calloc(atom->Nlevel, sizeof(double *));
 	atom->rhth[nt].Uji_down =
 	  (double **) calloc(atom->Nlevel, sizeof(double *));
 
-	for (m = 0;  m < as->Nlower[nact];  m++) {
-	  i = as->lower_levels[nact][m];
-	  atom->rhth[nt].chi_up[i] =
+	for (i = 0;  i < atom->Nlevel;  i++) {
+	  atom->rhth[nt].chi_up[i]   =
 	    (double *) malloc(atmos.Nspace * sizeof(double));
-	}
-	for (m = 0;  m < as->Nupper[nact];  m++) {
-	  j = as->upper_levels[nact][m];
-	  atom->rhth[nt].chi_down[j] =
+	  atom->rhth[nt].chi_down[i] =
 	    (double *) malloc(atmos.Nspace * sizeof(double));
-	  atom->rhth[nt].Uji_down[j] =
+	  atom->rhth[nt].Uji_down[i] =
 	    (double *) malloc(atmos.Nspace * sizeof(double));
 	}
       }
@@ -535,15 +620,26 @@ void alloc_as(int nspect, bool_t crosscoupling)
     molecule = atmos.activemols[nact];
 
     if (as->Nactivemolrt[nact] > 0) {
-      molecule->rhth[nt].eta =
-	(double *) malloc(atmos.Nspace * sizeof(double));
+      if (molecule->rhth[nt].eta == NULL)
+	molecule->rhth[nt].eta =
+	  (double *) malloc(atmos.Nspace * sizeof(double));
 
-      molecule->rhth[nt].Vij = 
-	matrix_double(as->Nactivemolrt[nact], atmos.Nspace);
-      molecule->rhth[nt].gij =
-	matrix_double(as->Nactivemolrt[nact], atmos.Nspace);
-      molecule->rhth[nt].wla =
-	matrix_double(as->Nactivemolrt[nact], atmos.Nspace);
+      if (input.Nthreads > 1  &&  molecule->rhth[nt].Gamma == NULL)
+	molecule->rhth[nt].Gamma =
+	  matrix_double(SQ(molecule->Nv), atmos.Nspace);
+
+      Nrt = as->Nactivemolrt[nact];
+      if (Nrt > molecule->rhth[nt].Nrt_alloc) {
+	if (molecule->rhth[nt].Nrt_alloc > 0) {
+	  freeMatrix((void **) molecule->rhth[nt].Vij);
+	  freeMatrix((void **) molecule->rhth[nt].gij);
+	  freeMatrix((void **) molecule->rhth[nt].wla);
+	}
+	molecule->rhth[nt].Vij = matrix_double(Nrt, atmos.Nspace);
+	molecule->rhth[nt].gij = matrix_double(Nrt, atmos.Nspace);
+	molecule->rhth[nt].wla = matrix_double(Nrt, atmos.Nspace);
+	molecule->rhth[nt].Nrt_alloc = Nrt;
+      }
     }
   }
 }
@@ -553,71 +649,14 @@ void alloc_as(int nspect, bool_t crosscoupling)
 
 void free_as(int nspect, bool_t crosscoupling)
 {
-  register int nact, n, m;
+  ActiveSet *as = &spectrum.as[nspect];
 
-  int i, j, nt;
-  Atom *atom;
-  Molecule *molecule;
-  ActiveSet *as;
+  /* --- The buffers belong to the per-thread pools in alloc_as() and
+         are reused for the rest of the run; only detach them here so
+         nothing can touch them between calls.  --      -------------- */
 
-  as = &spectrum.as[nspect];
-  nt = nspect % input.Nthreads;
-
-  free(as->chi_c);
-  free(as->eta_c);
-  free(as->sca_c);
-
-  free(as->chi);
-  free(as->eta);
-
-  if (input.StokesMode == FULL_STOKES && input.magneto_optical) {
-    if (atmos.backgrflags[nspect].ispolarized)
-      free(as->chip_c);
-    if (containsPolarized(as))
-      free(as->chip);
-  }
-
-  for (nact = 0;  nact < atmos.Nactiveatom;  nact++) {
-    atom = atmos.activeatoms[nact];
-
-    if (as->Nactiveatomrt[nact] > 0) {
-      free(atom->rhth[nt].eta);
-
-      freeMatrix((void **) atom->rhth[nt].Vij);
-      freeMatrix((void **) atom->rhth[nt].gij);
-      freeMatrix((void **) atom->rhth[nt].wla);
-
-      if (crosscoupling) {
-	for (m = 0;  m < as->Nlower[nact];  m++) {
-	  i = as->lower_levels[nact][m];
-	  free(atom->rhth[nt].chi_up[i]);
-	  atom->rhth[nt].chi_up[i] = NULL;
-	}
-	free(atom->rhth[nt].chi_up);
-
-	for (m = 0;  m < as->Nupper[nact];  m++) {
-	  j = as->upper_levels[nact][m];
-	  free(atom->rhth[nt].chi_down[j]);
-	  free(atom->rhth[nt].Uji_down[j]);
-
-	  atom->rhth[nt].chi_down[j] = NULL;
-	  atom->rhth[nt].Uji_down[j] = NULL;
-	}
-	free(atom->rhth[nt].chi_down);
-	free(atom->rhth[nt].Uji_down);
-      }
-    }
-  }
-  for (nact = 0;  nact < atmos.Nactivemol;  nact++) {
-    molecule = atmos.activemols[nact];
-    if (as->Nactivemolrt[nact] > 0) {
-      free(molecule->rhth[nt].eta);
-
-      freeMatrix((void **) molecule->rhth[nt].Vij);
-      freeMatrix((void **) molecule->rhth[nt].gij);
-      freeMatrix((void **) molecule->rhth[nt].wla);
-    }
-  }
+  as->chi_c  = as->eta_c = as->sca_c = as->chip_c = NULL;
+  as->chi    = as->eta   = as->chip  = NULL;
 }
 /* ------- end ---------------------------- free_as.c --------------- */
 

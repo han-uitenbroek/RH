@@ -26,8 +26,8 @@
 
 typedef struct {
   bool_t eval_operator, redistribute;
-  int    nspect;
-  double dJ;
+  int    nt, Nthreads, lambda_max;
+  double dJmax;
 } threadinfo;
 
 /* --- Function prototypes --                          -------------- */
@@ -85,14 +85,28 @@ void Iterate(int NmaxIter, double iterLimit)
     
     getCPU(2, TIME_START, NULL);
 
-    for (nact = 0;  nact < atmos.Nactiveatom;  nact++)
+    for (nact = 0;  nact < atmos.Nactiveatom;  nact++) {
       initGammaAtom(atmos.activeatoms[nact], niter);
-    for (nact = 0;  nact < atmos.Nactivemol;  nact++)
+      zeroGammaThreads(atmos.activeatoms[nact]);
+    }
+    for (nact = 0;  nact < atmos.Nactivemol;  nact++) {
       initGammaMolecule(atmos.activemols[nact]);
+      zeroGammaThreadsMolecule(atmos.activemols[nact]);
+    }
 
     /* --- Formal solution for all wavelengths --      -------------- */
 
     solveSpectrum(eval_operator=TRUE, FALSE);
+
+    /* --- Merge each thread's Gamma contributions (accumulated with
+           no locking during the sweep above) into the shared Gamma,
+           which already carries this iteration's collisional seed
+           from initGammaAtom/initGammaMolecule above --  ---------- */
+
+    for (nact = 0;  nact < atmos.Nactiveatom;  nact++)
+      mergeGammaThreads(atmos.activeatoms[nact]);
+    for (nact = 0;  nact < atmos.Nactivemol;  nact++)
+      mergeGammaThreadsMolecule(atmos.activemols[nact]);
 
     /* --- Solve statistical equilibrium equations --  -------------- */
 
@@ -150,9 +164,9 @@ void Iterate(int NmaxIter, double iterLimit)
 
 double solveSpectrum(bool_t eval_operator, bool_t redistribute)
 {
-  register int nspect, n, nt, k;
+  register int nspect, nt, k;
 
-  int         Nthreads, lambda_max;
+  int         lambda_max;
   double      dJ, dJmax;
   pthread_t  *thread_id;
   threadinfo *ti;
@@ -166,6 +180,14 @@ double solveSpectrum(bool_t eval_operator, bool_t redistribute)
 
          - Multithreaded Programming Guide, http://sun.docs.com
            (search for POSIX threads).
+
+         With eval_operator == TRUE and more than one thread, the
+         threads leave their Gamma contributions in their own copies
+         (rhth[nt].Gamma); the caller has to run mergeGammaThreads and
+         mergeGammaThreadsMolecule before using Gamma (Iterate does).
+         The radiative rates Rij and Rji are merged here. With one
+         thread everything is accumulated in place, as in a serial
+         code, and the merges do nothing.
 
          When solveSpectrum is called with redistribute == TRUE only
          wavelengths that have an active PRD line are solved. The
@@ -196,48 +218,47 @@ double solveSpectrum(bool_t eval_operator, bool_t redistribute)
 
   if (input.Nthreads > 1) {
 
-    /* --- If input.Nthreads positive then solve Nthreads wavelengths
-           concurrently in separate threads --         -------------- */
+    /* --- Spawn input.Nthreads worker threads ONCE for this call,
+           rather than once per batch of input.Nthreads wavelengths.
+           Each thread nt processes its own strided slice of the
+           wavelength grid (nt, nt+Nthreads, nt+2*Nthreads, ...) and
+           is joined only after it has worked through all of it.
+
+           The earlier per-batch create/join meant spectrum.Nspect
+           pthread_create/pthread_join cycles per call to
+           solveSpectrum, regardless of input.Nthreads (batches *
+           threads-per-batch = total wavelengths, always) -- measured
+           to completely swamp any benefit from the parallelism, with
+           wall-clock time flat-to-worse as thread count increased and
+           system time (thread creation/teardown) growing by two
+           orders of magnitude from 1 to 12 threads. This reduces
+           thread creation to input.Nthreads per call. --  ---------- */
 
     ti = (threadinfo *) malloc(input.Nthreads * sizeof(threadinfo));
+    thread_id = (pthread_t *) malloc(input.Nthreads * sizeof(pthread_t));
+
     for (nt = 0;  nt < input.Nthreads;  nt++) {
       ti[nt].eval_operator = eval_operator;
       ti[nt].redistribute  = redistribute;
-    }
-    thread_id = (pthread_t *) malloc(input.Nthreads * sizeof(pthread_t));
+      ti[nt].nt            = nt;
+      ti[nt].Nthreads      = input.Nthreads;
 
-    /* --- Thread management is very simple. Submit a batch of as many
-           as input.Nthreads at the same time, then wait till all of
-           these have finished. There is no check on successful
-           submission nor completion. --               -------------- */
+      if (pthread_create(&thread_id[nt], &input.thread_attr,
+			 Formal_pthread, &ti[nt])) {
 
-    for (nspect = 0;  nspect < spectrum.Nspect;  nspect += input.Nthreads) {
-      if (nspect + input.Nthreads <= spectrum.Nspect)
-	Nthreads = input.Nthreads;
-      else
-	Nthreads = (spectrum.Nspect % input.Nthreads);
+	/* --- Could not start the thread: do its slice here --- ---- */
 
-      /* --- Start batch of concurrent threads --      -------------- */
-
-      for (nt = 0;  nt < Nthreads;  nt++) {
-	ti[nt].nspect = nspect + nt;
-	if (!redistribute ||
-	    (redistribute && containsPRDline(&spectrum.as[nspect+nt]))) {
-	  pthread_create(&thread_id[nt], &input.thread_attr,
-			 Formal_pthread, &ti[nt]);
-	} else
-	  thread_id[nt] = 0;
+	Error(WARNING, "solveSpectrum",
+	      "Could not create a thread, running its share in the caller");
+	Formal_pthread(&ti[nt]);
+	thread_id[nt] = 0;
       }
-      /* --- Let the finished threads of the batch join again -- ---- */
-
-      for (nt = 0;  nt < Nthreads;  nt++) {
-	if (thread_id[nt]) {
-	  pthread_join(thread_id[nt], NULL);
-	  if (ti[nt].dJ > dJmax) {
-	    dJmax = ti[nt].dJ;
-	    lambda_max = nspect + nt;
-	  }
-	}
+    }
+    for (nt = 0;  nt < input.Nthreads;  nt++) {
+      if (thread_id[nt]) pthread_join(thread_id[nt], NULL);
+      if (ti[nt].dJmax > dJmax) {
+	dJmax = ti[nt].dJmax;
+	lambda_max = ti[nt].lambda_max;
       }
     }
     free(thread_id);
@@ -258,6 +279,13 @@ double solveSpectrum(bool_t eval_operator, bool_t redistribute)
     }
   }
 
+  /* --- Merge each thread's Rij/Rji contributions (accumulated with
+         no locking during the sweep above) into the shared Rij/Rji,
+         before anything downstream (PRDScatter, RADRATE_OUTPUT, ...)
+         reads them --                                  -------------- */
+
+  mergeRates(redistribute);
+
   sprintf(messageStr, " Spectrum max delta J = %6.4E (lambda#: %d)\n",
 	  dJmax, lambda_max);
   Error(MESSAGE, NULL, messageStr);
@@ -274,10 +302,25 @@ double solveSpectrum(bool_t eval_operator, bool_t redistribute)
 void *Formal_pthread(void *argument)
 {
   threadinfo *ti = (threadinfo *) argument;
+  int    nspect;
+  double dJ;
 
-  /* --- Threads wrapper around Formal --              -------------- */ 
+  /* --- Thread wrapper around Formal: works through this thread's
+         strided slice of the wavelength grid --        -------------- */
 
-  ti->dJ = Formal(ti->nspect, ti->eval_operator, ti->redistribute);
+  ti->dJmax = 0.0;
+  ti->lambda_max = -1;
+
+  for (nspect = ti->nt;  nspect < spectrum.Nspect;  nspect += ti->Nthreads) {
+    if (!ti->redistribute ||
+	(ti->redistribute && containsPRDline(&spectrum.as[nspect]))) {
+      dJ = Formal(nspect, ti->eval_operator, ti->redistribute);
+      if (dJ > ti->dJmax) {
+	ti->dJmax = dJ;
+	ti->lambda_max = nspect;
+      }
+    }
+  }
 
   return (NULL);
 }

@@ -90,6 +90,92 @@ void initGammaMolecule(Molecule *molecule)
 }
 /* ------- end ---------------------------- initGammaMolecule.c ----- */
 
+/* ------- begin -------------------------- zeroGammaThreads.c ------ */
+
+/* --- Zero every thread's private Gamma accumulator at the start of
+       an iteration. On the first iteration a thread's rhth[nt].Gamma
+       may not be allocated yet (lazily allocated in alloc_as() on
+       first use for this atom) -- skip it; a freshly calloc'd buffer
+       already starts at zero, so there is nothing to clear. -- ---- */
+
+void zeroGammaThreads(Atom *atom)
+{
+  register int nt, ij, k;
+
+  if (input.Nthreads <= 1) return;     /* one thread uses atom->Gamma */
+
+  for (nt = 0;  nt < input.Nthreads;  nt++) {
+    if (atom->rhth[nt].Gamma == NULL) continue;
+    for (ij = 0;  ij < SQ(atom->Nlevel);  ij++) {
+      for (k = 0;  k < atmos.Nspace;  k++)
+	atom->rhth[nt].Gamma[ij][k] = 0.0;
+    }
+  }
+}
+/* ------- end ---------------------------- zeroGammaThreads.c ------ */
+
+/* ------- begin -------------------------- zeroGammaThreadsMolecule.c */
+
+void zeroGammaThreadsMolecule(Molecule *molecule)
+{
+  register int nt, ij, k;
+
+  if (input.Nthreads <= 1) return;
+
+  for (nt = 0;  nt < input.Nthreads;  nt++) {
+    if (molecule->rhth[nt].Gamma == NULL) continue;
+    for (ij = 0;  ij < SQ(molecule->Nv);  ij++) {
+      for (k = 0;  k < atmos.Nspace;  k++)
+	molecule->rhth[nt].Gamma[ij][k] = 0.0;
+    }
+  }
+}
+/* ------- end ---------------------------- zeroGammaThreadsMolecule.c */
+
+/* ------- begin -------------------------- mergeGammaThreads.c ----- */
+
+/* --- Merge every thread's private Gamma contributions (accumulated
+       by addtoGamma() during the wavelength sweep, with no locking,
+       since each thread only ever touches its own rhth[nt].Gamma)
+       into the shared atom->Gamma, which initGammaAtom() has already
+       seeded with the collisional rates for this iteration. Call
+       after solveSpectrum()'s eval_operator pass completes, before
+       the result is used to update populations. --      -------------- */
+
+void mergeGammaThreads(Atom *atom)
+{
+  register int nt, ij, k;
+
+  if (input.Nthreads <= 1) return;     /* already accumulated in place */
+
+  for (nt = 0;  nt < input.Nthreads;  nt++) {
+    if (atom->rhth[nt].Gamma == NULL) continue;
+    for (ij = 0;  ij < SQ(atom->Nlevel);  ij++) {
+      for (k = 0;  k < atmos.Nspace;  k++)
+	atom->Gamma[ij][k] += atom->rhth[nt].Gamma[ij][k];
+    }
+  }
+}
+/* ------- end ---------------------------- mergeGammaThreads.c ----- */
+
+/* ------- begin -------------------------- mergeGammaThreadsMolecule.c */
+
+void mergeGammaThreadsMolecule(Molecule *molecule)
+{
+  register int nt, ij, k;
+
+  if (input.Nthreads <= 1) return;
+
+  for (nt = 0;  nt < input.Nthreads;  nt++) {
+    if (molecule->rhth[nt].Gamma == NULL) continue;
+    for (ij = 0;  ij < SQ(molecule->Nv);  ij++) {
+      for (k = 0;  k < atmos.Nspace;  k++)
+	molecule->Gamma[ij][k] += molecule->rhth[nt].Gamma[ij][k];
+    }
+  }
+}
+/* ------- end ---------------------------- mergeGammaThreadsMolecule.c */
+
 /* ------- begin -------------------------- addtoGamma.c ------------ */
 
 void addtoGamma(int nspect, double wmu, double *I, double *Psi)
@@ -98,7 +184,7 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
   register int nact, n, k, m;
 
   int    i, j, ij, ji, jp, nt;
-  double twohnu3_c2, twohc, wlamu, *Ieff;
+  double twohnu3_c2, twohc, wlamu, *Ieff, **Gamma;
 
   Atom *atom;
   AtomicLine *line;
@@ -119,6 +205,13 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
 
   for (nact = 0;  nact < atmos.Nactiveatom;  nact++) {
     atom = atmos.activeatoms[nact];
+
+    /* --- With a single thread, accumulate straight into the shared
+           Gamma, as a serial run always did. With more threads each
+           thread has its own copy (no lock needed), merged into the
+           shared one after the sweep. --              -------------- */
+
+    Gamma = (input.Nthreads > 1) ? atom->rhth[nt].Gamma : atom->Gamma;
 
     if (as->Nactiveatomrt[nact] > 0) {
       for (k = 0;  k < atmos.Nspace;  k++) {
@@ -148,22 +241,25 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
 	twohnu3_c2 = 0.0;
       }
 
-      if (input.Nthreads > 1) pthread_mutex_lock(&atom->Gamma_lock);
-      
+      /* --- Gamma is either the shared atom->Gamma (one thread) or
+             this thread's own copy rhth[nt].Gamma, which only thread nt
+             touches and which is merged into atom->Gamma once the
+             sweep is done (see iterate.c). --         -------------- */
+
       ij = i*atom->Nlevel + j;
       ji = j*atom->Nlevel + i;
 
       for (k = 0;  k < atmos.Nspace;  k++) {
 	wlamu = atom->rhth[nt].Vij[n][k] * atom->rhth[nt].wla[n][k] * wmu;
 
-	atom->Gamma[ji][k] += Ieff[k] * wlamu;
-	atom->Gamma[ij][k] += (twohnu3_c2 + Ieff[k]) *
+	Gamma[ji][k] += Ieff[k] * wlamu;
+	Gamma[ij][k] += (twohnu3_c2 + Ieff[k]) *
 	  atom->rhth[nt].gij[n][k] * wlamu;
       }
       /* --- Cross-coupling terms, currently only for Stokes_I -- --- */
 
       for (k = 0;  k < atmos.Nspace;  k++) {
-	atom->Gamma[ij][k] -= atom->rhth[nt].chi_up[i][k] *
+	Gamma[ij][k] -= atom->rhth[nt].chi_up[i][k] *
 	  Psi[k]*atom->rhth[nt].Uji_down[j][k] * wmu;
       }
       /* --- If rt->i is also an upper level of another transition that
@@ -172,7 +268,7 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
 
       for (m = 0;  m < as->Nactiveatomrt[nact];  m++) {
 	switch (as->art[nact][m].type) {
-	case ATOMIC_LINE:     
+	case ATOMIC_LINE:
 	  jp = as->art[nact][m].ptype.line->j;
 	  break;
 	case ATOMIC_CONTINUUM:
@@ -182,18 +278,18 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
 	}
 	if (jp == i) {
 	  for (k = 0;  k < atmos.Nspace;  k++) {
-	    atom->Gamma[ji][k] += atom->rhth[nt].chi_down[j][k] *
+	    Gamma[ji][k] += atom->rhth[nt].chi_down[j][k] *
 	      Psi[k]*atom->rhth[nt].Uji_down[i][k] * wmu;
 	  }
 	}
       }
-      if (input.Nthreads > 1) pthread_mutex_unlock(&atom->Gamma_lock); 
     }
   }
   /* --- Add the active molecular contributions --     -------------- */
 
   for (nact = 0;  nact < atmos.Nactivemol;  nact++) {
     molecule = atmos.activemols[nact];
+    Gamma = (input.Nthreads > 1) ? molecule->rhth[nt].Gamma : molecule->Gamma;
 
     for (n = 0;  n < as->Nactivemolrt[nact];  n++) {
       switch (as->mrt[nact][n].type) {
@@ -211,8 +307,6 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
 	twohnu3_c2 = 0.0;
       }
 
-      if (input.Nthreads > 1) pthread_mutex_lock(&molecule->Gamma_lock);
-
       /* --- In case of molecular vibration-rotation transitions -- - */
 
       ij = i*molecule->Nv + j;
@@ -222,12 +316,11 @@ void addtoGamma(int nspect, double wmu, double *I, double *Psi)
 	if (molecule->n[k]) {
 	  wlamu = molecule->rhth[nt].Vij[n][k] *
 	    molecule->rhth[nt].wla[n][k] * wmu;
-	  molecule->Gamma[ji][k] += I[k] * wlamu;
-	  molecule->Gamma[ij][k] += molecule->rhth[nt].gij[n][k] *
+	  Gamma[ji][k] += I[k] * wlamu;
+	  Gamma[ij][k] += molecule->rhth[nt].gij[n][k] *
 	    (twohnu3_c2 + I[k]) * wlamu;
 	}
       }
-      if (input.Nthreads > 1) pthread_mutex_unlock(&molecule->Gamma_lock);
     }
   }
 
@@ -325,15 +418,21 @@ void addtoCoupling(int nspect)
 
 void zeroRates(bool_t redistribute)
 {
-  register int kr, k, n;
+  register int kr, k, n, nt;
 
   Atom *atom;
 
-  /* --- Initialize the radiative rates for atomic transitions.
+  /* --- Zero the shared line/continuum Rij/Rji, as always, and also
+         every thread's private accumulator (written by addtoRates()
+         with no locking, one slot per thread) ahead of a wavelength
+         sweep. The shared arrays have to be zeroed here because
+         geometries whose formal solution writes them directly
+         (rhsphere) never touch the private ones, and mergeRates() only
+         adds to them.
 
          When redistribute == TRUE only the rates of PRD lines are
-         initialized.
-         --                                            -------------- */
+         zeroed, matching the set of lines addtoRates() actually
+         updates during a PRD sub-iteration.          -------------- */
 
   for (n = 0;  n < atmos.Natom;  n++) {
     atom = &atmos.atoms[n];
@@ -344,6 +443,12 @@ void zeroRates(bool_t redistribute)
 	    atom->line[kr].Rij[k] = 0.0;
 	    atom->line[kr].Rji[k] = 0.0;
 	  }
+	  for (nt = 0;  input.Nthreads > 1  &&  nt < input.Nthreads;  nt++) {
+	    for (k = 0;  k < atmos.Nspace;  k++) {
+	      atom->line[kr].Rij_thread[nt][k] = 0.0;
+	      atom->line[kr].Rji_thread[nt][k] = 0.0;
+	    }
+	  }
 	}
       }
       if (!redistribute) {
@@ -352,12 +457,66 @@ void zeroRates(bool_t redistribute)
 	    atom->continuum[kr].Rij[k] = 0.0;
 	    atom->continuum[kr].Rji[k] = 0.0;
 	  }
+	  for (nt = 0;  input.Nthreads > 1  &&  nt < input.Nthreads;  nt++) {
+	    for (k = 0;  k < atmos.Nspace;  k++) {
+	      atom->continuum[kr].Rij_thread[nt][k] = 0.0;
+	      atom->continuum[kr].Rji_thread[nt][k] = 0.0;
+	    }
+	  }
 	}
       }
     }
   }
 }
 /* ------- end ---------------------------- zeroRates.c ------------- */
+
+/* ------- begin -------------------------- mergeRates.c ------------ */
+
+/* --- Add every thread's private Rij/Rji contributions to the shared
+       line->Rij/Rji, which zeroRates() zeroed at the start of the
+       sweep (and which rhsphere fills directly). Call after a
+       wavelength sweep completes, with the same redistribute flag
+       passed to zeroRates() for that sweep, before anything
+       (PRDScatter, RADRATE_OUTPUT, ...) reads the result.
+       --                                               -------------- */
+
+void mergeRates(bool_t redistribute)
+{
+  register int kr, k, n, nt;
+
+  Atom *atom;
+
+  if (input.Nthreads <= 1) return;     /* rates were accumulated in place */
+
+  for (n = 0;  n < atmos.Natom;  n++) {
+    atom = &atmos.atoms[n];
+    if (atom->active) {
+      for (kr = 0;  kr < atom->Nline;  kr++) {
+        if (!redistribute || (redistribute && atom->line[kr].PRD)) {
+	  for (nt = 0;  nt < input.Nthreads;  nt++) {
+	    for (k = 0;  k < atmos.Nspace;  k++) {
+	      atom->line[kr].Rij[k] += atom->line[kr].Rij_thread[nt][k];
+	      atom->line[kr].Rji[k] += atom->line[kr].Rji_thread[nt][k];
+	    }
+	  }
+	}
+      }
+      if (!redistribute) {
+	for (kr = 0;  kr < atom->Ncont;  kr++) {
+	  for (nt = 0;  nt < input.Nthreads;  nt++) {
+	    for (k = 0;  k < atmos.Nspace;  k++) {
+	      atom->continuum[kr].Rij[k] +=
+		atom->continuum[kr].Rij_thread[nt][k];
+	      atom->continuum[kr].Rji[k] +=
+		atom->continuum[kr].Rji_thread[nt][k];
+	    }
+	  }
+	}
+      }
+    }
+  }
+}
+/* ------- end ---------------------------- mergeRates.c ------------ */
 
 /* ------- begin -------------------------- addtoRates.c ------------ */
 
@@ -374,7 +533,6 @@ void addtoRates(int nspect, int mu, bool_t to_obs, double wmu,
   Atom *atom;
   AtomicLine *line;
   AtomicContinuum *continuum;
-  pthread_mutex_t *rate_lock;
 
   /* --- Calculate the radiative rates for atomic transitions.
 
@@ -398,11 +556,9 @@ void addtoRates(int nspect, int mu, bool_t to_obs, double wmu,
 	if (redistribute && !line->PRD)
 	  Rij = NULL;
 	else {
-	  Rij = line->Rij;
-	  Rji = line->Rji;
+	  Rij = (input.Nthreads > 1) ? line->Rij_thread[nt] : line->Rij;
+	  Rji = (input.Nthreads > 1) ? line->Rji_thread[nt] : line->Rji;
 	  twohnu3_c2 = line->Aji / line->Bji;
-
-	  rate_lock = &line->rate_lock;
 	}
 	break;
 
@@ -411,30 +567,30 @@ void addtoRates(int nspect, int mu, bool_t to_obs, double wmu,
 	  Rij = NULL;
 	else {
 	  continuum = as->art[nact][n].ptype.continuum;
-	  Rij = continuum->Rij;
-	  Rji = continuum->Rji;
+	  Rij = (input.Nthreads > 1) ?
+	    continuum->Rij_thread[nt] : continuum->Rij;
+	  Rji = (input.Nthreads > 1) ?
+	    continuum->Rji_thread[nt] : continuum->Rji;
 	  twohnu3_c2 = twohc / CUBE(spectrum.lambda[nspect]);
-
-	  rate_lock = &continuum->rate_lock;
 	}
 	break;
-      
+
       default:
 	Rij = NULL;
       }
-      /* --- Convention: Rij is the rate for transition i -> j -- ----- */
+      /* --- Convention: Rij is the rate for transition i -> j.
+             With one thread this is the shared Rij/Rji. With more, it
+             is this thread's own copy, which only thread nt touches,
+             merged into the shared arrays once per sweep by
+             mergeRates() after all threads have been joined -- ----- */
 
       if (Rij != NULL) {
-	if (input.Nthreads > 1) pthread_mutex_lock(rate_lock);
-
 	for (k = 0;  k < atmos.Nspace;  k++) {
 	  wlamu =
 	    atom->rhth[nt].Vij[n][k] * atom->rhth[nt].wla[n][k] * wmu;
 	  Rij[k] += I[k] * wlamu;
 	  Rji[k] += atom->rhth[nt].gij[n][k] * (twohnu3_c2 + I[k]) * wlamu;
 	}
-
-	if (input.Nthreads > 1) pthread_mutex_unlock(rate_lock);
       }
     }
   }

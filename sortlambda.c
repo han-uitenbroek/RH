@@ -251,7 +251,7 @@ void SortLambda()
 
   spectrum.lambda = (double *)realloc(spectrum.lambda,
                                       spectrum.Nspect * sizeof(double));
-  spectrum.as = (ActiveSet *)malloc(spectrum.Nspect * sizeof(ActiveSet));
+  spectrum.as = (ActiveSet *)calloc(spectrum.Nspect, sizeof(ActiveSet));
 
   /* --- Go through each established wavelength and gather active
          transitions --                                -------------- */

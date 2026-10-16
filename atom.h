@@ -62,6 +62,15 @@ struct AtomicLine {
   AtomicLine **xrd;
   pthread_mutex_t rate_lock;
   ZeemanMultiplet *zm;
+  /* --- Per-thread Rij/Rji accumulators (one row per thread, see
+         addtoRates() in fillgamma.c): replaces rate_lock for the
+         geometries that go through the shared addtoRates(), same
+         pattern as rhth[nt].Gamma for addtoGamma(). rhsphere/formal.c
+         has its own separate, unshared accumulation logic and still
+         uses rate_lock directly, so that field is left in place.
+         Only allocated when N_THREADS > 1; with one thread the shared
+         Rij/Rji are accumulated into directly. -- */
+  double **Rij_thread, **Rji_thread;
 };
 
 typedef struct {
@@ -70,6 +79,7 @@ typedef struct {
   double  lambda0, *lambda, isotope_frac, alpha0, *alpha, *Rij, *Rji;
   Atom *atom;
   pthread_mutex_t rate_lock;
+  double **Rij_thread, **Rji_thread;
 } AtomicContinuum;
 
 typedef struct {
@@ -111,7 +121,9 @@ struct MolTransition {
 };
 
 struct rhthread {
-  double **gij, **Vij, **wla, **chi_up, **chi_down, **Uji_down, *eta;
+  double **gij, **Vij, **wla, **chi_up, **chi_down, **Uji_down, *eta,
+         **Gamma;
+  int    Nrt_alloc;
 };
 
 struct Atom {
@@ -221,6 +233,10 @@ double zm_gamma(double J, double S, double L);
 
 void initGammaAtom(Atom *atom, int iter);
 void initGammaMolecule(Molecule *molecule);
+void zeroGammaThreads(Atom *atom);
+void zeroGammaThreadsMolecule(Molecule *molecule);
+void mergeGammaThreads(Atom *atom);
+void mergeGammaThreadsMolecule(Molecule *molecule);
 
 void LTEpops(Atom *atom, bool_t Debeye);
 void LTEpops_elem(Element *element);
@@ -238,6 +254,7 @@ void VanderWaals(AtomicLine *line, double *GvdW);
 void writeAtom(Atom *atom);
 void writePopulations(Atom *atom);
 void zeroRates(bool_t redistribute);
+void mergeRates(bool_t redistribute);
 
 bool_t readRadRate(Atom *atom);
 bool_t writeRadRate(Atom *atom);
