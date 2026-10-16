@@ -21,6 +21,9 @@
  
 #include <stdlib.h>
 #include <math.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/types.h>
 
 #include "rh.h"
 #include "atom.h"
@@ -30,6 +33,7 @@
 #include "constant.h"
 #include "error.h"
 #include "statistics.h"
+#include "parallel.h"
 
 #define TENSION  8.0
 #define PRD_FILE_TEMPLATE "PRD_%s_%d-%d.dat"
@@ -46,22 +50,160 @@ extern InputData input;
 extern char messageStr[];
 
 
+/* --- The loop over spatial locations in PRDScatter is parallelized:
+       the scattering integral at one location uses only that location's
+       data and writes only rho_prd[.][k] for that k. The redistribution
+       weights live in a scratch file with one block per location (all
+       emission wavelengths of the line, in order), for each subordinate
+       line in turn. Each location's block has a known offset, so
+       workers read and write their own blocks with pread/pwrite instead
+       of sharing a file position, a window of consecutive locations at
+       a time: the blocks follow each other in the file, and large
+       requests are what the disk and the OS cache handle well. --- */
+
+#define PRD_IO_WINDOW  (2*1024*1024)
+
+typedef struct {
+  Atom       *atom;
+  AtomicLine *PRDline, **XRD;
+  int         Nsubordinate, fd;
+  enum Interpolation representation;
+  bool_t      initialize;
+  double     *Pj, *adamp;
+  long       *blocksize;      /* doubles in each block, [kxrd*Nspace + k] */
+  off_t      *kstart;         /* byte offset of each block                */
+} PRDjob;
+
+static void prdIntegrate(int kbeg, int kend, int nt, void *arg);
+
+/* ------- begin -------------------------- prdGrid.c --------------- */
+
+static int prdGrid(double q_emit, double waveratio, double *q0, double *qN)
+{
+  /* --- Integration limits over absorption wavelength, using only
+	 regions where the redistribution function is non-zero, and the
+	 number of points of the fine grid. (See also function GII.) - */
+
+  if (fabs(q_emit) < PRD_QCORE) {
+    *q0 = -PRD_QWING;
+    *qN =  PRD_QWING;
+  } else {
+    if (fabs(q_emit) < PRD_QWING) {
+      if (q_emit > 0.0) {
+	*q0 = -PRD_QWING;
+	*qN = waveratio * (q_emit + PRD_QSPREAD);
+      } else {
+	*q0 = waveratio * (q_emit - PRD_QSPREAD);
+	*qN = PRD_QWING;
+      }
+    } else {
+      *q0 = waveratio * (q_emit - PRD_QSPREAD);
+      *qN = waveratio * (q_emit + PRD_QSPREAD);
+    }
+  }
+  return (int) ((*qN - *q0) / PRD_DQ) + 1;
+}
+/* ------- end ---------------------------- prdGrid.c --------------- */
+
+/* ------- begin -------------------------- prdBlockSizes.c --------- */
+
+static void prdBlockSizes(int kbeg, int kend, int nt, void *arg)
+{
+  PRDjob     *job = (PRDjob *) arg;
+  AtomicLine *PRDline = job->PRDline;
+  int         kxrd, la, k;
+  long        n;
+  double      q_emit, q0, qN, waveratio;
+
+  for (kxrd = 0;  kxrd < job->Nsubordinate;  kxrd++) {
+    waveratio = job->XRD[kxrd]->lambda0 / PRDline->lambda0;
+    for (k = kbeg;  k < kend;  k++) {
+      n = 0;
+      for (la = 0;  la < PRDline->Nlambda;  la++) {
+	q_emit = (PRDline->lambda[la] - PRDline->lambda0) * CLIGHT /
+	  (PRDline->lambda0 * job->atom->vbroad[k]);
+	n += prdGrid(q_emit, waveratio, &q0, &qN);
+      }
+      job->blocksize[kxrd*atmos.Nspace + k] = n;
+    }
+  }
+}
+/* ------- end ---------------------------- prdBlockSizes.c --------- */
+
+/* ------- begin -------------------------- prdWindow.c ------------- */
+
+/* --- Window of locations k to ke-1, to be read in one go (or filled and
+       then written in one go): as many locations as fit in
+       PRD_IO_WINDOW bytes, but at least one. --       -------------- */
+
+static int prdWindowEnd(long *blocksize, int k, int kend)
+{
+  size_t bytes = 0;
+  int    ke = k;
+
+  while (ke < kend  &&
+	 (ke == k  ||  bytes + blocksize[ke]*sizeof(double) <= PRD_IO_WINDOW)) {
+    bytes += blocksize[ke] * sizeof(double);
+    ke++;
+  }
+  return ke;
+}
+
+static size_t prdWindowSize(long *blocksize, off_t *kstart, int k, int ke)
+{
+  return (kstart[ke-1] - kstart[k]) / sizeof(double) + blocksize[ke-1];
+}
+
+static void prdWindowIO(PRDjob *job, AtomicLine *XRDline, double *win,
+			size_t Nwin, off_t offset, int k0, int k1,
+			bool_t write_it)
+{
+  const char routineName[] = "PRDScatter";
+
+  char   *p = (char *) win;
+  size_t  left = Nwin * sizeof(double);
+  ssize_t n;
+
+  while (left > 0) {
+
+    /* --- A single call may not take more than INT_MAX bytes on some
+	   systems, and may be interrupted --          -------------- */
+
+    size_t chunk = (left < (size_t) 1 << 30) ? left : (size_t) 1 << 30;
+
+    n = (write_it) ? pwrite(job->fd, p, chunk, offset) :
+		     pread(job->fd, p, chunk, offset);
+    if (n < 0  &&  errno == EINTR) continue;
+    if (n <= 0) {
+      sprintf(messageStr,
+	      "Unable to %s the redistribution weights\n"
+	      " Line %d -> %d, locations %d to %d",
+	      (write_it) ? "write" : "read", XRDline->j, XRDline->i,
+	      k0, k1 - 1);
+      Error(ERROR_LEVEL_2, routineName, messageStr);
+    }
+    p += n;  offset += n;  left -= n;
+  }
+}
+/* ------- end ---------------------------- prdWindow.c ------------- */
+
+
 /* ------- begin -------------------------- PRDScatter.c ------------ */
 
 void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 {
   const char routineName[] = "PRDScatter";
-  register int  la, k, lap, kr, ip, kxrd;
+  register int  la, k, kr, ip, kxrd;
 
   char    filename[MAX_LINE_SIZE];
-  bool_t  hunt, initialize;
-  int     Np, Nread, Nwrite, ij, Nsubordinate;
-  double  q_emit, q0, qN, *q_abs = NULL, *qp = NULL, *wq = NULL,
-         *qpp = NULL, *gii = NULL, *adamp, cDop, gnorm, *J = NULL,
-          Jbar, scatInt, *J_k = NULL, *Pj, gamma, waveratio;
+  bool_t  initialize;
+  int     ij, Nsubordinate, nthreads;
+  off_t   offset;
+  double *adamp, cDop, *Pj;
   Atom *atom;
-  AtomicLine *line, **XRD, *XRDline;
+  AtomicLine *line, **XRD;
   AtomicContinuum *continuum;
+  PRDjob  job;
 
   /* --- Routine for angle-averaged and hybrid angle-dependent
          approximation. In the latter Jgas is used instead of J -- -- */ 
@@ -91,7 +233,6 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
       Error(ERROR_LEVEL_2, routineName, messageStr);
     }
   }
-  if (!initialize) rewind(PRDline->fp_GII);
   
   /* --- Set XRD line array --                         -------------- */
 
@@ -138,6 +279,70 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
       if (continuum->i == PRDline->j) Pj[k] += continuum->Rij[k];
     }
   }
+  /* --- The spline interpolators keep their coefficients in static
+	 storage, so only the linear representation runs in parallel - */
+
+  nthreads = (representation == LINEAR) ? input.Nthreads : 1;
+
+  job.atom           = atom;
+  job.PRDline        = PRDline;
+  job.XRD            = XRD;
+  job.Nsubordinate   = Nsubordinate;
+  job.representation = representation;
+  job.initialize     = initialize;
+  job.fd             = fileno(PRDline->fp_GII);
+  job.Pj             = Pj;
+  job.adamp          = adamp;
+  job.blocksize = (long *)  malloc(Nsubordinate*atmos.Nspace * sizeof(long));
+  job.kstart    = (off_t *) malloc(Nsubordinate*atmos.Nspace * sizeof(off_t));
+
+  /* --- Where each location's block of weights sits in the file: the
+	 size of every block first, then their running sum --  -------- */
+
+  parallelFor(atmos.Nspace, nthreads, prdBlockSizes, &job);
+  offset = 0;
+  for (kxrd = 0;  kxrd < Nsubordinate;  kxrd++) {
+    for (k = 0;  k < atmos.Nspace;  k++) {
+      job.kstart[kxrd*atmos.Nspace + k] = offset;
+      offset += job.blocksize[kxrd*atmos.Nspace + k] * sizeof(double);
+    }
+  }
+
+  /* --- Loop over subordinate lines and all spatial locations, with
+	 the locations split between the threads --    -------------- */
+
+  parallelFor(atmos.Nspace, nthreads, prdIntegrate, &job);
+
+  /* --- Clean temporary variable space --             -------------- */
+
+  free(job.blocksize);  free(job.kstart);
+  free(XRD);    free(Pj);     free(adamp);
+
+  sprintf(messageStr, "Scatter Int %5.1f", PRDline->lambda0);
+  getCPU(3, TIME_POLL, messageStr);
+}
+/* ------- end ---------------------------- PRDScatter.c ------------ */
+
+/* ------- begin -------------------------- prdIntegrate.c ---------- */
+
+static void prdIntegrate(int kbeg, int kend, int nt, void *arg)
+{
+  register int  la, k, lap, kxrd;
+
+  PRDjob *job = (PRDjob *) arg;
+  bool_t  hunt, initialize = job->initialize;
+  int     Np, Nsubordinate = job->Nsubordinate, kwin_start, kwin_end;
+  long    pos, *blocksize;
+  off_t  *kstart;
+  size_t  Nwin = 0, wincap = 0;
+  enum Interpolation representation = job->representation;
+  double  q_emit, q0, qN, *q_abs = NULL, *qp = NULL, *wq = NULL,
+	 *qpp = NULL, *gii, *adamp = job->adamp, gnorm, *J = NULL,
+	  Jbar, scatInt, *J_k = NULL, *Pj = job->Pj, gamma, waveratio,
+	 *win = NULL, *wbuf;
+  Atom *atom = job->atom;
+  AtomicLine *PRDline = job->PRDline, **XRD = job->XRD, *XRDline;
+
   /* --- Loop over subordinate lines --                -------------- */
 
   for (kxrd = 0;  kxrd < Nsubordinate;  kxrd++) {
@@ -147,9 +352,39 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
     J_k   = realloc(J_k, XRDline->Nlambda * sizeof(double));
     q_abs = realloc(q_abs, XRDline->Nlambda * sizeof(double));
 
-    /* --- Loop over all spatial locations --          -------------- */
+    /* --- This line's blocks of weights in the file --  -------------- */
 
-    for (k = 0;  k < atmos.Nspace;  k++) {
+    blocksize  = job->blocksize + kxrd*atmos.Nspace;
+    kstart     = job->kstart + kxrd*atmos.Nspace;
+    kwin_start = kwin_end = kbeg;
+
+    /* --- Loop over the spatial locations of this worker -- --------- */
+
+    for (k = kbeg;  k < kend;  k++) {
+
+      /* --- Start a new window of weights when the previous one is
+	     used up (first writing out the finished one when the weights
+	     are being computed for the first time) --   -------------- */
+
+      if (k == kwin_end) {
+	if (initialize  &&  k > kbeg)
+	  prdWindowIO(job, XRDline, win, Nwin, kstart[kwin_start],
+		      kwin_start, kwin_end, TRUE);
+	kwin_start = k;
+	kwin_end   = prdWindowEnd(blocksize, k, kend);
+	Nwin       = prdWindowSize(blocksize, kstart, kwin_start, kwin_end);
+	if (Nwin > wincap) {
+	  wincap = (Nwin > PRD_IO_WINDOW/sizeof(double)) ?
+	    Nwin : PRD_IO_WINDOW/sizeof(double);
+	  win = (double *) realloc(win, wincap * sizeof(double));
+	}
+	if (!initialize)
+	  prdWindowIO(job, XRDline, win, Nwin, kstart[kwin_start],
+		      kwin_start, kwin_end, FALSE);
+      }
+      wbuf = win + (kstart[k] - kstart[kwin_start]) / sizeof(double);
+      pos  = 0;
+
       gamma = atom->n[XRDline->i][k] / atom->n[PRDline->j][k] *
 	XRDline->Bij / Pj[k];
       Jbar = XRDline->Rij[k] / XRDline->Bij;
@@ -190,24 +425,7 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 	       using only regions where the redistribution function is
 	       non-zero. (See also function GII.) --   -------------- */
  
-	if (fabs(q_emit) < PRD_QCORE) {
-	  q0 = -PRD_QWING;
-	  qN =  PRD_QWING;
-	} else {
-	  if (fabs(q_emit) < PRD_QWING) {
-	    if (q_emit > 0.0) {
-	      q0 = -PRD_QWING;
-	      qN = waveratio * (q_emit + PRD_QSPREAD);
-	    } else {
-	      q0 = waveratio * (q_emit - PRD_QSPREAD);
-	      qN = PRD_QWING;
-	    }
-	  } else {
-	    q0 = waveratio * (q_emit - PRD_QSPREAD);
-	    qN = waveratio * (q_emit + PRD_QSPREAD);
-	  }
-	}
-	Np = (int) ((qN - q0) / PRD_DQ) + 1;
+	Np = prdGrid(q_emit, waveratio, &q0, &qN);
 	qp = (double *) realloc(qp,  Np * sizeof(double));
 	for (lap = 1, qp[0] = q0;  lap < Np;  lap++)
 	  qp[lap] = qp[lap - 1] + PRD_DQ;
@@ -237,7 +455,7 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 	}
 	/* --- Compute the redistribution weights --   -------------- */
 
-	gii = (double *) realloc(gii, Np * sizeof(double));
+	gii = wbuf + pos;
 	if (initialize) {
 
 	  /* --- Integration weights (See: Press et al. Numerical Recipes,
@@ -252,24 +470,6 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 
 	  for (lap = 0;  lap < Np;  lap++)
 	    gii[lap] = GII(adamp[k], waveratio, q_emit, qp[lap]) * wq[lap];
-
-	  if ((Nwrite =
-	       fwrite(gii, sizeof(double), Np, PRDline->fp_GII)) != Np) {
-	    sprintf(messageStr,
-		  "Unable to write proper number of redistribution weights\n"
-		  " Wrote %d instead of %d.\n Line %d -> %d, la = %d, k = %d",
-		    Nwrite, Np, XRDline->j, XRDline->i, la, k);
-	    Error(ERROR_LEVEL_2, routineName, messageStr);
-	  }
-	} else {
-	  if ((Nread =
-	       fread(gii, sizeof(double), Np, PRDline->fp_GII)) != Np) {
-	    sprintf(messageStr,
-		  "Unable to read proper number of redistribution weights\n"
-		  " Read %d instead of %d.\n Line %d -> %d, la = %d, k = %d",
-		  Nread, Np, XRDline->j, XRDline->i, la, k);
-	    Error(ERROR_LEVEL_2, routineName, messageStr);
-	  }
 	}
 	/* --- Inner wavelength loop doing actual wavelength integration
                over absorption wavelengths --          -------------- */
@@ -281,25 +481,21 @@ void PRDScatter(AtomicLine *PRDline, enum Interpolation representation)
 	  scatInt += J[lap] * gii[lap];
 	}
 	PRDline->rho_prd[la][k] += gamma*(scatInt/gnorm - Jbar);
+	pos += Np;
       }
     }
-  }
-  /* --- Clean temporary variable space --             -------------- */
 
-  for (kxrd = 0;  kxrd < Nsubordinate;  kxrd++) {
-    if (XRD[kxrd]->symmetric) {
-      free(qpp);
-      break;
-    }
-  }
-  free(J_k);    free(q_abs);  free(gii);
-  free(qp);     free(wq);     free(J);
-  free(XRD);    free(Pj);     free(adamp);
+    /* --- The last window of weights --               -------------- */
 
-  sprintf(messageStr, "Scatter Int %5.1f", PRDline->lambda0);
-  getCPU(3, TIME_POLL, messageStr);
+    if (initialize  &&  kend > kbeg)
+      prdWindowIO(job, XRDline, win, Nwin, kstart[kwin_start],
+		  kwin_start, kend, TRUE);
+  }
+
+  free(J_k);    free(q_abs);  free(qp);   free(qpp);
+  free(wq);     free(J);      free(win);
 }
-/* ------- end ---------------------------- PRDScatter.c ------------ */
+/* ------- end ---------------------------- prdIntegrate.c ---------- */
 
 /* ------- begin -------------------------- PRDAngleScatter.c ------- */
 

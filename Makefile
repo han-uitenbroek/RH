@@ -92,6 +92,7 @@ librh.a: \
  librh.a(opacity.o) \
  librh.a(options.o) \
  librh.a(order.o) \
+ librh.a(parallel.o) \
  librh.a(parse.o) \
  librh.a(paschen.o) \
  librh.a(planck.o) \
@@ -200,11 +201,12 @@ librh.a(ohchbf.o):        rh.h  atom.h  atmos.h  constant.h
 librh.a(opacity.o):       rh.h  error.h  atom.h  atmos.h  spectrum.h  inputs.h  constant.h
 librh.a(options.o):       rh.h  error.h  inputs.h
 librh.a(order.o):         rh.h
+librh.a(parallel.o):      rh.h  inputs.h  parallel.h
 librh.a(parse.o):         rh.h  error.h  inputs.h
 librh.a(paschen.o):       rh.h  error.h
 librh.a(planck.o):        rh.h  atom.h  spectrum.h  constant.h
 librh.a(pops_xdr.o):      rh.h  atom.h  atmos.h  error.h  xdr.h
-librh.a(profile.o):       rh.h  atom.h  atmos.h  inputs.h  constant.h  statistics.h  error.h
+librh.a(profile.o):       rh.h  atom.h  atmos.h  inputs.h  constant.h  statistics.h  error.h  parallel.h
 librh.a(radrate_xdr.o):   rh.h  atom.h  atmos.h  error.h  inputs.h  xdr.h
 librh.a(rayleigh.o):      rh.h  atom.h  atmos.h  constant.h  background.h  error.h
 librh.a(readatom.o):      rh.h  atom.h  atmos.h  spectrum.h  background.h  constant.h  error.h  inputs.h  statistics.h
@@ -214,7 +216,7 @@ librh.a(readj.o):         rh.h  atom.h  atmos.h  spectrum.h  background.h  input
 librh.a(readmolecule.o):  rh.h  atom.h  atmos.h  spectrum.h  background.h  constant.h  error.h  inputs.h  statistics.h
 librh.a(readvalue.o):     rh.h  atom.h  atmos.h  error.h  inputs.h
 librh.a(redistribute.o):  rh.h  atom.h  atmos.h  spectrum.h  accelerate.h  error.h  inputs.h
-librh.a(scatter.o):       rh.h  atom.h  atmos.h  spectrum.h  inputs.h  constant.h  error.h  statistics.h
+librh.a(scatter.o):       rh.h  atom.h  atmos.h  spectrum.h  inputs.h  constant.h  error.h  statistics.h  parallel.h
 librh.a(solvene.o):       rh.h  atom.h  atmos.h  constant.h  error.h  statistics.h
 librh.a(sortlambda.o):    rh.h  atom.h  atmos.h  spectrum.h  background.h  constant.h  inputs.h  error.h  statistics.h  xdr.h
 librh.a(spline.o):        rh.h
